@@ -1,8 +1,9 @@
+<div></div>
 <footer>
         <nav class="container">
             <div class="row row-cols-4">
                 <div class="col btnMenu">
-                    <button onclick="window.location.href='<?=base_url('masuk');?>'">
+                    <button onclick="window.location.href='<?=base_url('masuk/index');?>'">
                         <div class="btnIcon">
                             <i class="fa fa-reply" aria-hidden="true"></i>
                         </div>

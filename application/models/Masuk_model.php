@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Masuk_model extends MY_Model {
 
-    protected $table = '';
+    protected $perPage = 5;
 
     public function getDefaultValues(){
         return [
@@ -34,13 +34,21 @@ class Masuk_model extends MY_Model {
 
     }
 
-    public function fetchAll(){
+    public function fetchAll($page){
         return $this->select(
             [
                 'id',
                 'suratJalan'
             ]
-            )->get();
+            )
+            ->paginate($page)
+            ->get();
+
+            //return $this;
+    }
+
+    public function totalRows(){
+        return $this->count();
     }
 
 }
