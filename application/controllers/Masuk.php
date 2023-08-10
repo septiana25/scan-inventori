@@ -9,12 +9,8 @@ class Masuk extends MY_Controller {
     {
             $data['title'] = 'Form Masuk';
             $data['nav'] = 'Masuk - Input Surat Jalan';
-            $data['input'] = $this->ifPost();
+            $data['input'] = $this->defalutValueMasuk();
             $data['content'] = $this->masuk->fetchAll($page);
-            $data['total_rows'] = $this->masuk->totalRows();
-            $data['pagination'] = $this->masuk->makePagination(
-                base_url('masuk'), 2, $data['total_rows']
-            );
             $data['page'] = 'pages/masuk/index';
             $this->view($data);
             
@@ -22,7 +18,11 @@ class Masuk extends MY_Controller {
 
     public function create(){
 
-        $input = $this->ifPost();
+        if (!$_POST) {
+            $input = $this->defalutValueMasuk();
+        } else {
+            $input = (object) $this->input->post(null, true);
+        }
 
         if (!$this->masuk->validate()) {
 			$data['title']			= 'Tambah Produk';
@@ -45,14 +45,9 @@ class Masuk extends MY_Controller {
         }
     }
 
-    public function ifPost(){
-        if (!$_POST) {
-            $input = (object) $this->masuk->getDefaultValues();
-        } else {
-            $input = (object) $this->input->post(null, true);
-        }
-
-        return $input;
+    public function defalutValueMasuk(){
+        
+        return (object) $this->masuk->getDefaultValues();
     }
 
 

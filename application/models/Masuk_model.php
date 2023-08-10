@@ -37,12 +37,10 @@ class Masuk_model extends MY_Model {
     public function fetchAll($page){
         return $this->select(
             [
-                'id',
+                'id_masuk',
                 'suratJalan'
             ]
-            )
-            ->paginate($page)
-            ->get();
+            )->get();
 
             //return $this;
     }
