@@ -6,18 +6,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Detailmasuk extends MY_Controller {
 
 
-    public function index(){
+    public function index($id){
+        
+        $data['title'] = 'Form Masuk Scan';
+        $data['nav'] = 'Masuk - Scan Barang';
+        $data['input'] = $this->defalutValueMasukDet();
+        $data['content'] = $this->detailmasuk->fetchAll();
+        $data['form_action'] = "detailmasuk/create/$id";
+        $data['page'] = "pages/masuk/detailmasuk";
+        $this->view($data);
+
+    }
+
+    public function create($id){
+
         if (!$_POST) {
-            $input = (object) $this->detailmasuk->getDefaultValues();
+            $input = $this->defalutValueMasukDet();
         } else {
             $input = (object) $this->input->post(null, true);
         }
 
         if (!$this->detailmasuk->validate()) {
-            $data['title'] = 'Form Masuk';
-            $data['input'] = $input;
+            $data['title'] = 'Form Masuk Scan';
             $data['nav'] = 'Masuk - Scan Barang';
-            $data['page'] = 'pages/masuk/detailmasuk';
+            $data['input'] = $input;
+            $data['content'] = $this->detailmasuk->fetchAll();
+            $data['form_action'] = "detailmasuk/create/$id";
+            $data['page'] = "pages/masuk/detailmasuk";
             $this->view($data);
             return;
         }
@@ -25,23 +40,19 @@ class Detailmasuk extends MY_Controller {
         if ($this->detailmasuk->run($input)) {
             $this->session->set_flashdata('success', 'Berhasil disimpan');
             
-            redirect(base_url('detailmasuk'));
+            redirect(base_url("detailmasuk/$id"));
             
         }else {
             $this->session->set_flashdata('error', 'Opps Terjadi Kesalahan');
-            redirect(base_url('masuk'));
+            redirect(base_url("detailmasuk/$id"));
         }
     }
 
-    public function getAll()
-    {
+    public function defalutValueMasukDet(){
 
-        $data['title'] = 'Form Masuk';
-        $data['nav'] = 'Masuk - Scan Barang';
-        $data['content'] = $this->detailmasuk->get();
-        $data['page'] = 'pages/masuk/detailmasuk';
-            $this->view($data);    
+        return (object) $this->detailmasuk->getDefaultValues();
     }
+
 
 }
 

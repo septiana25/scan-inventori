@@ -30,8 +30,19 @@ class Detailmasuk_model extends MY_Model {
             'item' => $input->item,
         ];
 
-        $masuk_det = $this->create($data);
-        return true;
+        return $this->create($data);
+        
+    }
+
+    public function fetchAll(){
+        return $this->select(
+            [
+                'item',
+                'qty'
+            ]
+            )->get();
+
+            //return $this;
     }
 
 }

@@ -34,7 +34,7 @@ class Masuk_model extends MY_Model {
 
     }
 
-    public function fetchAll($page){
+    public function fetchAll(){
         return $this->select(
             [
                 'id_masuk',

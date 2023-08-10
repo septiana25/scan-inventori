@@ -10,7 +10,7 @@ class Masuk extends MY_Controller {
             $data['title'] = 'Form Masuk';
             $data['nav'] = 'Masuk - Input Surat Jalan';
             $data['input'] = $this->defalutValueMasuk();
-            $data['content'] = $this->masuk->fetchAll($page);
+            $data['content'] = $this->masuk->fetchAll();
             $data['page'] = 'pages/masuk/index';
             $this->view($data);
             
@@ -26,7 +26,7 @@ class Masuk extends MY_Controller {
 
         if (!$this->masuk->validate()) {
 			$data['title']			= 'Tambah Produk';
-            $data['content'] = $this->masuk->fetchAll();
+            $data['content']        = $this->masuk->fetchAll();
 			$data['input']			= $input;
 			$data['page']			= $data['page'] = 'pages/masuk/index';
 
@@ -34,10 +34,11 @@ class Masuk extends MY_Controller {
 			return;
 		}
 
-        if ($this->masuk->run($input)) {
+        $masuk = $this->masuk->run($input);
+        if ($masuk) {
             $this->session->set_flashdata('success', 'Berhasil disimpan');
             
-            redirect(base_url('detailmasuk'));
+            redirect(base_url("detailmasuk/$masuk"));
             
         }else {
             $this->session->set_flashdata('error', 'Opps Terjadi Kesalahan');

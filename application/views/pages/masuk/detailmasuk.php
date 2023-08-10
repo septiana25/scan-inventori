@@ -2,7 +2,7 @@
 <main class="container">
             <section id="form">
             <?php $this->load->view('layouts/_alert')?>
-                <?= form_open('detailmasuk', ['method' => 'POST']) ?>
+                <?= form_open($form_action, ['method' => 'POST']) ?>
                     <div class="mb-3">
                       <label for="item" class="form-label">Item</label>
                         <?= form_input('item', $input->item, ['class' => 'form-control', 'required' => true, 'autofocus' => true]); ?>
@@ -16,10 +16,12 @@
                             <th>QTY</th> 
                         </thead>
                         <tbody>
+                        <?php foreach ($content as $row) : ?>
                           <tr>
-                            <td>a</td>
-                            <td>a</td>
-                          </tr>                          
+                            <td><?= $row->item ?></td>
+                            <td><?= $row->qty ?></td>
+                          </tr> 
+                          <?php endforeach ?>                            
                         </tbody>
                     </table>
                     
