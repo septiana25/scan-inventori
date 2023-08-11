@@ -16,7 +16,7 @@ class Detailmasuk_model extends MY_Model {
         
         $this->session->set_userdata($sess_data);
     }
-    
+
     public function getDefaultValues($id){
         return [
             'id_masuk'  => $id,
@@ -42,6 +42,7 @@ class Detailmasuk_model extends MY_Model {
     }
 
     public function run($input){
+        
         $data = [
             'id_masuk'  => $input->id_masuk,
             'item'      => $input->item,

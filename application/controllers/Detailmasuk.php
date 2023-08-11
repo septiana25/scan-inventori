@@ -23,15 +23,15 @@ class Detailmasuk extends MY_Controller {
     }
 
     public function create($id){
-
-        if ($this->validateIdMasuk($id)) {
-            redirect(base_url("masuk"));
-        }
         
         if (!$_POST) {
             $input = $this->defalutValueMasukDet($id);
         } else {
             $input = (object) $this->input->post(null, true);
+        }
+
+        if ($this->validateIdMasuk($id) || $this->validateIdMasuk($input->id_masuk)) { 
+            redirect(base_url("masuk"));
         }
 
         if (!$this->detailmasuk->validate()) {
