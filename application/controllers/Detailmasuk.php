@@ -31,6 +31,7 @@ class Detailmasuk extends MY_Controller {
         }
 
         if ($this->validateIdMasuk($id) || $this->validateIdMasuk($input->id_masuk)) { 
+            $this->session->set_flashdata('error', 'Opps Terjadi Kesalahan');
             redirect(base_url("masuk"));
         }
 
