@@ -7,8 +7,19 @@ class Detailmasuk_model extends MY_Model {
 
     protected $table = 'masuk_det';
 
-    public function getDefaultValues(){
+    public function __construct()
+    {
+        parent::__construct();
+        $sess_data = [
+            'username'  => 'septiana'
+        ];
+        
+        $this->session->set_userdata($sess_data);
+    }
+    
+    public function getDefaultValues($id){
         return [
+            'id_masuk'  => $id,
             'item'      => '',
         ];
     }
@@ -19,6 +30,11 @@ class Detailmasuk_model extends MY_Model {
                 'field' => 'item',
                 'label' => 'Item',
                 'rules' => 'trim|required',
+            ],
+            [
+                'field' => 'id_masuk',
+                'label' => 'Id Masuk',
+                'rules' => 'trim|required|numeric',
             ]
         ];
 
@@ -27,7 +43,9 @@ class Detailmasuk_model extends MY_Model {
 
     public function run($input){
         $data = [
-            'item' => $input->item,
+            'id_masuk'  => $input->id_masuk,
+            'item'      => $input->item,
+            'user'      => $this->session->userdata('username')
         ];
 
         return $this->create($data);
@@ -35,6 +53,7 @@ class Detailmasuk_model extends MY_Model {
     }
 
     public function fetchAll(){
+
         return $this->select(
             [
                 'item',
@@ -42,9 +61,20 @@ class Detailmasuk_model extends MY_Model {
             ]
             )->get();
 
-            //return $this;
     }
 
+    public function fetchById($id){
+
+        return $this->select(
+            [
+                'item',
+                'qty'
+            ]
+            )->where('id_masuk', $id)
+            ->get();
+
+    }
+    
 }
 
 /* End of file Masuk_model.php */

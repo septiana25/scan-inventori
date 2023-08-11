@@ -5,6 +5,7 @@
                 <?= form_open($form_action, ['method' => 'POST']) ?>
                     <div class="mb-3">
                       <label for="item" class="form-label">Item</label>
+                        <?= form_hidden('id_masuk', $input->id_masuk);?>
                         <?= form_input('item', $input->item, ['class' => 'form-control', 'required' => true, 'autofocus' => true]); ?>
                         <?= form_error('item') ?>
                     </div>

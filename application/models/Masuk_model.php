@@ -42,11 +42,17 @@ class Masuk_model extends MY_Model {
             ]
             )->get();
 
-            //return $this;
+
     }
 
     public function totalRows(){
         return $this->count();
+    }
+
+    public function totalRowsMasuk($id){
+        return $this->where(
+            'id_masuk',
+            $id)->count();
     }
 
 }

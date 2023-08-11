@@ -4,14 +4,18 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Detailmasuk extends MY_Controller {
-
+    
 
     public function index($id){
         
+        if ($this->validateIdMasuk($id)) {
+            redirect(base_url("masuk"));
+        }
+
         $data['title'] = 'Form Masuk Scan';
         $data['nav'] = 'Masuk - Scan Barang';
-        $data['input'] = $this->defalutValueMasukDet();
-        $data['content'] = $this->detailmasuk->fetchAll();
+        $data['input'] = $this->defalutValueMasukDet($id);
+        $data['content'] = $this->detailmasuk->fetchById($id);
         $data['form_action'] = "detailmasuk/create/$id";
         $data['page'] = "pages/masuk/detailmasuk";
         $this->view($data);
@@ -20,8 +24,12 @@ class Detailmasuk extends MY_Controller {
 
     public function create($id){
 
+        if ($this->validateIdMasuk($id)) {
+            redirect(base_url("masuk"));
+        }
+        
         if (!$_POST) {
-            $input = $this->defalutValueMasukDet();
+            $input = $this->defalutValueMasukDet($id);
         } else {
             $input = (object) $this->input->post(null, true);
         }
@@ -30,7 +38,7 @@ class Detailmasuk extends MY_Controller {
             $data['title'] = 'Form Masuk Scan';
             $data['nav'] = 'Masuk - Scan Barang';
             $data['input'] = $input;
-            $data['content'] = $this->detailmasuk->fetchAll();
+            $data['content'] = $this->detailmasuk->fetchById($id);
             $data['form_action'] = "detailmasuk/create/$id";
             $data['page'] = "pages/masuk/detailmasuk";
             $this->view($data);
@@ -48,9 +56,25 @@ class Detailmasuk extends MY_Controller {
         }
     }
 
-    public function defalutValueMasukDet(){
+    /**
+     * set defalut input buat function index
+     */
+    public function defalutValueMasukDet($id){
 
-        return (object) $this->detailmasuk->getDefaultValues();
+        return (object) $this->detailmasuk->getDefaultValues($id);
+    }
+
+    /**
+     * validasi jika, id_masuk di tabel masuk tidak ada atau lebih dari 1
+     */
+    public function validateIdMasuk($id){
+
+        $this->load->model(ucfirst('masuk') . '_model', 'masuk', true);
+
+        $masuk = $this->masuk->totalRowsMasuk($id);
+        if ($masuk <= 0 || $masuk > 1) {
+            return true;
+        }
     }
 
 
