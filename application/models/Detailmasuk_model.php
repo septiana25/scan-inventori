@@ -20,15 +20,15 @@ class Detailmasuk_model extends MY_Model {
     public function getDefaultValues($id){
         return [
             'id_masuk'  => $id,
-            'item'      => '',
+            'barcode'      => '',
         ];
     }
 
     public function getValidationRules(){
         $validationRules = [
             [
-                'field' => 'item',
-                'label' => 'Item',
+                'field' => 'barcode',
+                'label' => 'Barcode',
                 'rules' => 'trim|required',
             ],
             [
@@ -45,7 +45,9 @@ class Detailmasuk_model extends MY_Model {
         
         $data = [
             'id_masuk'  => $input->id_masuk,
+            'barcode'   => $input->barcode,
             'item'      => $input->item,
+            'qty'      => $input->qty,
             'user'      => $this->session->userdata('username')
         ];
 
@@ -57,6 +59,7 @@ class Detailmasuk_model extends MY_Model {
 
         return $this->select(
             [
+                'barcode',
                 'item',
                 'qty'
             ]
@@ -68,6 +71,7 @@ class Detailmasuk_model extends MY_Model {
 
         return $this->select(
             [
+                'barcode',
                 'item',
                 'qty'
             ]

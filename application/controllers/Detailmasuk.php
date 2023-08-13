@@ -1,5 +1,6 @@
 <?php
 
+use function PHPSTORM_META\type;
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -46,15 +47,63 @@ class Detailmasuk extends MY_Controller {
             return;
         }
 
-        if ($this->detailmasuk->run($input)) {
-            $this->session->set_flashdata('success', 'Berhasil disimpan');
-            
-            redirect(base_url("detailmasuk/$id"));
-            
-        }else {
-            $this->session->set_flashdata('error', 'Opps Terjadi Kesalahan');
-            redirect(base_url("detailmasuk/$id"));
+        /* Begin Curl */
+        
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+            CURLOPT_URL => "http://localhost/apiinvkus/api/barang/$input->barcode",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => [
+                "X-API-KEY:ian123"
+            ],
+        ]);
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        /* END Curl */
+
+
+        if ($err) {
+            //echo "cURL Error #:" . $err;
+            $this->session->set_flashdata('error', 'Opps Terjadi Kesalahan API');
+                redirect(base_url("detailmasuk/$id"));
+
+        } else {
+
+            $res = json_decode($response);
+
+            if (empty($res)) {
+                $this->session->set_flashdata('error', 'Barcode Tidak Ada');
+                redirect(base_url("detailmasuk/$id"));
+            }
+
+            //push data object API 
+            $input->item = $res->brg;
+            $input->qty = 20;
+
+            if ($this->detailmasuk->run($input)) {
+                $this->session->set_flashdata('success', 'Berhasil disimpan');
+                
+                redirect(base_url("detailmasuk/$id"));
+                
+            }else {
+                $this->session->set_flashdata('error', 'Opps Terjadi Kesalahan');
+                redirect(base_url("detailmasuk/$id"));
+            }
+
         }
+        
+        
+
     }
 
     /**
