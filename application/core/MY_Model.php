@@ -78,6 +78,11 @@ class MY_Model extends CI_Model {
         return $this;
     }
 
+    public function group_by($column){
+        $this->db->group_by($column);
+        return $this;
+    }
+
     /**
      * Mengurutkan data dari hasil query dan kondisi
      * Chain Method

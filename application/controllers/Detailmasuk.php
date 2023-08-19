@@ -87,8 +87,9 @@ class Detailmasuk extends MY_Controller {
             }
 
             //push data object API 
+            $input->id_item = $res->id_brg;
             $input->item = $res->brg;
-            $input->qty = 20;
+            $input->qty = $res->qty;
 
             if ($this->detailmasuk->run($input)) {
                 $this->session->set_flashdata('success', 'Berhasil disimpan');

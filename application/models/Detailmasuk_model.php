@@ -45,10 +45,12 @@ class Detailmasuk_model extends MY_Model {
         
         $data = [
             'id_masuk'  => $input->id_masuk,
-            'barcode'   => $input->barcode,
+            'id_item'   => $input->id_item,
             'item'      => $input->item,
+            'barcode'   => $input->barcode,
             'qty'      => $input->qty,
-            'user'      => $this->session->userdata('username')
+            'user'      => $this->session->userdata('username'),
+            'at_update' => date("Y-m-d H:i:s")
         ];
 
         return $this->create($data);
@@ -63,7 +65,8 @@ class Detailmasuk_model extends MY_Model {
                 'item',
                 'qty'
             ]
-            )->get();
+            )->where('at_delete', NULL)
+            ->get();
 
     }
 
@@ -73,9 +76,11 @@ class Detailmasuk_model extends MY_Model {
             [
                 'barcode',
                 'item',
-                'qty'
+                'SUM(qty) as qty'
             ]
             )->where('id_masuk', $id)
+            ->where('at_delete', NULL)
+            ->group_by('id_item')
             ->get();
 
     }
