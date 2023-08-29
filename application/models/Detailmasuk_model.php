@@ -74,8 +74,8 @@ class Detailmasuk_model extends MY_Model {
 
         return $this->select(
             [
-                'barcode',
-                'item',
+                'MAX(barcode) AS barcode',
+                'MAX(item) AS item',
                 'SUM(qty) as qty'
             ]
             )->where('id_masuk', $id)
