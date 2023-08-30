@@ -26,7 +26,7 @@
                   <td width="30%"><?= $row->toko ?></td>
                   <td width="60%"><?=$row->no_faktur ?></td>
                   <td width="10%">
-                    <a href="<?= base_url()."detailmasuk/$row->id_klr"?>" >
+                    <a href="<?= base_url()."detailkeluar/$row->id_klr"?>" >
                     <button type="button" class="btn btn-primary"
                             style="--bs-btn-padding-y: .20rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .50rem;">
                             <i class="fa fa-eye" aria-hidden="true"></i>

@@ -57,6 +57,7 @@ $route['masuk/(:num)']	        = 'masuk/index/$1';
 $route['detailmasuk/(:any)']	= 'detailmasuk/index/$1';
 
 $route['keluar/(:any)']	        = 'keluar/index/$1';
+$route['detailkeluar/(:any)']	= 'detailkeluar/index/$1';
 
 /* $route['api/(:any)']	= 'api/index/$1'; */
 
