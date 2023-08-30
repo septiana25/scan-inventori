@@ -12,7 +12,7 @@
                     
                 </div>
                 <div class="col btnMenu">
-                    <button onclick="window.location.href='#'">
+                    <button onclick="window.location.href='<?=base_url('keluar/index');?>'">
                         <div class="btnIcon">
                             <i class="fa fa-share" aria-hidden="true"></i>
                         </div>

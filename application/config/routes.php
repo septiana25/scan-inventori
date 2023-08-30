@@ -55,6 +55,8 @@ $route['translate_uri_dashes']  = FALSE;
 
 $route['masuk/(:num)']	        = 'masuk/index/$1';
 $route['detailmasuk/(:any)']	= 'detailmasuk/index/$1';
-$route['api/(:any)']	= 'api/index/$1';
 
+$route['keluar/(:any)']	        = 'keluar/index/$1';
+
+/* $route['api/(:any)']	= 'api/index/$1'; */
 
