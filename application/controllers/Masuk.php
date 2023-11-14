@@ -1,18 +1,25 @@
 <?php
 
-
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Masuk extends MY_Controller {
 
     public function index($page = null)
     {
-            $data['title'] = 'Form Masuk';
-            $data['nav'] = 'Masuk - Input Surat Jalan';
-            $data['input'] = $this->defalutValueMasuk();
-            $data['content'] = $this->masuk->fetchAll();
-            $data['page'] = 'pages/masuk/index';
-            $this->view($data);
+        /* Begin Curl */
+        $this->load->helper('curl');
+
+        $url =$this->config->item('base_url_api') . "/po/suratjalan";
+        $response = curl_request($url, 'GET', null, [ "X-API-KEY:ian123" ]);
+
+        /* END Curl */
+
+        $data['title'] = 'Form Masuk';
+        $data['nav'] = 'Masuk - Input Surat Jalan';
+        $data['input'] = $this->defalutValueMasuk();
+        $data['content'] = json_decode($response);
+        $data['page'] = 'pages/masuk/index';
+        $this->view($data);
             
     }
 

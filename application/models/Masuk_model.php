@@ -27,7 +27,8 @@ class Masuk_model extends MY_Model {
 
     public function run($input){
         $data = [
-            'suratJalan' => $input->suratJalan,
+            'id_masuk' => $input->id_msk,
+            'suratJalan' => $input->suratJln,
         ];
 
         return $this->create($data);

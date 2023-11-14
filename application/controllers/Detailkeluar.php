@@ -14,7 +14,7 @@ class Detailkeluar extends MY_Controller {
         $curl = curl_init();
 
         curl_setopt_array($curl, [
-            CURLOPT_URL => "http://localhost/apiinvkus/api/keluarbyid/$id",
+            CURLOPT_URL => $this->config->item('base_url_api') . "/keluarbyid/$id",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -78,7 +78,7 @@ class Detailkeluar extends MY_Controller {
         $curl = curl_init();
 
         curl_setopt_array($curl, [
-            CURLOPT_URL => "http://localhost/apiinvkus/api/barang/$input->barcode",
+            CURLOPT_URL => $this->config->item('base_url_api') . "/barang/$input->barcode",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
