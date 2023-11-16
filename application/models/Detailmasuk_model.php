@@ -82,7 +82,14 @@ class Detailmasuk_model extends MY_Model {
             ->where('at_delete', NULL)
             ->group_by('id_item')
             ->get();
+    }
 
+    public function getTotalById($id, $barcode){
+        return $this->select('SUM(qty) AS total')
+            ->where('id_masuk', $id)
+            ->where('barcode', $barcode)
+            ->group_by('id_item')
+            ->first();
     }
     
 }
