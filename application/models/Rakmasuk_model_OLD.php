@@ -3,15 +3,15 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Masuk_model extends MY_Model
+class Rakmasuk_model extends MY_Model
 {
-
+    protected $table = 'masuk_det';
     protected $perPage = 5;
 
     public function getDefaultValues()
     {
         return [
-            'suratJalan'      => '',
+            'qty'      => '',
         ];
     }
 
@@ -19,8 +19,11 @@ class Masuk_model extends MY_Model
     {
         $validationRules = [
             [
+                'field' => 'qty',
+                'rules' => 'trim|required',
+            ],
+            [
                 'field' => 'suratJalan',
-                'label' => 'Surat Jalan',
                 'rules' => 'trim|required',
             ]
         ];
@@ -43,9 +46,14 @@ class Masuk_model extends MY_Model
         return $this->select(
             [
                 'id_masuk',
-                'suratJalan'
+                'MAX(id_item) AS id_item',
+                'MAX(item) AS item',
+                'SUM(qty) AS total'
             ]
-        )->get();
+        )
+            ->where_in('id_masuk', [12189, 12192])
+            ->group_by('id_masuk')
+            ->get();
     }
 
     public function totalRows()
@@ -62,4 +70,4 @@ class Masuk_model extends MY_Model
     }
 }
 
-/* End of file Masuk_model.php */
+/* End of file Rakmasuk_model.php */

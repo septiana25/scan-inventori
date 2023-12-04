@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
@@ -53,11 +53,14 @@ $route['default_controller']    = 'home';
 $route['404_override']          = '';
 $route['translate_uri_dashes']  = FALSE;
 
-$route['masuk/(:num)']	        = 'masuk/index/$1';
-$route['detailmasuk/(:any)']	= 'detailmasuk/index/$1';
+$route['masuk/(:num)']          = 'masuk/index/$1';
+$route['detailmasuk/(:any)']    = 'detailmasuk/index/$1';
+$route['rakmasuk/(:any)']            = 'rakmasuk/index/$1';
 
-$route['keluar/(:any)']	        = 'keluar/index/$1';
-$route['detailkeluar/(:any)']	= 'detailkeluar/index/$1';
+$route['managemasuk']           = 'managebarangmasuk/index';
+$route['barangkerak/(:num)'] = 'barangkerak/index/$1';
+
+$route['keluar/(:any)']         = 'keluar/index/$1';
+$route['detailkeluar/(:any)']   = 'detailkeluar/index/$1';
 
 /* $route['api/(:any)']	= 'api/index/$1'; */
-

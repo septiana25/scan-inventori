@@ -1,9 +1,10 @@
 <?php
 
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Detailmasuk_model extends MY_Model {
+class Detailmasuk_model extends MY_Model
+{
 
     protected $table = 'masuk_det';
 
@@ -13,18 +14,20 @@ class Detailmasuk_model extends MY_Model {
         $sess_data = [
             'username'  => 'septiana'
         ];
-        
+
         $this->session->set_userdata($sess_data);
     }
 
-    public function getDefaultValues($id){
+    public function getDefaultValues($id)
+    {
         return [
             'id_masuk'  => $id,
             'barcode'      => '',
         ];
     }
 
-    public function getValidationRules(){
+    public function getValidationRules()
+    {
         $validationRules = [
             [
                 'field' => 'barcode',
@@ -41,8 +44,9 @@ class Detailmasuk_model extends MY_Model {
         return $validationRules;
     }
 
-    public function run($input){
-        
+    public function run($input)
+    {
+
         $data = [
             'id_masuk'  => $input->id_masuk,
             'id_item'   => $input->id_item,
@@ -54,10 +58,10 @@ class Detailmasuk_model extends MY_Model {
         ];
 
         return $this->create($data);
-        
     }
 
-    public function fetchAll(){
+    public function fetchAll()
+    {
 
         return $this->select(
             [
@@ -65,33 +69,38 @@ class Detailmasuk_model extends MY_Model {
                 'item',
                 'qty'
             ]
-            )->where('at_delete', NULL)
+        )->where('at_delete', NULL)
             ->get();
-
     }
 
-    public function fetchById($id){
+    public function fetchById($id)
+    {
 
+        /* 'MAX(suratJalan) AS suratJalan', */
         return $this->select(
             [
+                'MAX(masuk.id_masuk) AS id_masuk',
+                'MAX(masuk.suratJalan) AS suratJalan',
                 'MAX(barcode) AS barcode',
+                'MAX(id_item) AS id_item',
                 'MAX(item) AS item',
                 'SUM(qty) as qty'
             ]
-            )->where('id_masuk', $id)
-            ->where('at_delete', NULL)
+        )
+            ->join('masuk', 'masuk.id_masuk = masuk_det.id_masuk')
+            ->where('masuk.id_masuk', $id)
             ->group_by('id_item')
             ->get();
     }
 
-    public function getTotalById($id, $barcode){
+    public function getTotalById($id, $barcode)
+    {
         return $this->select('SUM(qty) AS total')
             ->where('id_masuk', $id)
             ->where('barcode', $barcode)
             ->group_by('id_item')
             ->first();
     }
-    
 }
 
 /* End of file Masuk_model.php */
