@@ -16,9 +16,8 @@ class Masuk extends MY_Controller
         /* END Curl */
         $result = json_decode($response);
         $data['title'] = 'Form Masuk';
-        $data['nav'] = 'Masuk - Input Surat Jalan';
-        $data['input'] = $this->defalutValueMasuk();
-        $data['content'] = $result->data;
+        $data['nav'] = 'Masuk - Daftar PO Masuk';
+        $data['content'] = $result->data->po;
         $data['page'] = 'pages/masuk/index';
         $this->view($data);
     }

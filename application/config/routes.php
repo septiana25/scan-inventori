@@ -54,7 +54,7 @@ $route['404_override']          = '';
 $route['translate_uri_dashes']  = FALSE;
 
 $route['masuk/(:num)']          = 'masuk/index/$1';
-$route['detailmasuk/(:any)']    = 'detailmasuk/index/$1';
+$route['detailmasuk/(:any)/(:num)']    = 'detailmasuk/index/$1/$2';
 $route['rakmasuk/(:any)']            = 'rakmasuk/index/$1';
 
 $route['managemasuk']           = 'managebarangmasuk/index';

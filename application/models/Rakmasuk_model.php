@@ -9,7 +9,7 @@ class Rakmasuk_model extends MY_Model
     public function getDefaultValues()
     {
         return [
-            'rak'      => '',
+            'barcodeRak'      => '',
         ];
     }
 
@@ -17,7 +17,7 @@ class Rakmasuk_model extends MY_Model
     {
         $validationRules = [
             [
-                'field' => 'rak',
+                'field' => 'barcodeRak',
                 'rules' => 'trim|required',
             ],
         ];

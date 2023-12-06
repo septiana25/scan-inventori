@@ -6,14 +6,78 @@ class Rakmasuk extends MY_Controller
     public function index($id)
     {
 
+        $this->loadModelMasuk();
+
         if ($this->validateIdMasuk($id)) {
-            $this->session->set_flashdata('error', 'Data Tidak Ada');
+
+            $this->load->helper('curl');
+
+            $url = $this->config->item('base_url_api') . "/po/$id";
+            $response = curl_request($url, 'GET', null, ["X-API-KEY:ian123"]);
+            $result = json_decode($response);
+
+            if ($result == NULL) {
+                $this->session->set_flashdata('error', 'Opps Server API Error');
+                redirect(base_url("masuk"));
+            }
+
+            if (!empty($result->statusCode) && $result->statusCode == 404) {
+                $this->session->set_flashdata('error', 'Opps Terjadi Kesalahan URL API');
+                redirect(base_url("masuk/$id"));
+            }
+
+            if (empty($result->data->po)) {
+                $this->session->set_flashdata('error', 'Data Tidak Ada');
+                redirect(base_url("masuk/$id"));
+            }
+
+            if ($this->masuk->run($result->data->po)) {
+                $this->session->set_flashdata('success', 'Berhasil disimpan');
+            } else {
+                $this->session->set_flashdata('error', 'Opps Terjadi Kesalahan Masuk');
+                redirect(base_url("masuk/$id"));
+            }
+        }
+
+        $data['title'] = 'Form Masuk Scan';
+        $data['nav'] = 'Masuk - Scan Rak';
+        $data['input'] = $this->defalutValueRakMasuk($id);
+        $data['content'] = $this->masuk->fetchById($id);
+        $data['form_action'] = "rakmasuk/create/$id";
+        $data['page'] = "pages/masuk/rak";
+        $this->view($data);
+    }
+
+    public function create($id)
+    {
+
+        $this->loadModelMasuk();
+
+        if (!$_POST) {
+            $input = $this->defalutValueRakMasuk($id);
+        } else {
+            $input = (object) $this->input->post(null, true);
+        }
+
+
+        if ($this->validateIdMasuk($id) && $this->validateIdMasuk($input->id_masuk)) {
+            $this->session->set_flashdata('error', 'Data Masuk Tidak Sesuai');
             redirect(base_url("masuk"));
         }
 
-        $this->load->helper('curl');
+        if (!$this->rakmasuk->validate()) {
+            $data['title'] = 'Form Masuk Scan';
+            $data['nav'] = 'Masuk - Scan Rak';
+            $data['input'] = $input;
+            $data['content'] = $this->masuk->fetchById($id);
+            $data['form_action'] = "rakmasuk/create/$id";
+            $data['page'] = "pages/masuk/rak";
+            $this->view($data);
+            return;
+        }
 
-        $url = $this->config->item('base_url_api') . "/po/$id";
+        $this->load->helper('curl');
+        $url = $this->config->item('base_url_api') . "/shelves/$input->barcodeRak";
         $response = curl_request($url, 'GET', null, ["X-API-KEY:ian123"]);
         $result = json_decode($response);
 
@@ -24,31 +88,22 @@ class Rakmasuk extends MY_Controller
 
         if (!empty($result->statusCode) && $result->statusCode == 404) {
             $this->session->set_flashdata('error', 'Opps Terjadi Kesalahan URL API');
-            redirect(base_url("masuk"));
+            redirect(base_url("masuk/$id"));
         }
 
-        if (empty($result->data[0])) {
-            $this->session->set_flashdata('error', 'Barcode Rak Tidak Ada');
-            redirect(base_url("masuk"));
+        if (empty($result->data->shelf)) {
+            $this->session->set_flashdata('error', 'Data Tidak Ada');
+            redirect(base_url("rakmasuk/$id"));
         }
 
-        $this->loadModelDetailMasuk();
-
-        $data['title'] = 'Form Masuk Scan';
-        $data['nav'] = 'Masuk - Scan Rak';
-        $data['input'] = $this->defalutValueRakMasuk($id);
-        $data['content'] = $this->detailmasuk->fetchById($id);
-        $data['form_action'] = "rakmasuk/create/$id";
-        $data['page'] = "pages/masuk/rak";
-        $this->view($data);
+        redirect(base_url("detailmasuk/$input->barcodeRak/$id"));
     }
 
     public function defalutValueRakMasuk($id)
     {
 
-        return (object) $this->detailmasuk->getDefaultValues($id);
+        return (object) $this->rakmasuk->getDefaultValues($id);
     }
-
 
     public function validateIdMasuk($id)
     {

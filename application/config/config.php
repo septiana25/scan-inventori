@@ -24,7 +24,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 |
 */
 $config['base_url'] = 'http://192.168.1.21/scan';
-$config['base_url_api'] = 'http://localhost:3000';
+$config['base_url_api'] = 'http://localhost:4000';
 
 /*
 |--------------------------------------------------------------------------

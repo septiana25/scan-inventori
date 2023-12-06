@@ -18,11 +18,13 @@ class Detailmasuk_model extends MY_Model
         $this->session->set_userdata($sess_data);
     }
 
-    public function getDefaultValues($id)
+    public function getDefaultValues($idRak, $rak, $id)
     {
         return [
             'id_masuk'  => $id,
-            'barcode'      => '',
+            'id_rak'    => $idRak,
+            'rak'       => $rak,
+            'barcode'   => '',
         ];
     }
 
@@ -38,7 +40,17 @@ class Detailmasuk_model extends MY_Model
                 'field' => 'id_masuk',
                 'label' => 'Id Masuk',
                 'rules' => 'trim|required|numeric',
-            ]
+            ],
+            [
+                'field' => 'id_rak',
+                'label' => 'Id Rak',
+                'rules' => 'trim|required',
+            ],
+            [
+                'field' => 'rak',
+                'label' => 'Rak',
+                'rules' => 'trim|required',
+            ],
         ];
 
         return $validationRules;
@@ -48,13 +60,14 @@ class Detailmasuk_model extends MY_Model
     {
 
         $data = [
-            'id_masuk'  => $input->id_masuk,
-            'id_item'   => $input->id_item,
-            'item'      => $input->item,
-            'barcode'   => $input->barcode,
-            'qty'      => $input->qty,
-            'user'      => $this->session->userdata('username'),
-            'at_update' => date("Y-m-d H:i:s")
+            'id_masuk'      => $input->id_masuk,
+            'id_item'       => $input->id_item,
+            'item'          => $input->item,
+            'barcode'       => $input->barcode,
+            'id_rak'        => $input->id_rak,
+            'rak'           => $input->rak,
+            'qty'           => $input->qty,
+            'user'          => $this->session->userdata('username'),
         ];
 
         return $this->create($data);
@@ -91,6 +104,14 @@ class Detailmasuk_model extends MY_Model
             ->where('masuk.id_masuk', $id)
             ->group_by('id_item')
             ->get();
+    }
+
+    public function fetchByIdMasuk($id)
+    {
+        return $this->select('suratJalan')
+            ->where('masuk.id_masuk', $id)
+            ->join('masuk', 'masuk.id_masuk = masuk_det.id_masuk')
+            ->first();
     }
 
     public function getTotalById($id, $barcode)

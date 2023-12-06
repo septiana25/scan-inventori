@@ -6,14 +6,12 @@
             <label for="rak" class="form-label d-block">
                 <div class="d-flex justify-content-between">
                     <h6>Scan Rak</h6>
-                    <?php foreach ($content as $row) : ?>
-                        <h6>PO: <?= $row->suratJalan ?></h6>
-                    <?php endforeach ?>
+                    <h6>PO: <?= $content->suratJalan ?></h6>
                 </div>
             </label>
-            <?= form_hidden('id_masuk', $input->id_masuk); ?>
-            <?= form_input('rak', $input->barcode, ['class' => 'form-control', 'required' => true, 'autofocus' => true, 'placeholder' => 'Scan Rak']); ?>
-            <?= form_error('rak') ?>
+            <?= form_hidden('id_masuk', $content->id_masuk); ?>
+            <?= form_input('barcodeRak', $input->barcodeRak, ['class' => 'form-control',  'autofocus' => true, 'placeholder' => 'Scan Rak']); ?>
+            <?= form_error('barcodeRak') ?>
         </div>
         <!-- <button type="submit" class="btn btn-primary">Simpan</button> -->
         <?= form_close() ?>

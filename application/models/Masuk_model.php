@@ -31,7 +31,7 @@ class Masuk_model extends MY_Model
     public function run($input)
     {
         $data = [
-            'id_masuk' => $input->id_msk,
+            'id_masuk' => $input->idMsk,
             'suratJalan' => $input->suratJln,
         ];
 
@@ -46,6 +46,13 @@ class Masuk_model extends MY_Model
                 'suratJalan'
             ]
         )->get();
+    }
+
+    public function fetchById($id)
+    {
+        return $this->select('id_masuk, suratJalan')
+            ->where('id_masuk', $id)
+            ->first();
     }
 
     public function totalRows()
