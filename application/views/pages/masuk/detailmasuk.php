@@ -29,16 +29,11 @@
               <a class="text-decoration-none" href="<?= base_url() . "barangkerak/$row->id_item" ?>">
                 <div>
                   <h6><?= $row->item ?></h6>
-                  <div class="d-flex justify-content-between">
-                    <span class="text-muted fs-6">Rak: A1.1, B1.1</span>
-                    <span class="text-muted fs-6">Sisa</span>
-                  </div>
                 </div>
               </a>
             </td>
             <td>
               <h6><?= $row->qty ?></h6>
-              <span class="text-muted fs-6">501</span>
             </td>
           </tr>
         <?php endforeach ?>

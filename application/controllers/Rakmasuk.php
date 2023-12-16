@@ -8,13 +8,13 @@ class Rakmasuk extends MY_Controller
 
         $this->loadModelMasuk();
 
+        $this->load->helper('curl');
+
+        $url = $this->config->item('base_url_api') . "/po/$id";
+        $response = curl_request($url, 'GET', null, ["X-API-KEY:ian123"]);
+        $result = json_decode($response);
         if ($this->validateIdMasuk($id)) {
 
-            $this->load->helper('curl');
-
-            $url = $this->config->item('base_url_api') . "/po/$id";
-            $response = curl_request($url, 'GET', null, ["X-API-KEY:ian123"]);
-            $result = json_decode($response);
 
             if ($result == NULL) {
                 $this->session->set_flashdata('error', 'Opps Server API Error');
@@ -42,7 +42,7 @@ class Rakmasuk extends MY_Controller
         $data['title'] = 'Form Masuk Scan';
         $data['nav'] = 'Masuk - Scan Rak';
         $data['input'] = $this->defalutValueRakMasuk($id);
-        $data['content'] = $this->masuk->fetchById($id);
+        $data['content'] = $result->data->po;
         $data['form_action'] = "rakmasuk/create/$id";
         $data['page'] = "pages/masuk/rak";
         $this->view($data);

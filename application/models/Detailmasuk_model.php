@@ -86,7 +86,7 @@ class Detailmasuk_model extends MY_Model
             ->get();
     }
 
-    public function fetchById($id)
+    public function fetchById($id, $rak)
     {
 
         /* 'MAX(suratJalan) AS suratJalan', */
@@ -102,6 +102,7 @@ class Detailmasuk_model extends MY_Model
         )
             ->join('masuk', 'masuk.id_masuk = masuk_det.id_masuk')
             ->where('masuk.id_masuk', $id)
+            ->where('rak', $rak)
             ->group_by('id_item')
             ->get();
     }

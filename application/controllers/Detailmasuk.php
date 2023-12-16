@@ -43,13 +43,20 @@ class Detailmasuk extends MY_Controller
         $result = json_decode($response);
 
         $fetchByidMasuk = $this->detailmasuk->fetchByIdMasuk($id);
+        if ($fetchByidMasuk == NULL) {
+            $fetchByidMasuk = new stdClass();
+            $fetchByidMasuk->suratJalan = $result->data->po->suratJln;
+        }
         $fetchByidMasuk->rak = $rak;
+
+        /*  $resultDetailMasuk = $this->detailmasuk->fetchById($id);
+        $totalQty = $resultDetailMasuk->totalQty;  */
 
         $data['title'] = 'Form Masuk Scan';
         $data['nav'] = 'Masuk - Scan Barang';
         $data['input'] = $this->defalutValueMasukDet($idRak, $rak, $id);
         $data['contentHeader'] = $fetchByidMasuk;
-        $data['content'] = $this->detailmasuk->fetchById($id);
+        $data['content'] = $this->detailmasuk->fetchById($id, $rak);
         $data['form_action'] = "detailmasuk/create/$barcodeRak/$id";
         $data['page'] = "pages/masuk/detailmasuk";
         $this->view($data);
