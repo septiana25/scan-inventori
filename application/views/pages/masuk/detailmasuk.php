@@ -42,20 +42,3 @@
 
   </section>
 </main>
-
-<script>
-  $(document).ready(function() {
-
-    function showAlertAndRemove(alertClass) {
-      $(alertClass).delay(500).show(10, function() {
-        $(this).delay(2000).hide(10, function() {
-          $(this).remove();
-        });
-      });
-    }
-
-    showAlertAndRemove(".alert-success");
-    showAlertAndRemove(".alert-danger");
-
-  });
-</script>
