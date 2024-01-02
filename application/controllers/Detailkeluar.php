@@ -1,49 +1,61 @@
 <?php
 
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Detailkeluar extends MY_Controller {
+class Detailkeluar extends MY_Controller
+{
+
+    public function __construct()
+    {
+        parent::__construct();
+        $is_login    = $this->session->userdata('is_login');
+
+        if (!$is_login) {
+            redirect(base_url('login'));
+            return;
+        }
+    }
 
     public function index($id = 0)
     {
         if ($this->detailkeluar->fetchById($id) <= 0) {
 
-                    /* Begin Curl */
-        
-        $curl = curl_init();
+            /* Begin Curl */
 
-        curl_setopt_array($curl, [
-            CURLOPT_URL => $this->config->item('base_url_api') . "/keluarbyid/$id",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_HTTPHEADER => [
-                "X-API-KEY:ian123"
-            ],
-        ]);
+            $curl = curl_init();
 
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
+            curl_setopt_array($curl, [
+                CURLOPT_URL => $this->config->item('base_url_api') . "/keluarbyid/$id",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => [
+                    "X-API-KEY:ian123"
+                ],
+            ]);
 
-        curl_close($curl);
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
 
-        /* END Curl */
+            curl_close($curl);
 
-        var_dump($response); exit;
+            /* END Curl */
 
-        if ($err) {
-            //echo "cURL Error #:" . $err;
-            $this->session->set_flashdata('error', 'Opps Terjadi Kesalahan API');
+            var_dump($response);
+            exit;
+
+            if ($err) {
+                //echo "cURL Error #:" . $err;
+                $this->session->set_flashdata('error', 'Opps Terjadi Kesalahan API');
                 redirect(base_url("detailkeluar/$id"));
-
-        }
+            }
             $input = (object) json_decode($response);
             $this->detailkeluar->run($input);
-        } 
+        }
 
         $data['title'] = 'Form Keluar Scan';
         $data['nav'] = 'Keluar - Scan Barang';
@@ -54,14 +66,15 @@ class Detailkeluar extends MY_Controller {
         $this->view($data);
     }
 
-    public function create($id){
-        
+    public function create($id)
+    {
+
         if (!$_POST) {
             $input = $this->defalutValueKeluarDet($id);
         } else {
             $input = (object) $this->input->post(null, true);
         }
-        
+
         if (!$this->detailkeluar->validate()) {
             $data['title'] = 'Form Keluar Scan';
             $data['nav'] = 'Keluar - Scan Barang';
@@ -74,7 +87,7 @@ class Detailkeluar extends MY_Controller {
         }
 
         /* Begin Curl */
-        
+
         $curl = curl_init();
 
         curl_setopt_array($curl, [
@@ -97,12 +110,11 @@ class Detailkeluar extends MY_Controller {
 
         /* END Curl */
 
-        
+
         if ($err) {
             //echo "cURL Error #:" . $err;
             $this->session->set_flashdata('error', 'Opps Terjadi Kesalahan API');
-                redirect(base_url("detailkeluar/$id"));
-
+            redirect(base_url("detailkeluar/$id"));
         } else {
 
             $res = json_decode($response);
@@ -119,24 +131,20 @@ class Detailkeluar extends MY_Controller {
 
             if ($this->detailkeluar->run($input)) {
                 $this->session->set_flashdata('success', 'Berhasil disimpan');
-                
+
                 redirect(base_url("detailkeluar/$id"));
-                
-            }else {
+            } else {
                 $this->session->set_flashdata('error', 'Opps Terjadi Kesalahan');
                 redirect(base_url("detailkeluar/$id"));
             }
-
         }
-        
-        
-
     }
 
     /**
      * set defalut input buat function index
      */
-    public function defalutValueKeluarDet($id){
+    public function defalutValueKeluarDet($id)
+    {
 
         return (object) $this->detailkeluar->getDefaultValues($id);
     }
@@ -153,7 +161,6 @@ class Detailkeluar extends MY_Controller {
             return true;
         }
     } */
-
 }
 
 /* End of file Detailkeluar.php */
