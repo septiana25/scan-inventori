@@ -1,12 +1,14 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Register_model extends MY_Model {
+class Register_model extends MY_Model
+{
 
     protected $table = 'user';
 
-    public function getDefaultValues(){
+    public function getDefaultValues()
+    {
         return [
             'name'      => '',
             'username'  => '',
@@ -16,7 +18,8 @@ class Register_model extends MY_Model {
         ];
     }
 
-    public function getValidationRules(){
+    public function getValidationRules()
+    {
         $validationRules = [
             [
                 'field' => 'name',
@@ -25,7 +28,7 @@ class Register_model extends MY_Model {
             ],
             [
                 'field' => 'username',
-                'label' => 'User Nama',
+                'label' => 'Usernama',
                 'rules' => 'trim|required|is_unique[user.username]',
                 'errors' => [
                     'is_unique' => 'This %s aleady exists',
@@ -46,7 +49,8 @@ class Register_model extends MY_Model {
         return $validationRules;
     }
 
-    public function run($input){
+    public function run($input)
+    {
         $data = [
             'name' => $input->name,
             'username' => strtolower($input->username),
@@ -67,7 +71,4 @@ class Register_model extends MY_Model {
         $this->session->set_userdata($sess_data);
         return true;
     }
-
-
-
 }

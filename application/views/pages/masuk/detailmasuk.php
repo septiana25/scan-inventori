@@ -46,20 +46,16 @@
 <script>
   $(document).ready(function() {
 
-    /* $.ajax({
-        url: 'http://192.168.1.21/json.php',
-        dataType: 'json',
-        success: function (response) {
-            var trHTML = '';
-            trHTML += '<tbody>';
-            $.each(response, function (i, item) {
-              const obj1 = Object.assign({}, item);
-              console.log(item);
-              trHTML += '<tr><td>' + obj1.brcode + '</td><td>' + obj1.qty + '</td></tr>';
-            });
-            trHTML += '</tbody>';
-            $('#records_table').append(trHTML);
-        }
-      });  */
+    function showAlertAndRemove(alertClass) {
+      $(alertClass).delay(500).show(10, function() {
+        $(this).delay(2000).hide(10, function() {
+          $(this).remove();
+        });
+      });
+    }
+
+    showAlertAndRemove(".alert-success");
+    showAlertAndRemove(".alert-danger");
+
   });
 </script>

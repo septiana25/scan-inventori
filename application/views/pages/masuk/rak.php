@@ -14,6 +14,9 @@
             <?= form_error('barcodeRak') ?>
         </div>
         <?= form_close() ?>
+        <div class="d-flex justify-content-center align-item-center">
+            <h6>Daftar Item ke Storage</h6>
+        </div>
         <table class="table table-sm" id="records_table">
             <thead>
                 <th width="90%">Item</th>
@@ -26,8 +29,6 @@
                             <div>
                                 <h6><?= $item->brg ?></h6>
                                 <div class="d-flex justify-content-between">
-                                    <span class="text-muted fs-5">Rak:</span>
-
                                 </div>
                             </div>
                         </td>
