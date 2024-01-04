@@ -30,9 +30,12 @@ class Masuk_model extends MY_Model
 
     public function run($input)
     {
+        $date = new DateTime($input->tgl);
+        $formattedDate = $date->format('Y-m-d');
         $data = [
             'id_masuk' => $input->idMsk,
             'suratJalan' => $input->suratJln,
+            'tanggal_masuk' => $formattedDate,
         ];
 
         return $this->create($data);
