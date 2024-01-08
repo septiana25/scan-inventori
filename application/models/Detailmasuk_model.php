@@ -109,7 +109,7 @@ class Detailmasuk_model extends MY_Model
 
     public function fetchByIdMasuk($id)
     {
-        return $this->select('suratJalan')
+        return $this->select('masuk.id_masuk AS id_masuk, suratJalan')
             ->where('masuk.id_masuk', $id)
             ->join('masuk', 'masuk.id_masuk = masuk_det.id_masuk')
             ->first();

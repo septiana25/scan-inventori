@@ -4,6 +4,7 @@
     <?= form_open($form_action, ['method' => 'POST']) ?>
     <div class="mb-3">
       <label for="barcode" class="form-label d-block">
+        <a href="<?= base_url("rakmasuk/$contentHeader->id_masuk") ?>" class="btn btn-sm btn-primary">Kembali</a>
         <div class="d-flex justify-content-between">
           <h6>Rak: <?= $contentHeader->rak ?></h6>
           <h6>PO: <?= $contentHeader->suratJalan ?></h6>
@@ -26,11 +27,7 @@
         <?php foreach ($content as $row) : ?>
           <tr>
             <td>
-              <a class="text-decoration-none" href="<?= base_url() . "barangkerak/$row->id_item" ?>">
-                <div>
-                  <h6><?= $row->item ?></h6>
-                </div>
-              </a>
+              <h6><?= $row->item ?></h6>
             </td>
             <td>
               <h6><?= $row->qty ?></h6>

@@ -59,6 +59,7 @@ class Detailmasuk extends MY_Controller
             $fetchByidMasuk->suratJalan = $result->data->po->suratJln;
         }
         $fetchByidMasuk->rak = $rak;
+        $fetchByidMasuk->id_masuk = $id;
 
         /*  $resultDetailMasuk = $this->detailmasuk->fetchById($id);
         $totalQty = $resultDetailMasuk->totalQty;  */
