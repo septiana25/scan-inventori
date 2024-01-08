@@ -15,5 +15,10 @@
         </div>
         <button type="submit" class="btn btn-primary">Login</button>
         <?= form_close() ?>
+        <div>
+            <ul class="list-group">
+                <li class="list-group-item"><a href="register">Buat Akun Baru?</a></li>
+            </ul>
+        </div>
     </section>
 </main>
