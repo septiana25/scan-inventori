@@ -11,11 +11,6 @@ class Detailmasuk_model extends MY_Model
     public function __construct()
     {
         parent::__construct();
-        $sess_data = [
-            'username'  => 'septiana'
-        ];
-
-        $this->session->set_userdata($sess_data);
     }
 
     public function getDefaultValues($idRak, $rak, $id)
@@ -67,7 +62,7 @@ class Detailmasuk_model extends MY_Model
             'id_rak'        => $input->id_rak,
             'rak'           => $input->rak,
             'qty'           => $input->qty,
-            'user'          => $this->session->userdata('username'),
+            'user'          => $input->username,
         ];
 
         return $this->create($data);

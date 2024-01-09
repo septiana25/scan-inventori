@@ -24,23 +24,21 @@ class Rakmasuk extends MY_Controller
         $url = $this->config->item('base_url_api') . "/po/$id";
         $response = curl_request($url, 'GET', null, ["X-API-KEY:ian123"]);
         $result = json_decode($response);
+        if ($result == NULL) {
+            $this->session->set_flashdata('error', 'Opps Server API Error');
+            redirect(base_url("masuk"));
+        }
+
+        if (!empty($result->statusCode) && $result->statusCode == 404) {
+            $this->session->set_flashdata('error', 'Opps Terjadi Kesalahan URL API');
+            redirect(base_url("masuk/$id"));
+        }
+
+        if (empty($result->data->po)) {
+            $this->session->set_flashdata('error', 'Data Tidak Ada');
+            redirect(base_url("masuk/$id"));
+        }
         if ($this->validateIdMasuk($id)) {
-
-
-            if ($result == NULL) {
-                $this->session->set_flashdata('error', 'Opps Server API Error');
-                redirect(base_url("masuk"));
-            }
-
-            if (!empty($result->statusCode) && $result->statusCode == 404) {
-                $this->session->set_flashdata('error', 'Opps Terjadi Kesalahan URL API');
-                redirect(base_url("masuk/$id"));
-            }
-
-            if (empty($result->data->po)) {
-                $this->session->set_flashdata('error', 'Data Tidak Ada');
-                redirect(base_url("masuk/$id"));
-            }
 
             if ($this->masuk->run($result->data->po)) {
                 $this->session->set_flashdata('success', 'Berhasil disimpan');

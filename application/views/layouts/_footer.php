@@ -29,7 +29,7 @@
 
             </div>
             <div class="col btnMenu">
-                <button onclick="window.location.href='#'">
+                <button onclick="window.location.href='<?= base_url('profile'); ?>'">
                     <div class="btnIcon">
                         <i class="fa fa-user" aria-hidden="true"></i>
                     </div>

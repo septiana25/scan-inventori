@@ -80,7 +80,7 @@ class Detailmasuk extends MY_Controller
         $this->load->helper('curl');
 
         if (!$_POST) {
-            $input = $this->defalutValueMasukDet($id);
+            $input = $this->defalutValueMasukDet($idRak = null, $rak = null, $id);
         } else {
             $input = (object) $this->input->post(null, true);
         }
@@ -123,6 +123,7 @@ class Detailmasuk extends MY_Controller
         $input->id_item = $result->data->item->idBrg;
         $input->item = $result->data->item->brg;
         $input->qty = $result->data->item->qty;
+        $input->username = $this->session->userdata('username');
 
         if ($this->detailmasuk->run($input)) {
             $this->session->set_flashdata('success', 'Berhasil disimpan');
