@@ -3,10 +3,10 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Detailmasuk_model extends MY_Model
+class Approvedrak_model extends MY_Model
 {
 
-    protected $table = 'masuk_det';
+    protected $table = 'approved_rak';
 
     public function __construct()
     {
@@ -56,12 +56,7 @@ class Detailmasuk_model extends MY_Model
 
         $data = [
             'id_masuk'      => $input->id_masuk,
-            'id_item'       => $input->id_item,
-            'item'          => $input->item,
-            'barcode'       => $input->barcode,
             'id_rak'        => $input->id_rak,
-            'rak'           => $input->rak,
-            'qty'           => $input->qty,
             'user'          => $input->username,
         ];
 
@@ -81,43 +76,13 @@ class Detailmasuk_model extends MY_Model
             ->get();
     }
 
-    public function fetchById($id, $rak)
+    public function fetchByIdMasukIdRak($id, $idrak)
     {
-
-        /* 'MAX(suratJalan) AS suratJalan', */
-        return $this->select(
-            [
-                'MAX(masuk.id_masuk) AS id_masuk',
-                'MAX(masuk.suratJalan) AS suratJalan',
-                'MAX(barcode) AS barcode',
-                'MAX(id_item) AS id_item',
-                'MAX(item) AS item',
-                'SUM(qty) as qty'
-            ]
-        )
-            ->join('masuk', 'masuk.id_masuk = masuk_det.id_masuk')
-            ->where('masuk.id_masuk', $id)
-            ->where('rak', $rak)
-            ->group_by('id_item')
-            ->get();
-    }
-
-    public function fetchByIdMasuk($id)
-    {
-        return $this->select('masuk.id_masuk AS id_masuk, suratJalan')
-            ->where('masuk.id_masuk', $id)
-            ->join('masuk', 'masuk.id_masuk = masuk_det.id_masuk')
-            ->first();
-    }
-
-    public function getTotalById($id, $barcode)
-    {
-        return $this->select('SUM(qty) AS total')
+        return $this->select('id, id_masuk, approve')
             ->where('id_masuk', $id)
-            ->where('barcode', $barcode)
-            ->group_by('id_item')
+            ->where('id_rak', $idrak)
             ->first();
     }
 }
 
-/* End of file Detailmasuk_model.php */
+/* End of file Approvedrak_model.php */
