@@ -120,6 +120,7 @@ class Detailmasuk extends MY_Controller
         $input->id_item = $result->data->item->idBrg;
         $input->item = $result->data->item->brg;
         $input->qty = intval($result->data->item->qty);
+        $input->manager = "";
         $input->username = $this->session->userdata('username');
         $totalSaldoAkhir = 0;
 
@@ -142,13 +143,18 @@ class Detailmasuk extends MY_Controller
             $resultApprovedRak = $this->approvedrak->fetchByIdMasukIdRak($id, $input->id_rak);
 
             if ($resultApprovedRak == NULL) {
-                $this->approvedrak->run($input);
-                $this->handleError('Rak Penuh', "detailmasuk/$barcodeRak/$id");
+                if ($this->approvedrak->run($input)) {
+                    $this->handleError('Rak Penuh', "detailmasuk/$barcodeRak/$id");
+                } else {
+                    $this->handleError('Opps Terjadi Kesalahan', "detailmasuk/$barcodeRak/$id");
+                }
             }
 
-            if ($resultApprovedRak->approve == 'false') {
+            if ($resultApprovedRak->approve == 'false' || $resultApprovedRak->approve == 'cancel') {
                 $this->handleError('Rak Penuh, Hub.Manager', "detailmasuk/$barcodeRak/$id");
             }
+
+            $input->manager = $resultApprovedRak->manager;
         }
 
         if ($this->detailmasuk->run($input)) {

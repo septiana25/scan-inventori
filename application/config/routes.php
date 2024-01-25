@@ -49,22 +49,23 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller']    = 'home';
-$route['404_override']          = '';
-$route['translate_uri_dashes']  = FALSE;
+$route['default_controller']        = 'home';
+$route['404_override']              = '';
+$route['translate_uri_dashes']      = FALSE;
 
-$route['masuk/(:num)']          = 'masuk/index/$1';
-$route['detailmasuk/(:any)/(:num)']    = 'detailmasuk/index/$1/$2';
-$route['rakmasuk/(:any)']            = 'rakmasuk/index/$1';
+$route['masuk/(:num)']              = 'masuk/index/$1';
+$route['detailmasuk/(:any)/(:num)'] = 'detailmasuk/index/$1/$2';
+$route['rakmasuk/(:any)']           = 'rakmasuk/index/$1';
 
-$route['managemasuk']           = 'managebarangmasuk/index';
-$route['barangkerak/(:num)'] = 'barangkerak/index/$1';
+$route['managemasuk']               = 'managebarangmasuk/index';
+$route['barangkerak/(:num)']        = 'barangkerak/index/$1';
 
-$route['keluar/(:any)']         = 'keluar/index/$1';
-$route['detailkeluar/(:any)']   = 'detailkeluar/index/$1';
+$route['keluar/(:any)']             = 'keluar/index/$1';
+$route['detailkeluar/(:any)']       = 'detailkeluar/index/$1';
 
-$route['items']         = 'items/index';
+$route['items']                     = 'items/index';
+$route['approved']                  = 'approved/index';
 
-$route['users']   = 'users/index';
+$route['users']                     = 'users/index';
 
 /* $route['api/(:any)']	= 'api/index/$1'; */
