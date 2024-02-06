@@ -112,7 +112,7 @@ class Detailmasuk extends MY_Controller
             $this->handleError('Opps Server API Error', "detailmasuk/$barcodeRak/$id");
         }
 
-        if ($result->status == 'fail' || $resultItemRak->status == 'fail') {
+        if ($result->status == 'fail') {
             $this->handleError('Barcode Tidak Ada', "detailmasuk/$barcodeRak/$id");
         }
 
@@ -136,9 +136,11 @@ class Detailmasuk extends MY_Controller
             $this->handleError('Invalid QTY', "detailmasuk/$barcodeRak/$id");
         }
 
-        $totalRakPlusQty = $limitRak + $input->qty;
+        $totalMasuk = $this->detailmasuk->getTotalById($id, $input->barcode);
 
-        if ($totalRakPlusQty > $totalSaldoAkhir) {
+        $totalSaldoAkhirPlusQty = $totalSaldoAkhir + $input->qty + $totalMasuk->total;
+
+        if ($totalSaldoAkhirPlusQty > $limitRak) {
             $this->loadModelApprovedRak();
             $resultApprovedRak = $this->approvedrak->fetchByIdMasukIdRak($id, $input->id_rak);
 
