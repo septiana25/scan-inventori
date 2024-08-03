@@ -19,8 +19,8 @@ class Home extends MY_Controller
 
     public function index()
     {
-        $data['title'] = 'Login Aplikasi Scan';
-        $data['nav'] = 'Login';
+        $data['title'] = 'Selamat Datang Aplikasi Scan';
+        $data['nav'] = 'Scan App';
         $data['page'] = 'pages/home/index';
         $this->view($data);
     }
