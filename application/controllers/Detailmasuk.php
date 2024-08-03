@@ -124,9 +124,15 @@ class Detailmasuk extends MY_Controller
         $input->username = $this->session->userdata('username');
         $totalSaldoAkhir = 0;
 
-        if (isset($resultItemRak->data->items)) {
-            foreach ($resultItemRak->data->items as $item) {
+        $dataItemByRak = $resultItemRak->data->items;
+        $sameItem = false;
+
+        if (isset($dataItemByRak)) {
+            foreach ($dataItemByRak as $item) {
                 $totalSaldoAkhir += intval($item->saldo_akhir);
+                if ($item->id_brg == $input->id_item) {
+                    $sameItem = true;
+                }
             }
         }
 
@@ -139,6 +145,7 @@ class Detailmasuk extends MY_Controller
         $totalMasuk = $this->detailmasuk->getTotalById($id, $input->barcode);
 
         $totalSaldoAkhirPlusQty = $totalSaldoAkhir + $input->qty + $totalMasuk->total;
+
 
         if ($totalSaldoAkhirPlusQty > $limitRak) {
             $this->loadModelApprovedRak();
@@ -158,6 +165,11 @@ class Detailmasuk extends MY_Controller
 
             $input->manager = $resultApprovedRak->manager;
         }
+
+        if ($sameItem) {
+            $this->handleError('Item Sudah Ada di Rak', "detailmasuk/$barcodeRak/$id");
+        }
+
 
         if ($this->detailmasuk->run($input)) {
             $this->handleSuccess('Berhasil disimpan', "detailmasuk/$barcodeRak/$id");
