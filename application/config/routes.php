@@ -63,6 +63,8 @@ $route['barangkerak/(:num)']        = 'barangkerak/index/$1';
 $route['keluar/(:any)']             = 'keluar/index/$1';
 $route['detailkeluar/(:any)']       = 'detailkeluar/index/$1';
 
+$route['pickerso']                  = 'pickerso/index';
+
 $route['items']                     = 'items/index';
 $route['approved']                  = 'approved/index';
 

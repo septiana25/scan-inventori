@@ -22,14 +22,24 @@ class Masuk extends MY_Controller
         /* Begin Curl */
         $this->load->helper('curl');
 
-        $url = $this->config->item('base_url_api') . "/po";
-        $response = curl_request($url, 'GET', null, ["X-API-KEY:ian123"]);
+        try {
+            $url = $this->config->item('base_url_api') . "/po";
+            $apiKey = $this->config->item('api_key');
+            $response = curl_request($url, 'GET', null, ["X-API-KEY: $apiKey"]);
+            $result = json_decode($response);
 
-        /* END Curl */
-        $result = json_decode($response);
+            if (!$result || !isset($result->data->po)) {
+                throw new Exception('Data PO tidak valid');
+            }
+
+            $data['content'] = $result->data->po;
+        } catch (Exception $e) {
+            log_message('error', 'Error saat mengambil data PO: ' . $e->getMessage());
+            $data['content'] = [];
+        }
+
         $data['title'] = 'Form Masuk';
         $data['nav'] = 'Masuk - Daftar PO Masuk';
-        $data['content'] = $result->data->po;
         $data['page'] = 'pages/masuk/index';
         $this->view($data);
     }

@@ -8,7 +8,9 @@
       </thead>
       <tbody>
 
-        <?php foreach ($content as $row) : ?>
+        <?php
+        foreach ($content as $row) :
+        ?>
           <tr>
             <td><?= $row->suratJln ?></td>
             <td>

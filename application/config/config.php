@@ -27,6 +27,8 @@ $config['base_url'] = 'http://192.168.1.21:8001/scan';
 //$config['base_url_api'] = 'http://192.168.1.7:4000';
 $config['base_url_api'] = 'http://localhost:4000';
 
+$config['api_key'] = 'ian123';
+
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -227,7 +229,7 @@ $config['allow_get_array'] = TRUE;
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 0;
+$config['log_threshold'] = 4;
 
 /*
 |--------------------------------------------------------------------------

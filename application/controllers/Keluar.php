@@ -1,12 +1,14 @@
 <?php
 
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Keluar extends MY_Controller {
+class Keluar extends MY_Controller
+{
 
 
-    public function index($no_plat = 0){
+    public function index($no_plat = 0)
+    {
 
 
 
@@ -21,7 +23,7 @@ class Keluar extends MY_Controller {
 
     public function create($no_plat)
     {
-        
+
         if (!$_POST) {
             $input = $this->defalutValueKeluar();
         } else {
@@ -46,14 +48,15 @@ class Keluar extends MY_Controller {
             $this->view($data);
         }
 
-        
+
         redirect(base_url("keluar/$input->no_plat"));
     }
 
     /**
      * Call API at INVENTORI KUS
      */
-    private function api($no_plat){
+    private function api($no_plat)
+    {
 
         /* Begin Curl */
 
@@ -82,23 +85,22 @@ class Keluar extends MY_Controller {
         if ($err) {
             //echo "cURL Error #:" . $err;
             $this->session->set_flashdata('error', 'Opps Terjadi Kesalahan API');
-                redirect(base_url("keluar"));
-                exit;
+            redirect(base_url("keluar"));
+            exit;
         } else {
 
             return json_decode($response);
         }
-        
     }
 
     /**
      * set defalut input buat function index
      */
-    public function defalutValueKeluar(){
+    public function defalutValueKeluar()
+    {
 
         return (object) $this->keluar->getDefaultValues();
     }
-
 }
 
 /* End of file Keluar.php */
