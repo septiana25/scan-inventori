@@ -24,11 +24,11 @@ class PickerSo extends MY_Controller
             $data['totalPages'] = ceil($totalItems / $perPage);
             $data['currentPage'] = $page;
         } catch (Exception $e) {
-            log_message('error', 'Error saat mengambil data PO: ' . $e->getMessage());
+            log_message('error', 'Error saat mengambil data SO: ' . $e->getMessage());
             $data['content'] = new stdClass(); // Objek kosong jika terjadi error
             $data['totalPages'] = 1;
             $data['currentPage'] = 1;
-            $this->session->set_flashdata('error', 'Gagal mengambil data PO');
+            $this->session->set_flashdata('error', 'Gagal mengambil data SO');
         }
 
         $data['title'] = 'Form Keluar';

@@ -18,7 +18,7 @@
                         <td><?= htmlspecialchars($row->faktur) ?></td>
                         <td><?= date('d-m-Y', strtotime($row->tgl)) ?></td>
                         <td>
-                            <a href="<?= base_url("rakmasuk/" . htmlspecialchars($row->nopol)) ?>">
+                            <a href="<?= base_url("pickerso/detail/" . htmlspecialchars($row->nopol)) ?>">
                                 <button type="button" class="btn btn-primary" style="--bs-btn-padding-y: .20rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .50rem;">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </button>
