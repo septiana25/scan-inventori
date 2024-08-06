@@ -15,11 +15,21 @@
                 foreach ($content as $row) :
                 ?>
                     <tr id="item-<?= $row->id ?>">
-                        <td class="fw-bold"><?= $row->rak ?></td>
-                        <td><?= $row->brg ?></td>
-                        <td class="text-center fw-bold"><?= $row->qty_pro ?></td>
+                        <td class="fw-bold"><?= htmlspecialchars($row->rak, ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= htmlspecialchars($row->brg, ENT_QUOTES, 'UTF-8') ?></td>
+                        <td class="text-center fw-bold"><?= htmlspecialchars($row->qty_pro, ENT_QUOTES, 'UTF-8') ?></td>
                         <td>
-                            <button type="button" class="btn btn-success btn-icon-prominent save-item" data-id="<?= $row->id ?>" data-nopol="<?= $nopol ?>">
+                            <?php
+                            $itemData = json_encode([
+                                'id' => $row->id,
+                                'nopol' => $nopol,
+                                'toko' => $row->toko,
+                                'brg' => $row->brg,
+                                'rak' => $row->rak,
+                                'qty' => $row->qty_pro
+                            ]);
+                            ?>
+                            <button type="button" class="btn btn-success btn-icon-prominent save-item" data-item="<?= htmlspecialchars($itemData, ENT_QUOTES, 'UTF-8') ?>">
                                 <i class="fa fa-check-square" aria-hidden="true"></i>
                             </button>
                         </td>
@@ -56,8 +66,9 @@
     document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.save-item').forEach(button => {
             button.addEventListener('click', () => {
-                const id = button.dataset.id;
-                const nopol = button.dataset.nopol;
+                const itemData = JSON.parse(button.dataset.item);
+                const id = itemData.id;
+                const nopol = itemData.nopol;
 
                 fetch(`<?= base_url("pickerso/save") ?>`, {
                         method: 'POST',
