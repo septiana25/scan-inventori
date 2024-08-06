@@ -64,6 +64,13 @@
         document.querySelectorAll('#save-item-form').forEach(form => {
             form.addEventListener('submit', (event) => {
                 event.preventDefault();
+
+                // Tambahkan konfirmasi di sini
+                if (!confirm('Apakah Anda yakin ingin menyimpan item ini?')) {
+                    return; // Jika user membatalkan, hentikan eksekusi fungsi
+                }
+
+
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData);
 
