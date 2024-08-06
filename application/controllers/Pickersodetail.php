@@ -3,9 +3,26 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Pickersodetail extends MY_Controller
 {
+    const ERROR_INVALID_DATA = 'Data tidak valid';
+    const ERROR_SAVE_FAILED = 'Gagal menyimpan data';
+    const ERROR_UPDATE_FAILED = 'Gagal memperbarui data';
+    const ERROR_FETCH_FAILED = 'Gagal mengambil data';
+    const ERROR_TRY_CATCH = 'Terjadi kesalahan saat mengambil data';
+    const ERROR_FIELD_EMPTY = 'Field tidak boleh kosong';
+    const SUCCESS_SAVE = 'Data berhasil disimpan';
+    const SUCCESS_UPDATE = 'Data berhasil diperbarui';
+
     public function __construct()
     {
         parent::__construct();
+
+        $is_login    = $this->session->userdata('is_login');
+
+        if (!$is_login) {
+            redirect(base_url('login'));
+            return;
+        }
+
         $this->load->helper('curl');
     }
 
@@ -13,7 +30,7 @@ class Pickersodetail extends MY_Controller
     {
 
         if (!$nopol) {
-            $this->session->set_flashdata('error', 'Ekspedisi tidak valid');
+            $this->session->set_flashdata('error', self::ERROR_INVALID_DATA . ' Ekspedisi');
             redirect('pickerso');
         }
 
@@ -24,7 +41,7 @@ class Pickersodetail extends MY_Controller
             $result = json_decode($response);
 
             if (!$result || !isset($result->data->so[0])) {
-                throw new Exception('Data SO detail tidak valid');
+                throw new Exception(self::ERROR_INVALID_DATA);
             }
 
             $perPage = 10; // Jumlah item per halaman
@@ -34,9 +51,10 @@ class Pickersodetail extends MY_Controller
             $data['totalPages'] = ceil($totalItems / $perPage);
             $data['currentPage'] = $page;
             $data['nopol'] = $nopol;
+            $data['supir'] = $result->data->so[0]->supir;
         } catch (Exception $e) {
             log_message('error', 'Error saat mengambil detail SO: ' . $e->getMessage());
-            $this->session->set_flashdata('error', 'Gagal mengambil detail SO');
+            $this->session->set_flashdata('error', self::ERROR_FETCH_FAILED);
             redirect('pickerso');
         }
 
@@ -49,40 +67,53 @@ class Pickersodetail extends MY_Controller
     public function save()
     {
         $postData = json_decode(file_get_contents('php://input'), true);
-        $id = $postData['id'] ?? null;
-        $nopol = $postData['nopol'] ?? null;
+        $requiredFields = ['id', 'nopol', 'supir', 'id_toko', 'toko', 'brg', 'rak', 'qty'];
+        $data = [];
 
-        if (!$id || !$nopol) {
-            $response = ['status' => 'error', 'message' => 'ID atau Nopol tidak valid'];
-        } else {
-            try {
-                $url = $this->config->item('base_url_api') . "/so/picker_so";
-                $apiKey = $this->config->item('api_key');
-                $postData = json_encode(['id' => $id, 'nopol' => $nopol]);
-                $headers = [
-                    "X-API-KEY: $apiKey",
-                    "Content-Type: application/json"
+        foreach ($requiredFields as $field) {
+            if (!isset($postData[$field]) || empty($postData[$field])) {
+                $response = ['status' => 'error', 'message' => self::ERROR_FIELD_EMPTY . " $field"];
+                echo json_encode($response);
+                return;
+            }
+            $data[$field] = $postData[$field];
+        }
+        $data['user'] = $this->session->userdata('username');
+
+        try {
+
+            if (!$this->pickersodetail->run($data)) {
+                $response = ['status' => 'error', 'message' => self::ERROR_SAVE_FAILED];
+                echo json_encode($response);
+                return;
+            }
+
+            $url = $this->config->item('base_url_api') . "/so/picker_so";
+            $apiKey = $this->config->item('api_key');
+            $postData = json_encode(['id' => $data['id'], 'nopol' => $data['nopol']]);
+            $headers = [
+                "X-API-KEY: $apiKey",
+                "Content-Type: application/json"
+            ];
+            $response = curl_request($url, 'POST', $postData, $headers);
+            $result = json_decode($response, true);
+            if (isset($result['status']) && $result['status'] === 'success') {
+                $response = [
+                    'status' => 'success',
+                    'message' => self::SUCCESS_SAVE,
                 ];
-                $response = curl_request($url, 'POST', $postData, $headers);
-                $result = json_decode($response, true);
-                if (isset($result['status']) && $result['status'] === 'success') {
-                    $response = [
-                        'status' => 'success',
-                        'message' => 'Data berhasil disimpan',
-                    ];
-                } else {
-                    $response = [
-                        'status' => 'error',
-                        'message' => $result['message'] ?? 'Gagal menyimpan data',
-                    ];
-                }
-            } catch (Exception $e) {
-                log_message('error', 'Error saat menyimpan data: ' . $e->getMessage());
+            } else {
                 $response = [
                     'status' => 'error',
-                    'message' => 'Terjadi kesalahan saat menyimpan data',
+                    'message' => $result['message'] ?? self::ERROR_SAVE_FAILED,
                 ];
             }
+        } catch (Exception $e) {
+            log_message('error', self::ERROR_TRY_CATCH . ' ' . $e->getMessage());
+            $response = [
+                'status' => 'error',
+                'message' => self::ERROR_TRY_CATCH,
+            ];
         }
 
         echo json_encode($response);

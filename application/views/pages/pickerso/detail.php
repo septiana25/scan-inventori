@@ -10,28 +10,25 @@
                 <th width="5%">Action</th>
             </thead>
             <tbody>
-
-                <?php
-                foreach ($content as $row) :
-                ?>
+                <?php foreach ($content as $row) : ?>
                     <tr id="item-<?= $row->id ?>">
                         <td class="fw-bold"><?= htmlspecialchars($row->rak, ENT_QUOTES, 'UTF-8') ?></td>
                         <td><?= htmlspecialchars($row->brg, ENT_QUOTES, 'UTF-8') ?></td>
                         <td class="text-center fw-bold"><?= htmlspecialchars($row->qty_pro, ENT_QUOTES, 'UTF-8') ?></td>
                         <td>
-                            <?php
-                            $itemData = json_encode([
-                                'id' => $row->id,
-                                'nopol' => $nopol,
-                                'toko' => $row->toko,
-                                'brg' => $row->brg,
-                                'rak' => $row->rak,
-                                'qty' => $row->qty_pro
-                            ]);
-                            ?>
-                            <button type="button" class="btn btn-success btn-icon-prominent save-item" data-item="<?= htmlspecialchars($itemData, ENT_QUOTES, 'UTF-8') ?>">
-                                <i class="fa fa-check-square" aria-hidden="true"></i>
-                            </button>
+                            <form id="save-item-form">
+                                <input type="hidden" name="id" value="<?= $row->id ?>">
+                                <input type="hidden" name="nopol" value="<?= $nopol ?>">
+                                <input type="hidden" name="supir" value="<?= $supir ?>">
+                                <input type="hidden" name="id_toko" value="<?= $row->id_toko ?>">
+                                <input type="hidden" name="toko" value="<?= $row->toko ?>">
+                                <input type="hidden" name="brg" value="<?= $row->brg ?>">
+                                <input type="hidden" name="rak" value="<?= $row->rak ?>">
+                                <input type="hidden" name="qty" value="<?= $row->qty_pro ?>">
+                                <button type="submit" class="btn btn-success btn-icon-prominent">
+                                    <i class="fa fa-check-square" aria-hidden="true"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 <?php endforeach ?>
@@ -64,11 +61,11 @@
 </main>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.save-item').forEach(button => {
-            button.addEventListener('click', () => {
-                const itemData = JSON.parse(button.dataset.item);
-                const id = itemData.id;
-                const nopol = itemData.nopol;
+        document.querySelectorAll('#save-item-form').forEach(form => {
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData);
 
                 fetch(`<?= base_url("pickerso/save") ?>`, {
                         method: 'POST',
@@ -76,16 +73,18 @@
                             'Content-Type': 'application/json',
                             'X-Requested-With': 'XMLHttpRequest'
                         },
-                        body: JSON.stringify({
-                            id,
-                            nopol
-                        })
+                        body: JSON.stringify(data)
                     })
-                    .then(response => response.json())
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
                     .then(data => {
                         if (data.status === 'success') {
-                            // Cari elemen tr yang merupakan parent dari button
-                            const row = button.closest('tr');
+                            // Cari elemen tr yang merupakan parent dari form
+                            const row = form.closest('tr');
                             if (row) {
                                 // Animasi fade out sebelum menghapus
                                 row.style.transition = 'opacity 0.5s';
@@ -108,7 +107,8 @@
                             showAlert('error', data.message);
                         }
                     })
-                    .catch(() => {
+                    .catch((error) => {
+                        console.error('Error:', error);
                         showAlert('error', 'Terjadi kesalahan. Silakan coba lagi.');
                     });
             });
@@ -148,5 +148,9 @@
     .btn-icon-prominent:hover {
         transform: scale(1.1);
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    #save-item-form {
+        margin: 0;
     }
 </style>
