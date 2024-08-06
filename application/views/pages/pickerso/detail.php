@@ -4,22 +4,22 @@
         <div id="alert-container"></div>
         <table class="table table-sm" id="records_table">
             <thead>
+                <th width="10%" class="fw-bold">Rak</th>
                 <th>Item</th>
-                <th width="10%" class="text-center fw-bold">Rak</th>
                 <th width="5%" class="text-center fw-bold">Qty</th>
                 <th width="5%">Action</th>
             </thead>
             <tbody>
 
                 <?php
-                foreach ($content->details as $row) :
+                foreach ($content as $row) :
                 ?>
                     <tr id="item-<?= $row->id ?>">
+                        <td class="fw-bold"><?= $row->rak ?></td>
                         <td><?= $row->brg ?></td>
-                        <td class="text-center fw-bold"><?= $row->rak ?></td>
                         <td class="text-center fw-bold"><?= $row->qty_pro ?></td>
                         <td>
-                            <button type="button" class="btn btn-success btn-icon-prominent save-item" data-id="<?= $row->id ?>" data-nopol="<?= $content->nopol ?>">
+                            <button type="button" class="btn btn-success btn-icon-prominent save-item" data-id="<?= $row->id ?>" data-nopol="<?= $nopol ?>">
                                 <i class="fa fa-check-square" aria-hidden="true"></i>
                             </button>
                         </td>
@@ -27,9 +27,28 @@
                 <?php endforeach ?>
             </tbody>
         </table>
-        <!-- <nav aria-label="Page navigation example">
-                
-            </nav> -->
+        <!-- Pagination -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <?php if ($currentPage > 1) : ?>
+                    <li class="page-item">
+                        <a class="page-link" href="<?= base_url("pickerso/detail/$nopol/" . ($currentPage - 1)) ?>">Previous</a>
+                    </li>
+                <?php endif; ?>
+
+                <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
+                    <li class="page-item <?= ($i == $currentPage) ? 'active' : '' ?>">
+                        <a class="page-link" href="<?= base_url("pickerso/detail/$nopol/$i") ?>"><?= $i ?></a>
+                    </li>
+                <?php endfor; ?>
+
+                <?php if ($currentPage < $totalPages) : ?>
+                    <li class="page-item">
+                        <a class="page-link" href="<?= base_url("pickerso/detail/$nopol/" . ($currentPage + 1)) ?>">Next</a>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </nav>
 
     </section>
 </main>

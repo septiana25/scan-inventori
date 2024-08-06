@@ -9,8 +9,9 @@ class Pickersodetail extends MY_Controller
         $this->load->helper('curl');
     }
 
-    public function index($nopol = null)
+    public function index($nopol = null, $page = 1)
     {
+
         if (!$nopol) {
             $this->session->set_flashdata('error', 'Ekspedisi tidak valid');
             redirect('pickerso');
@@ -26,7 +27,12 @@ class Pickersodetail extends MY_Controller
                 throw new Exception('Data SO detail tidak valid');
             }
 
-            $data['content'] = $result->data->so[0];
+            $perPage = 10; // Jumlah item per halaman
+            $totalItems = count((array) $result->data->so[0]->details);
+
+            $data['content'] = array_slice((array) $result->data->so[0]->details, ($page - 1) * $perPage, $perPage);
+            $data['totalPages'] = ceil($totalItems / $perPage);
+            $data['currentPage'] = $page;
             $data['nopol'] = $nopol;
         } catch (Exception $e) {
             log_message('error', 'Error saat mengambil detail SO: ' . $e->getMessage());
