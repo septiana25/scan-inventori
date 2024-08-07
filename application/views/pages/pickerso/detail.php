@@ -34,91 +34,87 @@
                 <?php endforeach ?>
             </tbody>
         </table>
-        <!-- Pagination -->
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                <?php if ($currentPage > 1) : ?>
-                    <li class="page-item">
-                        <a class="page-link" href="<?= base_url("pickerso/detail/$nopol/" . ($currentPage - 1)) ?>">Previous</a>
-                    </li>
-                <?php endif; ?>
-
-                <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
-                    <li class="page-item <?= ($i == $currentPage) ? 'active' : '' ?>">
-                        <a class="page-link" href="<?= base_url("pickerso/detail/$nopol/$i") ?>"><?= $i ?></a>
-                    </li>
-                <?php endfor; ?>
-
-                <?php if ($currentPage < $totalPages) : ?>
-                    <li class="page-item">
-                        <a class="page-link" href="<?= base_url("pickerso/detail/$nopol/" . ($currentPage + 1)) ?>">Next</a>
-                    </li>
-                <?php endif; ?>
-            </ul>
-        </nav>
-
+        <!-- Modal Konfirmasi -->
+        <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmModalLabel">Konfirmasi Simpan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Apakah Anda yakin ingin menyimpan item ini?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-primary" id="confirmSave">Ya, Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 </main>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+        let currentForm = null;
         document.querySelectorAll('#save-item-form').forEach(form => {
             form.addEventListener('submit', (event) => {
                 event.preventDefault();
-
-                // Tambahkan konfirmasi di sini
-                if (!confirm('Apakah Anda yakin ingin menyimpan item ini?')) {
-                    return; // Jika user membatalkan, hentikan eksekusi fungsi
-                }
-
-
-                const formData = new FormData(form);
-                const data = Object.fromEntries(formData);
-
-                fetch(`<?= base_url("pickerso/save") ?>`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-Requested-With': 'XMLHttpRequest'
-                        },
-                        body: JSON.stringify(data)
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.status === 'success') {
-                            // Cari elemen tr yang merupakan parent dari form
-                            const row = form.closest('tr');
-                            if (row) {
-                                // Animasi fade out sebelum menghapus
-                                row.style.transition = 'opacity 0.5s';
-                                row.style.opacity = '0';
-                                setTimeout(() => {
-                                    row.remove();
-                                    // Periksa apakah tabel masih memiliki baris data
-                                    const tbody = document.querySelector('#records_table tbody');
-                                    if (tbody && tbody.children.length === 0) {
-                                        // Jika tidak ada baris lagi, tampilkan pesan atau sembunyikan tabel
-                                        tbody.innerHTML = '<tr><td colspan="4" class="text-center">Semua item telah disimpan</td></tr>';
-                                    }
-                                }, 500);
-                            }
-
-                            // Tampilkan pesan flash
-                            showAlert('success', data.message);
-                        } else {
-                            // Tampilkan pesan error
-                            showAlert('error', data.message);
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                        showAlert('error', 'Terjadi kesalahan. Silakan coba lagi.');
-                    });
+                currentForm = form;
+                confirmModal.show();
             });
+        });
+
+        document.getElementById('confirmSave').addEventListener('click', () => {
+            const formData = new FormData(currentForm);
+            const data = Object.fromEntries(formData);
+
+            fetch(`<?= base_url("pickerso/save") ?>`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Cari elemen tr yang merupakan parent dari form
+                        const row = currentForm.closest('tr');
+                        if (row) {
+                            // Animasi fade out sebelum menghapus
+                            row.style.transition = 'opacity 0.5s';
+                            row.style.opacity = '0';
+                            setTimeout(() => {
+                                row.remove();
+                                // Periksa apakah tabel masih memiliki baris data
+                                const tbody = document.querySelector('#records_table tbody');
+                                if (tbody && tbody.children.length === 0) {
+                                    // Jika tidak ada baris lagi, tampilkan pesan atau sembunyikan tabel
+                                    tbody.innerHTML = '<tr><td colspan="4" class="text-center">Semua item telah disimpan</td></tr>';
+                                }
+                            }, 500);
+                        }
+
+                        // Tampilkan pesan flash
+                        showAlert('success', data.message);
+                    } else {
+                        // Tampilkan pesan error
+                        showAlert('error', data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    showAlert('error', 'Terjadi kesalahan. Silakan coba lagi.');
+                });
+            confirmModal.hide();
         });
 
         // Fungsi untuk menampilkan alert

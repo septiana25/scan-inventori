@@ -44,12 +44,7 @@ class Pickersodetail extends MY_Controller
                 throw new Exception(self::ERROR_INVALID_DATA);
             }
 
-            $perPage = 10; // Jumlah item per halaman
-            $totalItems = count((array) $result->data->so[0]->details);
-
-            $data['content'] = array_slice((array) $result->data->so[0]->details, ($page - 1) * $perPage, $perPage);
-            $data['totalPages'] = ceil($totalItems / $perPage);
-            $data['currentPage'] = $page;
+            $data['content'] = $result->data->so[0]->details;
             $data['nopol'] = $nopol;
             $data['supir'] = $result->data->so[0]->supir;
         } catch (Exception $e) {
