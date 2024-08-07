@@ -102,7 +102,6 @@
                                 }
                             }, 500);
                         }
-
                         // Tampilkan pesan flash
                         showAlert('success', data.message);
                     } else {
@@ -111,7 +110,6 @@
                     }
                 })
                 .catch((error) => {
-                    console.error('Error:', error);
                     showAlert('error', 'Terjadi kesalahan. Silakan coba lagi.');
                 });
             confirmModal.hide();
