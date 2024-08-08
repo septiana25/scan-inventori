@@ -17,7 +17,8 @@ function asset_url($filename)
     <link rel="stylesheet" href="<?= asset_url('css/style.css') ?>">
     <!-- jQuery library -->
     <script src="<?= asset_url('js/jquery.min.js') ?>"></script>
-    <script src="<?= asset_url('js/loadingindicator.js') ?>"></script>
+    <script src="<?= asset_url('js/loadingIndicator.js') ?>"></script>
+    <script src="<?= asset_url('js/alertManager.js') ?>"></script>
 </head>
 
 <body>

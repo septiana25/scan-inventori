@@ -78,3 +78,22 @@ footer .btnMenu button p {
     font-size: 0.8rem;
     color: white;
 }
+
+/* Button Icon Prominent */
+.btn-icon-prominent {
+    padding: 0.5rem 0.7rem;
+    transition: all 0.3s ease;
+}
+
+.btn-icon-prominent i {
+    font-size: 1.2rem;
+}
+
+.btn-icon-prominent:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+#save-item-form {
+    margin: 0;
+}

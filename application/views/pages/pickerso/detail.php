@@ -133,9 +133,9 @@
                                     }
                                 }, 500);
                             }
-                            showAlert('success', data.message);
+                            AlertManager.success(data.message);
                         } else {
-                            showAlert('error', data.message);
+                            AlertManager.error(data.message);
                         }
                     })
                     .catch((error) => {
@@ -144,49 +144,12 @@
                         LoadingIndicator.toggleButton(confirmSaveBtn, false);
                         isLoading = false;
 
-                        console.error('Error:', error);
-                        showAlert('error', 'Terjadi kesalahan. Silakan coba lagi.');
+                        AlertManager.error('Terjadi kesalahan. Silakan coba lagi.');
                     });
             }
         });
-
-        // Fungsi untuk menampilkan alert
-        const showAlert = (type, message) => {
-            const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
-            const alertHtml = `
-            <div class="alert ${alertClass} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-4 mt-md-5" role="alert" style="z-index: 9999;">
-                <strong>${type}</strong> ${message}.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        `;
-
-            // Tambahkan alert ke dalam container
-            document.getElementById('alert-container').innerHTML = alertHtml;
-
-            // Hilangkan alert setelah 5 detik
-            setTimeout(() => {
-                const alertElement = document.querySelector('.alert');
-                if (alertElement) alertElement.remove();
-            }, 5000);
-        };
     });
 </script>
 <style>
-    .btn-icon-prominent {
-        padding: 0.5rem 0.7rem;
-        transition: all 0.3s ease;
-    }
 
-    .btn-icon-prominent i {
-        font-size: 1.2rem;
-    }
-
-    .btn-icon-prominent:hover {
-        transform: scale(1.1);
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    }
-
-    #save-item-form {
-        margin: 0;
-    }
 </style>
