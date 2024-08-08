@@ -1,14 +1,22 @@
+<?php
+function asset_url($filename)
+{
+    $version = filemtime(FCPATH . 'assets/' . $filename);
+    return base_url('assets/' . $filename) . '?v=' . $version;
+}
+?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= isset($title) ? $title : 'Scan APP' ?> </title>
-    <link rel="stylesheet" href="<?= base_url('assets/css/w3.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/css/raleway.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/font-awesome-4.7.0/css/font-awesome.min.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/css/bootstrap.min.css') ?>">
-    <link rel="stylesheet" href="<?= base_url() ?>/assets/css/style.css">
+    <link rel="stylesheet" href="<?= asset_url('css/w3.css') ?>">
+    <link rel="stylesheet" href="<?= asset_url('css/raleway.css') ?>">
+    <link rel="stylesheet" href="<?= asset_url('font-awesome-4.7.0/css/font-awesome.min.css') ?>">
+    <link rel="stylesheet" href="<?= asset_url('css/bootstrap.min.css') ?>">
+    <link rel="stylesheet" href="<?= asset_url('css/style.css') ?>">
     <!-- jQuery library -->
-    <script src="<?= base_url('assets/js/jquery.min.js') ?>"></script>
+    <script src="<?= asset_url('js/jquery.min.js') ?>"></script>
 </head>
 
 <body>
@@ -50,8 +58,8 @@
 
         });
     </script>
-    <script src="<?= base_url('assets/js/popper.min.js') ?>"></script>
-    <script src="<?= base_url('assets/js/bootstrap.bundle.min.js') ?>"></script>
+    <script src="<?= asset_url('js/popper.min.js') ?>"></script>
+    <script src="<?= asset_url('js/bootstrap.bundle.min.js') ?>"></script>
 
     <!-- <script src="assets/js/<?= $filejs[1]; ?>.js"></script> -->
 
