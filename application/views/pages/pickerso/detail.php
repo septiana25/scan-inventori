@@ -48,6 +48,12 @@
                             <p><strong>Item:</strong> <span id="modalItem"></span></p>
                             <p><strong>Qty:</strong> <span id="modalQty"></span></p>
                         </div>
+                        <div id="loadingIndicator" class="text-center d-none">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Sedang memproses...</p>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -61,7 +67,11 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const confirmSaveBtn = document.getElementById('confirmSave');
         let currentForm = null;
+        let isLoading = false;
+
         document.querySelectorAll('#save-item-form').forEach(form => {
             form.addEventListener('submit', (event) => {
                 event.preventDefault();
@@ -81,53 +91,60 @@
             });
         });
 
-        document.getElementById('confirmSave').addEventListener('click', () => {
-            const formData = new FormData(currentForm);
-            const data = Object.fromEntries(formData);
+        confirmSaveBtn.addEventListener('click', () => {
+            if (currentForm && !isLoading) {
+                isLoading = true;
+                // Tampilkan loading indicator dan nonaktifkan tombol
+                LoadingIndicator.show(loadingIndicator);
+                LoadingIndicator.toggleButton(confirmSaveBtn, true);
 
-            fetch(`<?= base_url("pickerso/save") ?>`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.status === 'success') {
-                        // Cari elemen tr yang merupakan parent dari form
-                        const row = currentForm.closest('tr');
-                        if (row) {
-                            // Animasi fade out sebelum menghapus
-                            row.style.transition = 'opacity 0.5s';
-                            row.style.opacity = '0';
-                            setTimeout(() => {
-                                row.remove();
-                                // Periksa apakah tabel masih memiliki baris data
-                                const tbody = document.querySelector('#records_table tbody');
-                                if (tbody && tbody.children.length === 0) {
-                                    // Jika tidak ada baris lagi, tampilkan pesan atau sembunyikan tabel
-                                    tbody.innerHTML = '<tr><td colspan="4" class="text-center">Semua item telah disimpan</td></tr>';
-                                }
-                            }, 500);
+                const formData = new FormData(currentForm);
+                const data = Object.fromEntries(formData);
+
+                fetch(`<?= base_url("pickerso/save") ?>`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Sembunyikan loading indicator dan aktifkan kembali tombol
+                        LoadingIndicator.hide(loadingIndicator);
+                        LoadingIndicator.toggleButton(confirmSaveBtn, false);
+                        isLoading = false;
+
+                        confirmModal.hide();
+                        if (data.status === 'success') {
+                            const row = currentForm.closest('tr');
+                            if (row) {
+                                row.style.transition = 'opacity 0.5s';
+                                row.style.opacity = '0';
+                                setTimeout(() => {
+                                    row.remove();
+                                    const tbody = document.querySelector('#records_table tbody');
+                                    if (tbody && tbody.children.length === 0) {
+                                        tbody.innerHTML = '<tr><td colspan="4" class="text-center">Semua item telah disimpan</td></tr>';
+                                    }
+                                }, 500);
+                            }
+                            showAlert('success', data.message);
+                        } else {
+                            showAlert('error', data.message);
                         }
-                        // Tampilkan pesan flash
-                        showAlert('success', data.message);
-                    } else {
-                        // Tampilkan pesan error
-                        showAlert('error', data.message);
-                    }
-                })
-                .catch((error) => {
-                    showAlert('error', 'Terjadi kesalahan. Silakan coba lagi.');
-                });
-            confirmModal.hide();
+                    })
+                    .catch((error) => {
+                        // Sembunyikan loading indicator dan aktifkan kembali tombol
+                        LoadingIndicator.hide(loadingIndicator);
+                        LoadingIndicator.toggleButton(confirmSaveBtn, false);
+                        isLoading = false;
+
+                        console.error('Error:', error);
+                        showAlert('error', 'Terjadi kesalahan. Silakan coba lagi.');
+                    });
+            }
         });
 
         // Fungsi untuk menampilkan alert
