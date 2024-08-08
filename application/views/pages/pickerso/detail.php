@@ -118,15 +118,18 @@
 
                         confirmModal.hide();
                         if (data.status === 'success') {
+                            // Cari elemen tr yang merupakan parent dari form
                             const row = currentForm.closest('tr');
                             if (row) {
                                 row.style.transition = 'opacity 0.5s';
                                 row.style.opacity = '0';
                                 setTimeout(() => {
                                     row.remove();
+                                    // Periksa apakah tabel masih memiliki baris data
                                     const tbody = document.querySelector('#records_table tbody');
                                     if (tbody && tbody.children.length === 0) {
-                                        tbody.innerHTML = '<tr><td colspan="4" class="text-center">Semua item telah disimpan</td></tr>';
+                                        // Jika tidak ada baris lagi, tampilkan pesan atau sembunyikan tabel
+                                        tbody.innerHTML = '<tr><td colspan="4" class="text-center">Semua item telah diambil</td></tr>';
                                     }
                                 }, 500);
                             }
