@@ -97,3 +97,14 @@ footer .btnMenu button p {
 #save-item-form {
     margin: 0;
 }
+
+@media (max-width: 767.98px) {
+    .alert {
+        left: 0 !important;
+        right: 0 !important;
+        transform: none !important;
+        width: 95% !important;
+        max-width: none !important;
+        border-radius: 0 !important;
+    }
+}

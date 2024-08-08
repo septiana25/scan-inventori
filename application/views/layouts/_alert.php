@@ -22,14 +22,22 @@ foreach ($alertTypes as $type => $settings) {
 
 if ($activeAlert) :
 ?>
-    <div class="alert <?= $activeAlert['class'] ?> alert-dismissible fade show d-flex align-items-center position-fixed top-0 start-50 translate-middle-x mt-4 mt-md-5" role="alert" style="z-index: 9999;">
-        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="<?= $activeAlert['type'] ?>:">
-            <use xlink:href="#<?= $activeAlert['icon'] ?>" />
-        </svg>
-        <div>
-            <strong><?= $activeAlert['type'] ?>:</strong> <?= htmlspecialchars($activeAlert['message']) ?>
+    <div class="alert <?= $activeAlert['class'] ?> alert-dismissible fade show d-flex align-items-center position-fixed top-0 start-0 end-0 mt-4 mt-md-5 mx-2 mx-md-auto" role="alert" style="z-index: 9999; max-width: 100%;">
+        <div class="container-fluid px-0">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="<?= $activeAlert['type'] ?>:">
+                        <use xlink:href="#<?= $activeAlert['icon'] ?>" />
+                    </svg>
+                </div>
+                <div class="col">
+                    <strong><?= $activeAlert['type'] ?>:</strong> <?= htmlspecialchars($activeAlert['message']) ?>
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
         </div>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
     <!-- SVG icons -->
@@ -44,4 +52,6 @@ if ($activeAlert) :
             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
         </symbol>
     </svg>
+
+
 <?php endif; ?>
