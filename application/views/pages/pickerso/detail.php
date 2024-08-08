@@ -39,15 +39,19 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="confirmModalLabel">Konfirmasi Simpan</h5>
+                        <h5 class="modal-title" id="confirmModalLabel">Konfirmasi Pengambilan</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Apakah Anda yakin ingin menyimpan item ini?
+                        <div class="item-details mt-3">
+                            <p><strong>Rak:</strong> <span id="modalRak"></span></p>
+                            <p><strong>Item:</strong> <span id="modalItem"></span></p>
+                            <p><strong>Qty:</strong> <span id="modalQty"></span></p>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="button" class="btn btn-primary" id="confirmSave">Ya, Simpan</button>
+                        <button type="button" class="btn btn-primary" id="confirmSave">Ya, Ambil</button>
                     </div>
                 </div>
             </div>
@@ -62,6 +66,17 @@
             form.addEventListener('submit', (event) => {
                 event.preventDefault();
                 currentForm = form;
+
+                // Ambil informasi item dari form
+                const rak = form.querySelector('input[name="rak"]').value;
+                const brg = form.querySelector('input[name="brg"]').value;
+                const qty = form.querySelector('input[name="qty"]').value;
+
+                // Isi informasi ke dalam modal
+                document.getElementById('modalRak').textContent = rak;
+                document.getElementById('modalItem').textContent = brg;
+                document.getElementById('modalQty').textContent = qty;
+
                 confirmModal.show();
             });
         });
