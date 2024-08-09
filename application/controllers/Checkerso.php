@@ -31,7 +31,8 @@ class Checkerso extends MY_Controller
             $perPage = 10; // Jumlah item per halaman
             $totalItems = count((array) $groupedData);
 
-            $data['content'] = array_slice((array) $groupedData, ($page - 1) * $perPage, $perPage);
+            $slicedData = array_slice($groupedData, ($page - 1) * $perPage, $perPage);
+            $data['content'] = json_decode(json_encode($slicedData));
             $data['totalPages'] = ceil($totalItems / $perPage);
             $data['currentPage'] = $page;
         } catch (Exception $e) {
@@ -46,5 +47,27 @@ class Checkerso extends MY_Controller
         $data['nav'] = 'Keluar - Checker SO';
         $data['page'] = 'pages/checkerso/index';
         $this->view($data);
+    }
+
+    public function detail($nopol)
+    {
+        try {
+            $result = $this->checkerso->fetchByNopol($nopol);
+
+            if (empty($result)) {
+                $this->session->set_flashdata('error', 'Data SO tidak ditemukan');
+                redirect(base_url("checkerso"));
+            }
+
+            $data['content'] = $result;
+            $data['title'] = 'Detail SO';
+            $data['nav'] = 'Keluar - List SO';
+            $data['page'] = 'pages/checkerso/detail';
+            $this->view($data);
+        } catch (Exception $e) {
+            log_message('error', 'Error saat mengambil data SO: ' . $e->getMessage());
+            $this->session->set_flashdata('error', 'Terjadi kesalahan saat mengambil data SO');
+            redirect(base_url("checkerso"));
+        }
     }
 }

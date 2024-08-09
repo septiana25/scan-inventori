@@ -90,20 +90,20 @@ class Checkerso_model extends MY_Model
             ->get();
     }
 
-    public function fetchById($id)
+    public function fetchByNopol($nopol)
     {
         return $this->select(
             [
-                'id',
-                'id_masuk',
-                'id_rak',
-                'rak',
-                'user',
-                'approve'
+                'MAX(nopol) as nopol',
+                'MAX(supir) as supir',
+                'MAX(id_toko) as id_toko',
+                'MAX(toko) as toko'
             ]
         )
-            ->where('id', $id)
-            ->first();
+            ->where('nopol', $nopol)
+            ->where('status', '0')
+            ->group_by('id_toko')
+            ->get();
     }
 
     public function fetchByIdMasukIdRak($id, $idrak)

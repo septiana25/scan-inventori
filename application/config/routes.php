@@ -69,7 +69,7 @@ $route['pickerso/detail/(:any)/(:num)']     = 'pickersodetail/index/$1/$2';
 $route['pickerso/save']                 = 'pickersodetail/save';
 
 $route['checkerso']                  = 'checkerso/index';
-$route['checkerso/detail/(:any)']      = 'checkersodetail/index/$1';
+$route['checkerso/detail/(:any)']      = 'checkerso/detail/$1';
 $route['checkerso/detail/(:any)/(:num)'] = 'checkersodetail/index/$1/$2';
 
 $route['items']                     = 'items/index';

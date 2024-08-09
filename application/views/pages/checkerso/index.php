@@ -4,7 +4,7 @@
         <table class="table table-sm" id="records_table">
             <thead>
                 <th>Ekspedisi</th>
-                <th width="5%">Total Toko</th>
+                <th width="15%">Total Toko</th>
                 <th width="5%">Action</th>
             </thead>
             <tbody>
@@ -13,10 +13,10 @@
                 foreach ($content as $row) :
                 ?>
                     <tr>
-                        <td><?= htmlspecialchars($row['supir']) ?></td>
-                        <td><?= htmlspecialchars($row['count_toko']) ?></td>
+                        <td><?= htmlspecialchars($row->supir) ?></td>
+                        <td><?= htmlspecialchars($row->count_toko) ?></td>
                         <td>
-                            <a href="<?= base_url("checkerso/detail/" . htmlspecialchars($row['nopol'])) ?>">
+                            <a href="<?= base_url("checkerso/detail/" . htmlspecialchars($row->nopol)) ?>">
                                 <button type="button" class="btn btn-primary" style="--bs-btn-padding-y: .20rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .50rem;">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </button>
