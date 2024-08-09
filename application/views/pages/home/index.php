@@ -34,7 +34,7 @@
         </a>
       </div>
       <div class="col">
-        <a href="<?= base_url("keluar") ?>" class="text-decoration-none">
+        <a href="<?= base_url("checkerso") ?>" class="text-decoration-none">
           <div class="card h-100 text-center shadow-sm">
             <div class="card-body d-flex flex-column justify-content-center">
               <i class="fa fa-clipboard fa-3x text-info mb-3"></i>
