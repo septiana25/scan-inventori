@@ -55,8 +55,7 @@ class Checkerso extends MY_Controller
             $result = $this->checkerso->fetchByNopol($nopol);
 
             if (empty($result)) {
-                $this->session->set_flashdata('error', 'Data SO tidak ditemukan');
-                redirect(base_url("checkerso"));
+                throw new Exception('Data SO tidak ditemukan');
             }
 
             $data['content'] = $result;
@@ -66,7 +65,7 @@ class Checkerso extends MY_Controller
             $this->view($data);
         } catch (Exception $e) {
             log_message('error', 'Error saat mengambil data SO: ' . $e->getMessage());
-            $this->session->set_flashdata('error', 'Terjadi kesalahan saat mengambil data SO');
+            $this->session->set_flashdata('error', 'Terjadi kesalahan saat mengambil Ekspedisi');
             redirect(base_url("checkerso"));
         }
     }

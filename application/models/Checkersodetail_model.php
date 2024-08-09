@@ -3,7 +3,7 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Checkerso_model extends MY_Model
+class Checkersodetail_model extends MY_Model
 {
 
     protected $table = 'pickerso';
@@ -13,12 +13,9 @@ class Checkerso_model extends MY_Model
         parent::__construct();
     }
 
-    public function getDefaultValues($idRak, $rak, $id)
+    public function getDefaultValues()
     {
         return [
-            'id_masuk'  => $id,
-            'id_rak'    => $idRak,
-            'rak'       => $rak,
             'barcode'   => '',
         ];
     }
@@ -30,22 +27,7 @@ class Checkerso_model extends MY_Model
                 'field' => 'barcode',
                 'label' => 'Barcode',
                 'rules' => 'trim|required',
-            ],
-            [
-                'field' => 'id_masuk',
-                'label' => 'Id Masuk',
-                'rules' => 'trim|required|numeric',
-            ],
-            [
-                'field' => 'id_rak',
-                'label' => 'Id Rak',
-                'rules' => 'trim|required',
-            ],
-            [
-                'field' => 'rak',
-                'label' => 'Rak',
-                'rules' => 'trim|required',
-            ],
+            ]
         ];
 
         return $validationRules;
@@ -103,25 +85,6 @@ class Checkerso_model extends MY_Model
             ->where('nopol', $nopol)
             ->where('status', '0')
             ->group_by('id_toko')
-            ->get();
-    }
-
-    public function fetchByNopolAndIdToko($nopol, $id_toko)
-    {
-        return $this->select(
-            [
-                'nopol',
-                'supir',
-                'id_toko',
-                'toko',
-                'id',
-                'brg',
-                'qty',
-            ]
-        )
-            ->where('nopol', $nopol)
-            ->where('id_toko', $id_toko)
-            ->where('status', '0')
             ->get();
     }
 
