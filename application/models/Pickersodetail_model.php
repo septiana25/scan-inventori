@@ -40,4 +40,17 @@ class Pickersodetail_model extends MY_Model
         $response = curl_request($url, 'GET', null, ["X-API-KEY: $apiKey"]);
         return json_decode($response);
     }
+
+    public function updatePickerSOAPI($id, $nopol)
+    {
+        $url = $this->config->item('base_url_api') . "/so/picker_so";
+        $apiKey = $this->config->item('api_key');
+        $postData = json_encode(['id' => $id, 'nopol' => $nopol]);
+        $headers = [
+            "X-API-KEY: $apiKey",
+            "Content-Type: application/json"
+        ];
+        $response = curl_request($url, 'POST', $postData, $headers);
+        return json_decode($response, true);
+    }
 }

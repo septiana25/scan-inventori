@@ -5,6 +5,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @property CI_Session $session
  * @property CI_Config $config
  * @property CI_Input $input
+ * @property CI_Output $output
  * @property CI_Pagination $pagination
  * @property Pickersodetail_model $pickersodetail
  */
@@ -63,18 +64,12 @@ class Pickersodetail extends MY_Controller
 
     public function save()
     {
-        $postData = json_decode(file_get_contents('php://input'), true);
-        $requiredFields = ['id', 'nopol', 'supir', 'id_toko', 'toko', 'brg', 'rak', 'qty'];
-        $data = [];
+        $data = json_decode(file_get_contents('php://input'), true);
 
-        foreach ($requiredFields as $field) {
-            if (!isset($postData[$field]) || empty($postData[$field])) {
-                $response = ['status' => 'error', 'message' => self::ERROR_FIELD_EMPTY . " $field"];
-                echo json_encode($response);
-                return;
-            }
-            $data[$field] = $postData[$field];
+        if (!$this->validateSaveData($data)) {
+            return;
         }
+
         $data['user'] = $this->session->userdata('username');
 
         try {
@@ -85,26 +80,8 @@ class Pickersodetail extends MY_Controller
                 return;
             }
 
-            $url = $this->config->item('base_url_api') . "/so/picker_so";
-            $apiKey = $this->config->item('api_key');
-            $postData = json_encode(['id' => $data['id'], 'nopol' => $data['nopol']]);
-            $headers = [
-                "X-API-KEY: $apiKey",
-                "Content-Type: application/json"
-            ];
-            $response = curl_request($url, 'POST', $postData, $headers);
-            $result = json_decode($response, true);
-            if (isset($result['status']) && $result['status'] === 'success') {
-                $response = [
-                    'status' => 'success',
-                    'message' => self::SUCCESS_SAVE,
-                ];
-            } else {
-                $response = [
-                    'status' => 'error',
-                    'message' => $result['message'] ?? self::ERROR_SAVE_FAILED,
-                ];
-            }
+            $apiResult = $this->pickersodetail->updatePickerSOAPI($data['id'], $data['nopol']);
+            $response = $this->processApiResponse($apiResult);
         } catch (Exception $e) {
             log_message('error', self::ERROR_TRY_CATCH . ' ' . $e->getMessage());
             $response = [
@@ -113,7 +90,7 @@ class Pickersodetail extends MY_Controller
             ];
         }
 
-        echo json_encode($response);
+        $this->sendJsonResponse($response);
     }
 
     public function update()
@@ -148,5 +125,32 @@ class Pickersodetail extends MY_Controller
     {
         // Implementasi fungsi print jika diperlukan
         // Misalnya, mengambil data SO berdasarkan nopol dan menampilkan dalam format yang siap cetak
+    }
+
+    private function validateSaveData($data)
+    {
+        $requiredFields = ['id', 'nopol', 'supir', 'id_toko', 'toko', 'brg', 'rak', 'qty'];
+        foreach ($requiredFields as $field) {
+            if (empty($data[$field])) {
+                $this->sendJsonResponse(['status' => 'error', 'message' => self::ERROR_FIELD_EMPTY . " $field"]);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private function processApiResponse($result)
+    {
+        if (isset($result['status']) && $result['status'] === 'success') {
+            return ['status' => 'success', 'message' => self::SUCCESS_SAVE];
+        }
+        return ['status' => 'error', 'message' => $result['message'] ?? self::ERROR_SAVE_FAILED];
+    }
+
+    private function sendJsonResponse($response)
+    {
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));
     }
 }
