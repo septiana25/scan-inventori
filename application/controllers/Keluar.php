@@ -5,7 +5,17 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Keluar extends MY_Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
 
+        $is_login    = $this->session->userdata('is_login');
+
+        if (!$is_login) {
+            redirect(base_url('login'));
+            return;
+        }
+    }
 
     public function index($no_plat = 0)
     {

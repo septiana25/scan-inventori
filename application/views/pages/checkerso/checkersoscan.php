@@ -16,15 +16,12 @@
                 </div>
             </label>
             <?= form_hidden('id_toko', $toko); ?>
-            <?= form_input('barcode', $input->barcode, ['class' => 'form-control',  'autofocus' => true, 'placeholder' => 'Scan ']); ?>
+            <?= form_input('barcode', $input->barcode, ['class' => 'form-control',  'autofocus' => true, 'placeholder' => 'Scan Item']); ?>
             <?= form_error('barcode') ?>
         </div>
         <div class="mb-3">
             <select class="form-select" id="unit" name="unit">
-                <option value="koli">Koli</option>
-                <option value="koli">Karung</option>
-                <option value="karung">Karung</option>
-                <option value="dus">Dus</option>
+                <option value="pack">Koli/Karung/Dus</option>
                 <option value="pcs">Pcs</option>
             </select>
             <?= form_error('unit') ?>
@@ -33,7 +30,7 @@
         <div class="d-flex justify-content-center align-item-center">
             <h6>Daftar Item Yang Harus Discan</h6>
         </div>
-        <table class="table table-sm" id="records_table">
+        <table class="table table-sm pb-5" id="records_table">
             <thead>
                 <th width="90%">Item</th>
                 <th>QTY</th>
@@ -55,5 +52,7 @@
                 <?php endforeach ?>
             </tbody>
         </table>
+        </br>
+        </br>
     </section>
 </main>

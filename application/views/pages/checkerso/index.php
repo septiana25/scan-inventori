@@ -4,7 +4,7 @@
         <table class="table table-sm" id="records_table">
             <thead>
                 <th>Ekspedisi</th>
-                <th width="15%">Total Toko</th>
+                <th width="40%">Total Toko</th>
                 <th width="5%">Action</th>
             </thead>
             <tbody>
