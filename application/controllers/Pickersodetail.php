@@ -5,6 +5,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @property CI_Session $session
  * @property CI_Config $config
  * @property CI_Input $input
+ * @property CI_Pagination $pagination
  * @property Pickersodetail_model $pickersodetail
  */
 class Pickersodetail extends MY_Controller
@@ -22,31 +23,26 @@ class Pickersodetail extends MY_Controller
     {
         parent::__construct();
 
+        $this->load->helper('curl');
         $is_login    = $this->session->userdata('is_login');
 
         if (!$is_login) {
             redirect(base_url('login'));
             return;
         }
-
-        $this->load->helper('curl');
     }
 
     public function index($nopol = null, $page = 1)
     {
-
-        if (!$nopol) {
+        if (!$nopol || !preg_match('/^[A-Z0-9]+$/', $nopol)) {
             $this->session->set_flashdata('error', self::ERROR_INVALID_DATA . ' Ekspedisi');
             redirect('pickerso');
         }
 
         try {
-            $url = $this->config->item('base_url_api') . "/so/$nopol";
-            $apiKey = $this->config->item('api_key');
-            $response = curl_request($url, 'GET', null, ["X-API-KEY: $apiKey"]);
-            $result = json_decode($response);
+            $result = $this->pickersodetail->getSODetails($nopol);
 
-            if (!$result || !isset($result->data->so[0])) {
+            if (empty($result) || !isset($result->data->so[0])) {
                 throw new Exception(self::ERROR_INVALID_DATA);
             }
 

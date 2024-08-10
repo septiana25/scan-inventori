@@ -1,7 +1,3 @@
-<?php
-$currentPage = isset($currentPage) ? $currentPage : 1;
-$totalPages = isset($totalPages) ? $totalPages : 1;
-?>
 <main class="container">
     <section id="form">
         <?php $this->load->view('layouts/_alert') ?>
@@ -42,27 +38,7 @@ $totalPages = isset($totalPages) ? $totalPages : 1;
         </table>
 
         <!-- Pagination -->
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                <?php if ($currentPage > $totalPages) : ?>
-                    <li class="page-item">
-                        <a class="page-link" href="<?= base_url("pickerso/index/" . ($currentPage - 1)) ?>">Previous</a>
-                    </li>
-                <?php endif; ?>
-
-                <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
-                    <li class="page-item <?= ($i == $currentPage) ? 'active' : '' ?>">
-                        <a class="page-link" href="<?= base_url("pickerso/index/$i") ?>"><?= $i ?></a>
-                    </li>
-                <?php endfor; ?>
-
-                <?php if ($currentPage < $totalPages) : ?>
-                    <li class="page-item">
-                        <a class="page-link" href="<?= base_url("pickerso/index/" . ($currentPage + 1)) ?>">Next</a>
-                    </li>
-                <?php endif; ?>
-            </ul>
-        </nav>
+        <?= $pagination ?>
     </section>
 </main>
 <script>

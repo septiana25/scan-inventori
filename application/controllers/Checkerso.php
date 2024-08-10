@@ -12,6 +12,7 @@ class Checkerso extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->helper('curl');
         $this->load->library('pagination');
         $is_login    = $this->session->userdata('is_login');
 
@@ -22,7 +23,6 @@ class Checkerso extends MY_Controller
     }
     public function index($page = 1)
     {
-        $this->load->helper('curl');
 
         try {
 

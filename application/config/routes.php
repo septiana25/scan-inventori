@@ -64,6 +64,7 @@ $route['keluar/(:any)']             = 'keluar/index/$1';
 $route['detailkeluar/(:any)']       = 'detailkeluar/index/$1';
 
 $route['pickerso']                  = 'pickerso/index';
+$route['pickerso/(:num)']           = 'pickerso/index/$1';
 $route['pickerso/detail/(:any)']     = 'pickersodetail/index/$1';
 $route['pickerso/detail/(:any)/(:num)']     = 'pickersodetail/index/$1/$2';
 $route['pickerso/save']                 = 'pickersodetail/save';

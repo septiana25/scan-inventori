@@ -44,6 +44,8 @@
                 <?php endif; ?>
             </tbody>
         </table>
+
+        <!-- Pagination -->
         <!-- Modal Konfirmasi -->
         <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
             <div class="modal-dialog">

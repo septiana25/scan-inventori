@@ -5,14 +5,20 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @property CI_Session $session
  * @property CI_Config $config
  * @property CI_Input $input
+ * @property CI_Pagination $pagination
  * @property PickerSo_model $pickerso
  */
 class PickerSo extends MY_Controller
 {
+    const PER_PAGE = 10;
+
     public function __construct()
     {
         parent::__construct();
 
+        $this->load->helper('curl');
+        $this->load->library('pagination');
+        $this->load->helper('pagination');
         $is_login    = $this->session->userdata('is_login');
 
         if (!$is_login) {
@@ -22,23 +28,20 @@ class PickerSo extends MY_Controller
     }
     public function index($page = 1)
     {
-        $this->load->helper('curl');
-
         try {
-            $url = $this->config->item('base_url_api') . "/so";
-            $apiKey = $this->config->item('api_key'); // Simpan API key di konfigurasi
-            $response = curl_request($url, 'GET', null, ["X-API-KEY: $apiKey"]);
-            $result = json_decode($response);
+
+            $result = $this->pickerso->getAllSO();
 
             if (!$result || !isset($result->data->so)) {
                 throw new Exception('Data SO tidak valid');
             }
 
-            $perPage = 10; // Jumlah item per halaman
-            $totalItems = count((array) $result->data->so);
+            $totalItems = count($result->data->so);
+            $offset = ($page - 1) * self::PER_PAGE;
 
-            $data['content'] = array_slice((array) $result->data->so, ($page - 1) * $perPage, $perPage);
-            $data['totalPages'] = ceil($totalItems / $perPage);
+            $slicedArray = array_slice($result->data->so, $offset, self::PER_PAGE);
+            $data['content'] = json_decode(json_encode($slicedArray));
+            $data['pagination'] = $this->initializePagination($totalItems, $page);
             $data['currentPage'] = $page;
         } catch (Exception $e) {
             log_message('error', 'Error saat mengambil data SO: ' . $e->getMessage());
@@ -52,5 +55,22 @@ class PickerSo extends MY_Controller
         $data['nav'] = 'Keluar - Picker SO';
         $data['page'] = 'pages/pickerso/index';
         $this->view($data);
+    }
+
+    private function initializePagination($totalItems, $page)
+    {
+        $config = [
+            'base_url' => base_url("pickerso"),
+            'total_rows' => $totalItems,
+            'per_page' => self::PER_PAGE,
+            'use_page_numbers' => TRUE,
+            'cur_page' => $page,
+            'attributes' => ['class' => 'page-link'],
+        ];
+
+        $config = array_merge($config, get_pagination_template());
+
+        $this->pagination->initialize($config);
+        return $this->pagination->create_links();
     }
 }
