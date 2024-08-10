@@ -6,6 +6,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @property CI_Config $config
  * @property CI_Input $input
  * @property CI_Output $output
+ * @property CI_DB_trans $db
  * @property CI_Pagination $pagination
  * @property Pickersodetail_model $pickersodetail
  */
@@ -17,6 +18,7 @@ class Pickersodetail extends MY_Controller
     const ERROR_FETCH_FAILED = 'Gagal mengambil data';
     const ERROR_TRY_CATCH = 'Terjadi kesalahan saat mengambil data';
     const ERROR_FIELD_EMPTY = 'Field tidak boleh kosong';
+    const ERROR_API_FAILED = 'Gagal memperbarui data di API';
     const SUCCESS_SAVE = 'Data berhasil disimpan';
     const SUCCESS_UPDATE = 'Data berhasil diperbarui';
 
@@ -71,18 +73,31 @@ class Pickersodetail extends MY_Controller
         }
 
         $data['user'] = $this->session->userdata('username');
+        log_message('debug', 'Transaction begin');
+        $this->db->trans_begin();
 
         try {
-
-            if (!$this->pickersodetail->run($data)) {
+            $insertResult = $this->pickersodetail->run($data);
+            if (!$insertResult) {
                 $response = ['status' => 'error', 'message' => self::ERROR_SAVE_FAILED];
                 echo json_encode($response);
                 return;
             }
+            log_message('debug', 'Insert result: ' . ($insertResult ? 'success' : 'fail'));
+
 
             $apiResult = $this->pickersodetail->updatePickerSOAPI($data['id'], $data['nopol']);
+            log_message('debug', 'API result: ' . json_encode($apiResult));
+            if (!$this->isApiResponseSuccess($apiResult)) {
+                throw new Exception(self::ERROR_API_FAILED);
+            }
+            log_message('debug', 'About to commit');
+            $this->db->trans_commit();
+            log_message('debug', 'Transaction commit');
             $response = $this->processApiResponse($apiResult);
         } catch (Exception $e) {
+            log_message('debug', 'Rolling back transaction');
+            $this->db->trans_rollback();
             log_message('error', self::ERROR_TRY_CATCH . ' ' . $e->getMessage());
             $response = [
                 'status' => 'error',
@@ -101,6 +116,8 @@ class Pickersodetail extends MY_Controller
             $this->session->set_flashdata('error', 'Tidak ada data yang dikirim');
             redirect('pickerso');
         }
+
+        $this->db->trans_begin();
 
         try {
             $url = $this->config->item('base_url_api') . "/so/update";
@@ -152,5 +169,10 @@ class Pickersodetail extends MY_Controller
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
+    }
+
+    private function isApiResponseSuccess($result)
+    {
+        return isset($result['status']) && $result['status'] === 'success';
     }
 }
