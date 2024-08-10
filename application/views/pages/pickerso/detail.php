@@ -10,28 +10,38 @@
                 <th width="5%">Action</th>
             </thead>
             <tbody>
-                <?php foreach ($content as $row) : ?>
-                    <tr id="item-<?= $row->id ?>">
-                        <td class="fw-bold"><?= htmlspecialchars($row->rak, ENT_QUOTES, 'UTF-8') ?></td>
-                        <td><?= htmlspecialchars($row->brg, ENT_QUOTES, 'UTF-8') ?></td>
-                        <td class="text-center fw-bold"><?= htmlspecialchars($row->qty_pro, ENT_QUOTES, 'UTF-8') ?></td>
-                        <td>
-                            <form id="save-item-form">
-                                <input type="hidden" name="id" value="<?= $row->id ?>">
-                                <input type="hidden" name="nopol" value="<?= $nopol ?>">
-                                <input type="hidden" name="supir" value="<?= $supir ?>">
-                                <input type="hidden" name="id_toko" value="<?= $row->id_toko ?>">
-                                <input type="hidden" name="toko" value="<?= $row->toko ?>">
-                                <input type="hidden" name="brg" value="<?= $row->brg ?>">
-                                <input type="hidden" name="rak" value="<?= $row->rak ?>">
-                                <input type="hidden" name="qty" value="<?= $row->qty_pro ?>">
-                                <button type="submit" class="btn btn-success btn-icon-prominent">
-                                    <i class="fa fa-check-square" aria-hidden="true"></i>
-                                </button>
-                            </form>
-                        </td>
+                <?php
+                if (!empty($content) && is_iterable($content)):
+                    foreach ($content as $row) :
+                ?>
+                        <tr id="item-<?= $row->id ?>">
+                            <td class="fw-bold"><?= htmlspecialchars($row->rak, ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?= htmlspecialchars($row->brg, ENT_QUOTES, 'UTF-8') ?></td>
+                            <td class="text-center fw-bold"><?= htmlspecialchars($row->qty_pro, ENT_QUOTES, 'UTF-8') ?></td>
+                            <td>
+                                <form id="save-item-form">
+                                    <input type="hidden" name="id" value="<?= $row->id ?>">
+                                    <input type="hidden" name="nopol" value="<?= $nopol ?>">
+                                    <input type="hidden" name="supir" value="<?= $supir ?>">
+                                    <input type="hidden" name="id_toko" value="<?= $row->id_toko ?>">
+                                    <input type="hidden" name="toko" value="<?= $row->toko ?>">
+                                    <input type="hidden" name="brg" value="<?= $row->brg ?>">
+                                    <input type="hidden" name="rak" value="<?= $row->rak ?>">
+                                    <input type="hidden" name="qty" value="<?= $row->qty_pro ?>">
+                                    <button type="submit" class="btn btn-success btn-icon-prominent">
+                                        <i class="fa fa-check-square" aria-hidden="true"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php
+                    endforeach;
+                else:
+                    ?>
+                    <tr>
+                        <td colspan="4" class="text-center">Tidak ada data</td>
                     </tr>
-                <?php endforeach ?>
+                <?php endif; ?>
             </tbody>
         </table>
         <!-- Modal Konfirmasi -->

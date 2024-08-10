@@ -12,7 +12,7 @@
                         <label for="username" class="form-label">Username</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fa fa-user" aria-hidden="true"></i></span>
-                            <?= form_input('username', $input->username, ['class' => 'form-control', 'required' => true, 'placeholder' => 'Masukkan Username']); ?>
+                            <?= form_input('username', isset($input->username) ? $input->username : '', ['class' => 'form-control', 'required' => true, 'placeholder' => 'Masukkan Username']); ?>
                         </div>
                         <?= form_error('username', '<div class="text-danger mt-1">', '</div>') ?>
                     </div>

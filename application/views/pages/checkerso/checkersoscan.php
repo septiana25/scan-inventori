@@ -16,7 +16,7 @@
                 </div>
             </label>
             <?= form_hidden('id_toko', $toko); ?>
-            <?= form_input('barcode', $input->barcode, ['class' => 'form-control',  'autofocus' => true, 'placeholder' => 'Scan Item']); ?>
+            <?= form_input('barcode', isset($input->barcode) ? $input->barcode : '', ['class' => 'form-control',  'autofocus' => true, 'placeholder' => 'Scan Item']); ?>
             <?= form_error('barcode') ?>
         </div>
         <div class="mb-3">
@@ -36,20 +36,30 @@
                 <th>QTY/Pcs</th>
             </thead>
             <tbody>
-                <?php foreach ($content as $item) : ?>
-                    <tr>
-                        <td>
-                            <div>
-                                <h6><?= $item->brg ?></h6>
-                                <div class="d-flex justify-content-between">
+                <?php
+                if (!empty($content) && is_iterable($content)):
+                    foreach ($content as $item) :
+                ?>
+                        <tr>
+                            <td>
+                                <div>
+                                    <h6><?= $item->brg ?></h6>
+                                    <div class="d-flex justify-content-between">
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td>
-                            <h6 class="text-center"><?= $item->qty ?></h6>
-                        </td>
+                            </td>
+                            <td>
+                                <h6 class="text-center"><?= $item->qty ?></h6>
+                            </td>
+                        </tr>
+                    <?php
+                    endforeach;
+                else:
+                    ?>
+                    <tr>
+                        <td colspan="4" class="text-center">Tidak ada data</td>
                     </tr>
-                <?php endforeach ?>
+                <?php endif; ?>
             </tbody>
         </table>
         </br>
