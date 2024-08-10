@@ -1,6 +1,10 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+/**
+ * @property CI_Session $session
+ * @property Checkerso_model $checkerso
+ */
 class Checkerso extends MY_Controller
 {
 

@@ -3,6 +3,12 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
+/**
+ * @property CI_Session $session
+ * @property Detailkeluar_model $detailkeluar
+ * @property CI_Config $config
+ * @property CI_Input $input
+ */
 class Detailkeluar extends MY_Controller
 {
 

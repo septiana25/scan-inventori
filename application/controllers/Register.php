@@ -2,7 +2,11 @@
 
 
 defined('BASEPATH') or exit('No direct script access allowed');
-
+/**
+ * @property CI_Session $session
+ * @property Register_model $register
+ * @property CI_Input $input
+ */
 class Register extends MY_Controller
 {
 

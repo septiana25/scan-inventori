@@ -2,6 +2,11 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
+/**
+ * @property CI_Session $session
+ * @property Barangkerak_model $barangkerak
+ * @property CI_Config $config
+ */
 class Barangkerak extends MY_Controller
 {
 

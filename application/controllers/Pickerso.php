@@ -1,6 +1,12 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+/**
+ * @property CI_Session $session
+ * @property CI_Config $config
+ * @property CI_Input $input
+ * @property PickerSo_model $pickerso
+ */
 class PickerSo extends MY_Controller
 {
     public function __construct()

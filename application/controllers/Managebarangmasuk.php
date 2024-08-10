@@ -1,7 +1,12 @@
 <?php
-
 defined('BASEPATH') or exit('No direct script access allowed');
 
+/**
+ * @property CI_Session $session
+ * @property CI_Config $config
+ * @property CI_Input $input
+ * @property Managebarangmasuk_model $managebarangmasuk
+ */
 class Managebarangmasuk extends MY_Controller
 {
 

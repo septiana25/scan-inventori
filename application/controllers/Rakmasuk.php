@@ -1,6 +1,13 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+/**
+ * @property CI_Session $session
+ * @property CI_Config $config
+ * @property CI_Input $input
+ * @property Rakmasuk_model $rakmasuk
+ * @property Masuk_model $masuk
+ */
 class Rakmasuk extends MY_Controller
 {
 

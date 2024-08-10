@@ -2,6 +2,10 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
+/**
+ * @property CI_Session $session
+ * @property Approvedrak_model $approvedrak
+ */
 class Approved extends MY_Controller
 {
 

@@ -2,6 +2,14 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
+/**
+ * @property CI_Session $session
+ * @property Detailmasuk_model $detailmasuk
+ * @property Approvedrak_model $approvedrak
+ * @property Masuk_model $masuk
+ * @property CI_Config $config
+ * @property CI_Input $input
+ */
 class Detailmasuk extends MY_Controller
 {
 
@@ -89,7 +97,7 @@ class Detailmasuk extends MY_Controller
             $data['title'] = 'Form Masuk Scan';
             $data['nav'] = 'Masuk - Scan Barang';
             $data['input'] = $input;
-            $data['content'] = $this->detailmasuk->fetchById($id);
+            $data['content'] = $this->detailmasuk->fetchById($id, $input->rak);
             $data['form_action'] = "detailmasuk/create/$barcodeRak/$id";
             $data['page'] = "pages/masuk/detailmasuk";
             $this->view($data);

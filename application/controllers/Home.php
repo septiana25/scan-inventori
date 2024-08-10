@@ -1,8 +1,10 @@
 <?php
-
-
 defined('BASEPATH') or exit('No direct script access allowed');
 
+/**
+ * @property CI_Session $session
+ * @property CI_Config $config
+ */
 class Home extends MY_Controller
 {
 
