@@ -138,6 +138,27 @@ class Checkerso_model extends MY_Model
             ->where('id_rak', $idrak)
             ->first();
     }
+
+    /**
+     * @return array
+     * @note grouping data by nopol
+     */
+    public function fetchAllGrouped()
+    {
+        $result = $this->fetchAll();
+        $groupedData = [];
+        foreach ($result as $item) {
+            if (!isset($groupedData[$item->nopol])) {
+                $groupedData[$item->nopol] = [
+                    'nopol' => $item->nopol,
+                    'supir' => $item->supir,
+                    'count_toko' => 0,
+                ];
+            }
+            $groupedData[$item->nopol]['count_toko']++;
+        }
+        return array_values($groupedData);
+    }
 }
 
 /* End of file Approvedrak_model.php */

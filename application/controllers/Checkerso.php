@@ -4,14 +4,15 @@ defined('BASEPATH') or exit('No direct script access allowed');
 /**
  * @property CI_Session $session
  * @property Checkerso_model $checkerso
+ * @property CI_Pagination $pagination
  */
 class Checkerso extends MY_Controller
 {
-
+    const PER_PAGE = 10;
     public function __construct()
     {
         parent::__construct();
-
+        $this->load->library('pagination');
         $is_login    = $this->session->userdata('is_login');
 
         if (!$is_login) {
@@ -25,31 +26,25 @@ class Checkerso extends MY_Controller
 
         try {
 
-            $result =  $this->checkerso->fetchAll();
-
+            $result =  $this->checkerso->fetchAllGrouped();
 
             if (empty($result)) {
                 throw new Exception('Tidak ada data');
             }
-            // Mengelompokkan data berdasarkan nopol
-            $groupedData = [];
-            foreach ($result as $item) {
-                if (!isset($groupedData[$item->nopol])) {
-                    $groupedData[$item->nopol] = [
-                        'nopol' => $item->nopol,
-                        'supir' => $item->supir,
-                        'count_toko' => 0,
-                    ];
-                }
-                $groupedData[$item->nopol]['count_toko']++;
-            }
 
-            $perPage = 10; // Jumlah item per halaman
-            $totalItems = count((array) $groupedData);
+            $totalItems = count($result);
+            $offset = ($page - 1) * self::PER_PAGE;
+            $this->pagination->initialize([
+                'base_url' => base_url('checkerso/index'),
+                'total_rows' => $totalItems,
+                'per_page' => self::PER_PAGE,
+                'use_page_numbers' => TRUE,
+                'cur_page' => $page,
+            ]);
 
-            $slicedData = array_slice($groupedData, ($page - 1) * $perPage, $perPage);
-            $data['content'] = json_decode(json_encode($slicedData));
-            $data['totalPages'] = ceil($totalItems / $perPage);
+            $slicedArray = array_slice($result, $offset, self::PER_PAGE);
+            $data['content'] = json_decode(json_encode($slicedArray));
+            $data['pagination'] = $this->pagination->create_links();
             $data['currentPage'] = $page;
         } catch (Exception $e) {
             log_message('error', 'Error saat mengambil data SO: ' . $e->getMessage());

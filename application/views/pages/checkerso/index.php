@@ -13,7 +13,7 @@ $currentPage = isset($currentPage) ? $currentPage : 1;
             <tbody>
 
                 <?php
-                if (!empty($content) && is_object($content) && count((array)$content) > 0):
+                if (!empty($content) && is_iterable($content) && count((array)$content) > 0):
                     foreach ($content as $row) :
                 ?>
                         <tr>
@@ -39,27 +39,7 @@ $currentPage = isset($currentPage) ? $currentPage : 1;
         </table>
 
         <!-- Pagination -->
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                <?php if ($currentPage > 1) : ?>
-                    <li class="page-item">
-                        <a class="page-link" href="<?= base_url("pickerso/index/" . ($currentPage - 1)) ?>">Previous</a>
-                    </li>
-                <?php endif; ?>
-
-                <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
-                    <li class="page-item <?= ($i == $currentPage) ? 'active' : '' ?>">
-                        <a class="page-link" href="<?= base_url("pickerso/index/$i") ?>"><?= $i ?></a>
-                    </li>
-                <?php endfor; ?>
-
-                <?php if ($currentPage < $totalPages) : ?>
-                    <li class="page-item">
-                        <a class="page-link" href="<?= base_url("pickerso/index/" . ($currentPage + 1)) ?>">Next</a>
-                    </li>
-                <?php endif; ?>
-            </ul>
-        </nav>
+        <?php echo $pagination; ?>
     </section>
 </main>
 <script>
