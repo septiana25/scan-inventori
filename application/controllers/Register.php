@@ -37,12 +37,12 @@ class Register extends MY_Controller
         }
 
         if ($this->register->run($input)) {
-            $this->session->set_flashdata('success', 'Berhasil melakukan registrasi');
+            $this->session->set_flashdata('success', 'Berhasil melakukan registrasi, Silahkan Login');
 
-            redirect(base_url());
+            redirect(base_url('login'));
         } else {
             $this->session->set_flashdata('error', 'Opps Terjadi Kesalahan');
-            redirect(base_url());
+            redirect(base_url('register'));
         }
     }
 }

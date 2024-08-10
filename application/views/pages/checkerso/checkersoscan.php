@@ -33,7 +33,7 @@
         <table class="table table-sm pb-5" id="records_table">
             <thead>
                 <th width="90%">Item</th>
-                <th>QTY</th>
+                <th>QTY/Pcs</th>
             </thead>
             <tbody>
                 <?php foreach ($content as $item) : ?>
@@ -46,7 +46,7 @@
                             </div>
                         </td>
                         <td>
-                            <h6><?= $item->qty ?></h6>
+                            <h6 class="text-center"><?= $item->qty ?></h6>
                         </td>
                     </tr>
                 <?php endforeach ?>

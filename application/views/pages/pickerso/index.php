@@ -15,7 +15,7 @@
                 ?>
                     <tr>
                         <td><?= htmlspecialchars($row->supir) ?></td>
-                        <td><?= htmlspecialchars($row->faktur) ?></td>
+                        <td class="text-center"><?= htmlspecialchars($row->faktur) ?></td>
                         <td><?= date('d-m-Y', strtotime($row->tgl)) ?></td>
                         <td>
                             <a href="<?= base_url("pickerso/detail/" . htmlspecialchars($row->nopol)) ?>">

@@ -4,7 +4,7 @@
         <table class="table table-sm" id="records_table">
             <thead>
                 <th>Ekspedisi</th>
-                <th width="40%">Total Toko</th>
+                <th class="text-center" width="40%">Total Toko</th>
                 <th width="5%">Action</th>
             </thead>
             <tbody>
@@ -14,7 +14,7 @@
                 ?>
                     <tr>
                         <td><?= htmlspecialchars($row->supir) ?></td>
-                        <td><?= htmlspecialchars($row->count_toko) ?></td>
+                        <td class="text-center"><?= htmlspecialchars($row->count_toko) ?></td>
                         <td>
                             <a href="<?= base_url("checkerso/detail/" . htmlspecialchars($row->nopol)) ?>">
                                 <button type="button" class="btn btn-primary" style="--bs-btn-padding-y: .20rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .50rem;">
