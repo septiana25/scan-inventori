@@ -3,7 +3,7 @@
     <?php $this->load->view('layouts/_alert') ?>
     <?= form_open($form_action, ['method' => 'POST']) ?>
     <div class="mb-3">
-      <?= form_input('barcodeRak', $input->barcodeRak, ['class' => 'form-control',  'autofocus' => true, 'placeholder' => 'Scan Rak']); ?>
+      <?= form_input('barcodeRak', isset($input->barcodeRak) ? $input->barcodeRak : '', ['class' => 'form-control',  'autofocus' => true, 'placeholder' => 'Scan Rak']); ?>
       <?= form_error('barcodeRak') ?>
     </div>
     <?= form_close() ?>
@@ -16,21 +16,31 @@
         <th>QTY</th>
       </thead>
       <tbody>
-        <?php foreach ($content as $item) : ?>
-          <tr>
-            <td>
-              <div>
-                <h6><?= $item->brg ?></h6>
-                <div class="d-flex justify-content-between">
-                  <span class="text-muted fs-5">Rak: <?= $item->rak ?></span>
+        <?php
+        if (!empty($content) && is_object($content)):
+          foreach ($content as $item) :
+        ?>
+            <tr>
+              <td>
+                <div>
+                  <h6><?= $item->brg ?></h6>
+                  <div class="d-flex justify-content-between">
+                    <span class="text-muted fs-5">Rak: <?= $item->rak ?></span>
+                  </div>
                 </div>
-              </div>
-            </td>
-            <td>
-              <h6><?= $item->saldo_akhir ?></h6>
-            </td>
+              </td>
+              <td>
+                <h6><?= $item->saldo_akhir ?></h6>
+              </td>
+            </tr>
+          <?php
+          endforeach;
+        else:
+          ?>
+          <tr>
+            <td colspan="4" class="text-center">Tidak ada data</td>
           </tr>
-        <?php endforeach ?>
+        <?php endif; ?>
       </tbody>
     </table>
   </section>
