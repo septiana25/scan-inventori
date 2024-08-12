@@ -1,3 +1,9 @@
+<?php
+$options = [
+    'pack' => 'Koli/Karung/Dus',
+    'pcs'  => 'Pcs'
+];
+?>
 <main class="container">
     <section id="form">
         <?php $this->load->view('layouts/_alert') ?>
@@ -20,10 +26,7 @@
             <?= form_error('barcode') ?>
         </div>
         <div class="mb-3">
-            <select class="form-select" id="unit" name="unit">
-                <option value="pack">Koli/Karung/Dus</option>
-                <option value="pcs">Pcs</option>
-            </select>
+            <?= form_dropdown('unit', $options, $selected_unit, 'class="form-select" id="unit"'); ?>
             <?= form_error('unit') ?>
         </div>
         <?= form_close() ?>

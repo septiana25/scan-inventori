@@ -17,6 +17,7 @@ class Checkersodetail_model extends MY_Model
     {
         return [
             'barcode'   => '',
+            'unit'      => 'pack',
         ];
     }
 

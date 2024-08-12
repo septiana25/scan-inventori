@@ -3,6 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * @property CI_Session $session
+ * @property CI_Input $input
  * @property Checkerso_model $checkerso
  * @property Checkersodetail_model $checkersodetail
  */
@@ -35,27 +36,9 @@ class Checkersodetail extends MY_Controller
 
         try {
             $this->loadModelCheckerSo();
-            $result =  $this->checkerso->fetchByNopolAndIdToko($nopol, $id_toko);
+            $result = $this->checkerso->fetchAllGroupedByNopol($nopol, $id_toko);
 
-            $groupedData = [];
-            foreach ($result as $item) {
-                if (!isset($groupedData[$item->nopol])) {
-                    $groupedData[$item->nopol] = [
-                        'nopol' => $item->nopol,
-                        'supir' => $item->supir,
-                        'id_toko' => $item->id_toko,
-                        'toko' => $item->toko,
-                        'detail' => []
-                    ];
-                }
-                // Buat salinan item tanpa properti yang tidak diinginkan
-                $detailItem = (array) $item;
-                unset($detailItem['nopol'], $detailItem['supir'], $detailItem['id_toko'], $detailItem['toko']);
-
-                $groupedData[$item->nopol]['detail'][] = (object) $detailItem;
-            }
-
-            $dataGroupNopol = $groupedData[$nopol];
+            $dataGroupNopol = $result[$nopol];
 
             if (empty($dataGroupNopol)) {
                 throw new Exception(self::ERROR_FETCH_FAILED);
@@ -74,6 +57,7 @@ class Checkersodetail extends MY_Controller
         $data['title'] = 'Form Keluar';
         $data['nav'] = 'Keluar - Scan SO';
         $data['input'] = $this->defalutValueCheckerSoDet();
+        $data['selected_unit'] = $this->input->post('unit') ? $this->input->post('unit') : 'pack';
         $data['form_action'] = "#";
         $data['page'] = 'pages/checkerso/checkersoscan';
         $this->view($data);

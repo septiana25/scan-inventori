@@ -159,6 +159,29 @@ class Checkerso_model extends MY_Model
         }
         return array_values($groupedData);
     }
+
+    public function fetchAllGroupedByNopol($nopol, $id_toko)
+    {
+        $result = $this->fetchByNopolAndIdToko($nopol, $id_toko);
+        $groupedData = [];
+        foreach ($result as $item) {
+            if (!isset($groupedData[$item->nopol])) {
+                $groupedData[$item->nopol] = [
+                    'nopol' => $item->nopol,
+                    'supir' => $item->supir,
+                    'id_toko' => $item->id_toko,
+                    'toko' => $item->toko,
+                    'detail' => []
+                ];
+            }
+            // Buat salinan item tanpa properti yang tidak diinginkan
+            $detailItem = (array) $item;
+            unset($detailItem['nopol'], $detailItem['supir'], $detailItem['id_toko'], $detailItem['toko']);
+
+            $groupedData[$item->nopol]['detail'][] = (object) $detailItem;
+        }
+        return $groupedData;
+    }
 }
 
 /* End of file Approvedrak_model.php */
