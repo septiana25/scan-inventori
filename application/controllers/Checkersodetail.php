@@ -88,7 +88,7 @@ class Checkersodetail extends MY_Controller
             }
 
             $resultBarcode = $checkBarcode->data->item[0];
-            $resultPicker = $this->pickersodetail->fetchByIdBrgByNopol($data['nopol'], $resultBarcode->id_brg);
+            $resultPicker = $this->pickersodetail->fetchByIdBrgByNopol($data['nopol'], $data['id_toko'], $resultBarcode->id_brg);
 
             if (empty($resultPicker)) {
                 throw new Exception(self::ERROR_API_EMPTY . " Di Picker");

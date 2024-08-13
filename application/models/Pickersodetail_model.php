@@ -54,7 +54,7 @@ class Pickersodetail_model extends MY_Model
         return $this->select(['sisa'])->where('id_pic', $id_pic)->first();
     }
 
-    public function fetchByIdBrgByNopol($nopol, $id_brg)
+    public function fetchByIdBrgByNopol($nopol, $id_toko, $id_brg)
     {
         return $this->select(
             [
@@ -63,6 +63,7 @@ class Pickersodetail_model extends MY_Model
             ]
         )
             ->where('nopol', $nopol)
+            ->where('id_toko', $id_toko)
             ->where('id_brg', $id_brg)
             ->where('status', '0')
             ->get();
