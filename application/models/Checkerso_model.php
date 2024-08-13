@@ -102,6 +102,7 @@ class Checkerso_model extends MY_Model
         )
             ->where('nopol', $nopol)
             ->where('status', '0')
+            ->where('sisa >', '0')
             ->group_by('id_toko')
             ->get();
     }
@@ -124,6 +125,7 @@ class Checkerso_model extends MY_Model
             ->where('nopol', $nopol)
             ->where('id_toko', $id_toko)
             ->where('status', '0')
+            ->where('sisa >', '0')
             ->get();
     }
 
