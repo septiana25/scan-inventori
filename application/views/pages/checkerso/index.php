@@ -39,7 +39,7 @@ $currentPage = isset($currentPage) ? $currentPage : 1;
         </table>
 
         <!-- Pagination -->
-        <?php echo $pagination; ?>
+        <?php echo $pagination ?? ''; ?>
     </section>
 </main>
 <script>
