@@ -27,10 +27,45 @@ class Pickersodetail_model extends MY_Model
             'toko'      => $input['toko'],
             'brg'       => $input['brg'],
             'qty'       => $input['qty'],
+            'sisa'      => $input['qty'],
             'user'      => $input['user'],
         ];
 
         return $this->create($data);
+    }
+
+    public function updatePickerSOSisa($update)
+    {
+        $result = $this->getByIdPic($update->id_pic);
+
+        if ($result->sisa - $update->qty_scan < 0) {
+            return false;
+        }
+
+        $data = [
+            'sisa'      => $result->sisa - $update->qty_scan
+        ];
+
+        return $this->where('id_pic', $update->id_pic)->update($data);
+    }
+
+    public function getByIdPic($id_pic)
+    {
+        return $this->select(['sisa'])->where('id_pic', $id_pic)->first();
+    }
+
+    public function fetchByIdBrgByNopol($nopol, $id_brg)
+    {
+        return $this->select(
+            [
+                'id_pic',
+                'sisa'
+            ]
+        )
+            ->where('nopol', $nopol)
+            ->where('id_brg', $id_brg)
+            ->where('status', '0')
+            ->get();
     }
 
     public function getSODetails($nopol)

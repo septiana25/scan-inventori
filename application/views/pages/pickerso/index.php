@@ -38,7 +38,7 @@
         </table>
 
         <!-- Pagination -->
-        <?= $pagination ?>
+        <?= $pagination ?? '' ?>
     </section>
 </main>
 <script>

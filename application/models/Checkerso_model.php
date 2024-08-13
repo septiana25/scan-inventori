@@ -110,6 +110,7 @@ class Checkerso_model extends MY_Model
     {
         return $this->select(
             [
+                'id_pic',
                 'nopol',
                 'supir',
                 'id_toko',
@@ -117,6 +118,7 @@ class Checkerso_model extends MY_Model
                 'id',
                 'brg',
                 'qty',
+                'sisa'
             ]
         )
             ->where('nopol', $nopol)

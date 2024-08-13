@@ -6,11 +6,15 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Checkersodetail_model extends MY_Model
 {
 
-    protected $table = 'pickerso';
+    protected $table = 'checkerso';
 
     public function __construct()
     {
         parent::__construct();
+        // Memastikan helper curl dimuat
+        if (!function_exists('curl_request')) {
+            $this->load->helper('curl');
+        }
     }
 
     public function getDefaultValues()
@@ -37,26 +41,13 @@ class Checkersodetail_model extends MY_Model
     public function run($input)
     {
         $data = [
-            'id_masuk'      => $input->id_masuk,
-            'id_rak'        => $input->id_rak,
-            'rak'           => $input->rak,
+            'id_pic'      => $input->id_pic,
+            'qty_scan'        => $input->qty_scan,
             'user'          => $input->username,
         ];
 
         return $this->create($data);
     }
-
-    /* public function update($input)
-    {
-
-        $data = [
-            'id'           => $input->id,
-            'approve'      => 'true',
-            'manager'      => $input->username,
-        ];
-
-        return $this->update($data);
-    } */
 
     public function fetchAll()
     {
@@ -101,6 +92,14 @@ class Checkersodetail_model extends MY_Model
             ->where('id_masuk', $id)
             ->where('id_rak', $idrak)
             ->first();
+    }
+
+    public function checkBarcodeAPI($barcode)
+    {
+        $url = $this->config->item('base_url_api') . "/item/" . urlencode($barcode);
+        $apiKey = $this->config->item('api_key');
+        $response = curl_request($url, 'GET', null, ["X-API-KEY: $apiKey"]);
+        return json_decode($response);
     }
 }
 
