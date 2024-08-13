@@ -18,7 +18,6 @@ class Pickersodetail_model extends MY_Model
 
     public function run($input)
     {
-
         $data = [
             'id'        => $input['id'],
             'nopol'     => $input['nopol'],
@@ -26,6 +25,7 @@ class Pickersodetail_model extends MY_Model
             'id_toko'   => $input['id_toko'],
             'toko'      => $input['toko'],
             'brg'       => $input['brg'],
+            'id_brg'    => $input['id_brg'],
             'qty'       => $input['qty'],
             'sisa'      => $input['qty'],
             'user'      => $input['user'],

@@ -26,6 +26,7 @@
                                     <input type="hidden" name="id_toko" value="<?= $row->id_toko ?>">
                                     <input type="hidden" name="toko" value="<?= $row->toko ?>">
                                     <input type="hidden" name="brg" value="<?= $row->brg ?>">
+                                    <input type="hidden" name="id_brg" value="<?= $row->id_brg ?>">
                                     <input type="hidden" name="rak" value="<?= $row->rak ?>">
                                     <input type="hidden" name="qty" value="<?= $row->qty_pro ?>">
                                     <button type="submit" class="btn btn-success btn-icon-prominent">
