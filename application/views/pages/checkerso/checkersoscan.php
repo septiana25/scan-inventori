@@ -7,6 +7,7 @@ $options = [
 <main class="container">
     <section id="form">
         <?php $this->load->view('layouts/_alert') ?>
+        <div id="alert-container"></div>
         <!-- Tombol Kembali -->
         <div class="mb-3">
             <a href="<?= base_url('checkerso/detail/' . $nopol) ?>" class="btn btn-secondary">
@@ -46,17 +47,14 @@ $options = [
                     $loadingShown = false;
                     foreach ($content as $item) :
                 ?>
-                        <tr>
+                        <tr id="item-row-<?= $item->id_pic ?>">
                             <td>
-                                <?php if (!$loadingShown): ?>
-                                    <div id="loadingIndicator" class="text-center">
-                                        <div class="spinner-border text-primary" role="status">
-                                            <span class="visually-hidden">Loading...</span>
-                                        </div>
-                                        <p class="mt-2">Sedang memproses...</p>
+                                <div id="loadingIndicator" class="text-center d-none">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
                                     </div>
-                                    <?php $loadingShown = true; ?>
-                                <?php endif; ?>
+                                    <p class="mt-2">Sedang memproses...</p>
+                                </div>
                                 <div>
                                     <h6><?= $item->brg ?></h6>
                                     <div class="d-flex justify-content-between">
@@ -64,7 +62,7 @@ $options = [
                                 </div>
                             </td>
                             <td>
-                                <h6 class="text-center"><?= $item->sisa ?></h6>
+                                <h6 class="text-center item-sisa"><?= $item->sisa ?></h6>
                             </td>
                         </tr>
                     <?php
@@ -86,6 +84,8 @@ $options = [
     document.addEventListener('DOMContentLoaded', () => {
         const form = document.getElementById('form_scan');
         const loadingIndicator = document.getElementById('loadingIndicator');
+        const barcode = document.getElementById('barcode');
+        let isLoading = false;
 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -95,36 +95,66 @@ $options = [
             const data = Object.fromEntries(formData);
             console.log('Data to be sent:', data);
 
-            if (loadingIndicator) {
-                loadingIndicator.classList.remove('d-none');
-            }
+            if (!isLoading) {
+                isLoading = true;
+                LoadingIndicator.show(loadingIndicator);
 
-            fetch('<?= base_url("checkerso/save") ?>', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(response => {
-                    console.log('Raw response:', response);
-                    return response.json();
-                })
-                .then(result => {
-                    console.log('Parsed response:', result);
-                    // Proses respons di sini
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    // Tangani error di sini
-                })
-                .finally(() => {
-                    if (loadingIndicator) {
-                        loadingIndicator.classList.add('d-none');
-                    }
-                    form.reset();
-                });
+                fetch('<?= base_url("checkerso/save") ?>', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(result => {
+                        isLoading = false;
+                        LoadingIndicator.hide(loadingIndicator);
+                        // Proses respons di sini
+                        if (result.status === 'success') {
+                            updateTable(result.updatedItems);
+                            console.log(result.updatedItems);
+                            AlertManager.success(result.message);
+                        } else {
+                            AlertManager.error(result.message);
+                        }
+                    })
+                    .catch(error => {
+                        sLoading = false;
+                        LoadingIndicator.hide(loadingIndicator);
+                        // Tangani error di sini
+                    })
+                    .finally(() => {
+                        barcode.value = '';
+                    });
+            }
         });
+
+        function updateTable(updatedItems) {
+            updatedItems.forEach(item => {
+                const row = document.getElementById(`item-row-${item.id_pic}`);
+                if (row) {
+                    if (item.sisa === '0' || item.sisa === 0) {
+                        // Jika sisa adalah 0, hapus baris
+                        row.remove();
+                    } else {
+                        // Jika tidak, perbarui nilai sisa
+                        const sisaElement = row.querySelector('.item-sisa');
+                        if (sisaElement) {
+                            sisaElement.textContent = item.sisa;
+                        }
+                    }
+                }
+            });
+
+            // Periksa apakah tabel kosong setelah pembaruan
+            const tableBody = document.querySelector('#records_table tbody');
+            if (tableBody && tableBody.children.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="2" class="text-center">Tidak ada data</td></tr>';
+            }
+        }
     });
 </script>

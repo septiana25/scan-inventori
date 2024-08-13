@@ -77,6 +77,14 @@ class Pickersodetail_model extends MY_Model
         return json_decode($response);
     }
 
+    public function getUpdatedItems($nopol, $id_toko)
+    {
+        return $this->select('id_pic, sisa')
+            ->where('nopol', $nopol)
+            ->where('id_toko', $id_toko)
+            ->get();
+    }
+
     public function getSOPickerByNopolByIdTokoAPI($nopol, $id_toko)
     {
         $url = $this->config->item('base_url_api') . "/so/" . urlencode($nopol) . "/" . urlencode($id_toko);

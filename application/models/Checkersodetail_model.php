@@ -80,20 +80,6 @@ class Checkersodetail_model extends MY_Model
             ->get();
     }
 
-    public function fetchByIdMasukIdRak($id, $idrak)
-    {
-        return $this->select(
-            [
-                'id',
-                'id_masuk',
-                'approve'
-            ]
-        )
-            ->where('id_masuk', $id)
-            ->where('id_rak', $idrak)
-            ->first();
-    }
-
     public function checkBarcodeAPI($barcode)
     {
         $url = $this->config->item('base_url_api') . "/item/" . urlencode($barcode);

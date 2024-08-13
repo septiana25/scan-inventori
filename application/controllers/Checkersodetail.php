@@ -134,10 +134,11 @@ class Checkersodetail extends MY_Controller
             }
 
             $this->db->trans_commit();
-
+            $updatedItems = $this->pickersodetail->getUpdatedItems($data['nopol'], $data['id_toko']);
             $response = [
                 'status' => 'success',
-                'message' => self::SUCCESS_SAVE
+                'message' => self::SUCCESS_SAVE,
+                'updatedItems' => $updatedItems
             ];
         } catch (\Throwable $e) {
             $this->db->trans_rollback();
