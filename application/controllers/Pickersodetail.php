@@ -73,35 +73,53 @@ class Pickersodetail extends MY_Controller
         }
 
         $data['user'] = $this->session->userdata('username');
-        log_message('debug', 'Transaction begin');
-        $this->db->trans_begin();
 
         try {
-            $insertResult = $this->pickersodetail->run($data);
-            if (!$insertResult) {
-                $response = ['status' => 'error', 'message' => self::ERROR_SAVE_FAILED];
-                echo json_encode($response);
-                return;
-            }
-            log_message('debug', 'Insert result: ' . ($insertResult ? 'success' : 'fail'));
+            $this->db->trans_begin();
 
+            $apiResultNopolId = $this->pickersodetail->getSOPickerByNopolByIdTokoAPI($data['nopol'], $data['id']);
+
+            if (!$this->isApiResponseSuccess($apiResultNopolId)) {
+                throw new Exception(self::ERROR_API_FAILED);
+            }
+
+            if (empty($apiResultNopolId->data->so)) {
+                throw new Exception(self::ERROR_FETCH_FAILED);
+            }
+
+            $baseDataObject = [
+                'id' => $data['id'],
+                'nopol' => $data['nopol'],
+                'supir' => $data['supir'],
+                'brg' => $data['brg'],
+                'id_brg' => $data['id_brg'],
+                'user' => $data['user'],
+            ];
+
+            foreach ($apiResultNopolId->data->so as $so) {
+                $dataObject = array_merge($baseDataObject, [
+                    'id_toko' => $so->id_toko,
+                    'toko' => $so->toko,
+                    'qty' => $so->qty_pro
+                ]);
+
+                $insertResult = $this->pickersodetail->run($dataObject);
+                if (!$insertResult) {
+                    throw new Exception(self::ERROR_SAVE_FAILED);
+                }
+            }
 
             $apiResult = $this->pickersodetail->updatePickerSOAPI($data['id'], $data['nopol']);
-            log_message('debug', 'API result: ' . json_encode($apiResult));
             if (!$this->isApiResponseSuccess($apiResult)) {
                 throw new Exception(self::ERROR_API_FAILED);
             }
-            log_message('debug', 'About to commit');
             $this->db->trans_commit();
-            log_message('debug', 'Transaction commit');
             $response = $this->processApiResponse($apiResult);
         } catch (Exception $e) {
-            log_message('debug', 'Rolling back transaction');
             $this->db->trans_rollback();
-            log_message('error', self::ERROR_TRY_CATCH . ' ' . $e->getMessage());
             $response = [
                 'status' => 'error',
-                'message' => self::ERROR_TRY_CATCH,
+                'message' => $e->getMessage() ?? self::ERROR_TRY_CATCH,
             ];
         }
 
@@ -173,6 +191,12 @@ class Pickersodetail extends MY_Controller
 
     private function isApiResponseSuccess($result)
     {
-        return isset($result['status']) && $result['status'] === 'success';
+        if (is_object($result)) {
+            return isset($result->status) && $result->status === 'success';
+        } elseif (is_array($result)) {
+            return isset($result['status']) && $result['status'] === 'success';
+        } else {
+            return false;
+        }
     }
 }

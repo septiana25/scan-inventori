@@ -76,6 +76,14 @@ class Pickersodetail_model extends MY_Model
         return json_decode($response);
     }
 
+    public function getSOPickerByNopolByIdTokoAPI($nopol, $id_toko)
+    {
+        $url = $this->config->item('base_url_api') . "/so/" . urlencode($nopol) . "/" . urlencode($id_toko);
+        $apiKey = $this->config->item('api_key');
+        $response = curl_request($url, 'GET', null, ["X-API-KEY: $apiKey"]);
+        return json_decode($response);
+    }
+
     public function updatePickerSOAPI($id, $nopol)
     {
         $url = $this->config->item('base_url_api') . "/so/picker_so";
