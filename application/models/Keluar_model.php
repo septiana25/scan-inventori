@@ -1,9 +1,11 @@
 <?php
 
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Keluar_Model extends MY_Model {
+class Keluar_Model extends MY_Model
+{
+    protected $table = 'checkerso';
 
     public function __construct()
     {
@@ -11,17 +13,19 @@ class Keluar_Model extends MY_Model {
         $sess_data = [
             'username'  => 'septiana'
         ];
-        
+
         $this->session->set_userdata($sess_data);
     }
 
-    public function getDefaultValues(){
+    public function getDefaultValues()
+    {
         return [
             'no_plat'  => ''
         ];
     }
 
-    public function getValidationRules(){
+    public function getValidationRules()
+    {
         $validationRules = [
             [
                 'field' => 'no_plat',
@@ -33,6 +37,36 @@ class Keluar_Model extends MY_Model {
         return $validationRules;
     }
 
+    public function fetchAll()
+    {
+        return $this->select(
+            [
+                'MAX(nopol) as nopol',
+                'MAX(supir) as supir',
+                'MAX(checkerso.at_create) as at_create'
+            ]
+        )
+            ->join('pickerso', 'pickerso.id_pic = checkerso.id_pic')
+            ->group_by('nopol')
+            ->get();
+    }
+
+    public function print($nopol)
+    {
+        return $this->select(
+            [
+                'supir',
+                'toko',
+                'brg',
+                'qty_scan',
+                'checkerso.at_create',
+                'checkerso.user'
+            ]
+        )
+            ->where('nopol', $nopol)
+            ->join('pickerso', 'pickerso.id_pic = checkerso.id_pic')
+            ->get();
+    }
 }
 
 /* End of file Keluar_Model.php */

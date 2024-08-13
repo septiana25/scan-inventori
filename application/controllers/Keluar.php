@@ -5,8 +5,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @property CI_Session $session
  * @property CI_Config $config
  * @property CI_Input $input
+ * @property Excel $excel
  * @property Keluar_model $keluar
  */
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 class Keluar extends MY_Controller
 {
     public function __construct()
@@ -14,7 +19,6 @@ class Keluar extends MY_Controller
         parent::__construct();
 
         $is_login    = $this->session->userdata('is_login');
-
         if (!$is_login) {
             redirect(base_url('login'));
             return;
@@ -24,87 +28,59 @@ class Keluar extends MY_Controller
     public function index($no_plat = 0)
     {
 
-
+        $result = $this->keluar->fetchAll();
 
         $data['title'] = 'Form Keluar Scan';
         $data['nav'] = 'Keluar - Scan Kendaraan';
-        $data['input'] = $this->defalutValueKeluar();
-        $data['content'] = $this->api($no_plat);
+        $data['content'] = $result;
         $data['form_action'] = "keluar/create/$no_plat";
         $data['page'] = "pages/keluar/index";
         $this->view($data);
     }
 
-    public function create($no_plat)
+    public function print($nopol)
     {
+        $result = $this->keluar->print($nopol);
 
-        if (!$_POST) {
-            $input = $this->defalutValueKeluar();
-        } else {
-            $input = (object) $this->input->post(null, true);
+        // Buat objek Spreadsheet baru
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Set header
+        $sheet->setCellValue('A1', 'SUPIR');
+        $sheet->setCellValue('B1', 'TOKO');
+        $sheet->setCellValue('C1', 'ITEM');
+        $sheet->setCellValue('D1', 'QTY');
+        $sheet->setCellValue('E1', 'TANGGAL');
+        $sheet->setCellValue('F1', 'USER SCAN');
+
+        // Isi data
+        $row = 2;
+        foreach ($result as $item) {
+            $sheet->setCellValue('A' . $row, $item->supir);
+            $sheet->setCellValue('B' . $row, $item->toko);
+            $sheet->setCellValue('C' . $row, $item->brg);
+            $sheet->setCellValue('D' . $row, $item->qty_scan);
+            $sheet->setCellValue('E' . $row, date('Y-m-d H:i:s', strtotime($item->at_create)));
+            $sheet->setCellValue('F' . $row, $item->user);
+            $row++;
         }
 
-        /* if (empty($this->api($no_plat))) {
-            $this->session->set_flashdata('error', 'Barcode Tidak Ada');
-                redirect(base_url("keluar/$no_plat"));
-                exit;
-        } */
-        //var_dump($input->no_plat);exit;
-
-        if (!$this->keluar->validate()) {
-
-            $data['title'] = 'Form Keluar Scan';
-            $data['nav'] = 'Keluar - Scan Kendaraan';
-            $data['input'] = $input;
-            $data['content'] = $this->api($input->no_plat);
-            $data['form_action'] = "keluar/create";
-            $data['page'] = "pages/keluar/index";
-            $this->view($data);
+        // Auto-size kolom
+        foreach (range('A', 'F') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
         }
 
+        // Buat writer untuk output Xlsx
+        $writer = new Xlsx($spreadsheet);
 
-        redirect(base_url("keluar/$input->no_plat"));
-    }
+        // Set header untuk download
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Hasil_Scan_Keluar_' . $nopol . '-' . date('YmdHis') . '.xlsx"');
+        header('Cache-Control: max-age=0');
 
-    /**
-     * Call API at INVENTORI KUS
-     */
-    private function api($no_plat)
-    {
-
-        /* Begin Curl */
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, [
-            CURLOPT_URL => "http://localhost/apiinvkus/api/keluar/$no_plat",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_HTTPHEADER => [
-                "X-API-KEY:ian123"
-            ],
-        ]);
-
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-
-        curl_close($curl);
-
-        /* END Curl */
-
-        if ($err) {
-            //echo "cURL Error #:" . $err;
-            $this->session->set_flashdata('error', 'Opps Terjadi Kesalahan API');
-            redirect(base_url("keluar"));
-            exit;
-        } else {
-
-            return json_decode($response);
-        }
+        // Output file ke browser
+        $writer->save('php://output');
     }
 
     /**
