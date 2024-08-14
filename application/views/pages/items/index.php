@@ -17,7 +17,7 @@
       </thead>
       <tbody>
         <?php
-        if (!empty($content) && is_object($content)):
+        if (!empty($content) && is_iterable($content)):
           foreach ($content as $item) :
         ?>
             <tr>

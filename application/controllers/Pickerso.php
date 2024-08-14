@@ -19,12 +19,6 @@ class PickerSo extends MY_Controller
         $this->load->helper('curl');
         $this->load->library('pagination');
         $this->load->helper('pagination');
-        $is_login    = $this->session->userdata('is_login');
-
-        if (!$is_login) {
-            redirect(base_url('login'));
-            return;
-        }
     }
     public function index($page = 1)
     {

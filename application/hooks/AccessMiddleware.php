@@ -39,8 +39,28 @@ class AccessMiddleware
 
         $access_map = [
             'users' => [
-                'allowed_roles' => ['superadmin', 'admin'],
+                'allowed_roles' => ['superadmin'],
                 'methods' => ['index', 'create', 'edit', 'delete']
+            ],
+            'pickerso' => [
+                'allowed_roles' => ['superadmin', 'admin', 'pickers'],
+                'methods' => ['index']
+            ],
+            'pickersodetail' => [
+                'allowed_roles' => ['superadmin', 'admin', 'pickers'],
+                'methods' => ['index']
+            ],
+            'checkerso' => [
+                'allowed_roles' => ['superadmin', 'admin', 'checkers'],
+                'methods' => ['index', 'detail']
+            ],
+            'checkersodetail' => [
+                'allowed_roles' => ['superadmin', 'admin', 'checkers'],
+                'methods' => ['index', 'save']
+            ],
+            'approved' => [
+                'allowed_roles' => ['superadmin'],
+                'methods' => ['index', 'upproverak', 'cancelrak']
             ],
             // Tambahkan controller lain dan aturan aksesnya di sini
         ];

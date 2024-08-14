@@ -28,14 +28,6 @@ class Checkersodetail extends MY_Controller
     public function __construct()
     {
         parent::__construct();
-
-        $this->load->helper('curl');
-        $is_login    = $this->session->userdata('is_login');
-
-        if (!$is_login) {
-            redirect(base_url('login'));
-            return;
-        }
     }
 
     public function index($nopol, $id_toko)

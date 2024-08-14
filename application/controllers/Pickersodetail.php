@@ -27,12 +27,6 @@ class Pickersodetail extends MY_Controller
         parent::__construct();
 
         $this->load->helper('curl');
-        $is_login    = $this->session->userdata('is_login');
-
-        if (!$is_login) {
-            redirect(base_url('login'));
-            return;
-        }
     }
 
     public function index($nopol = null, $page = 1)
