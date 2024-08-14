@@ -1,7 +1,8 @@
 <?php
 
-function getDropdownList($table, $columns){
-    $CI =& get_instance();
+function getDropdownList($table, $columns)
+{
+    $CI = &get_instance();
     $query = $CI->db->select($columns)->from($table)->get();
 
     if ($query->num_rows() >= 1) {
@@ -15,12 +16,14 @@ function getDropdownList($table, $columns){
     return $options = ['' => '- Select -'];
 }
 
-function hashEncrypt($input){
+function hashEncrypt($input)
+{
     $hash = password_hash($input, PASSWORD_DEFAULT);
     return $hash;
 }
 
-function hashEncryptVerify($input, $hash){
+function hashEncryptVerify($input, $hash)
+{
     if (password_verify($input, $hash)) {
         return false;
     } else {
