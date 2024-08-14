@@ -79,5 +79,9 @@ $route['items']                     = 'items/index';
 $route['approved']                  = 'approved/index';
 
 $route['users']                     = 'users/index';
+$route['users/resetdefault/(:num)']  = 'users/resetdefault/$1';
+
+$route['profile']                  = 'profile/index';
+$route['profile/reset/(:num)']      = 'profile/reset/$1';
 
 /* $route['api/(:any)']	= 'api/index/$1'; */

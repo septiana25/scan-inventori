@@ -39,8 +39,8 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="<?= base_url("users/reset/" . htmlspecialchars($row->id_user)) ?>">
-                                                <i class="fa fa-refresh" aria-hidden="true"></i> Reset Password
+                                            <a class="dropdown-item" href="<?= base_url("users/resetdefault/" . htmlspecialchars($row->id_user)) ?>">
+                                                <i class="fa fa-refresh" aria-hidden="true"></i> Password Default
                                             </a>
                                         </li>
                                     </ul>

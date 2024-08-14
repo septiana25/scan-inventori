@@ -42,7 +42,9 @@ $content = !empty($content) && is_object($content) ? $content : (object) [];
             </div>
           <?php endif; ?>
 
-
+          <div class="d-grid gap-2 mt-4">
+            <a href="<?= base_url("profile/reset/$content->id_user") ?>" class="btn btn-primary">Reset Password</a>
+          </div>
 
           <div class="d-grid gap-2 mt-4">
             <a href="<?= base_url("logout") ?>" class="btn btn-danger">Logout</a>

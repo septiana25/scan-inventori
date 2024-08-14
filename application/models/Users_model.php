@@ -7,9 +7,40 @@ class Users_model extends MY_Model
     public function getDefaultValues()
     {
         return [
-            'username'        => '',
             'password'    => '',
         ];
+    }
+
+    public function getValidationRules()
+    {
+        $validationRules = [
+            [
+                'field' => 'new_password',
+                'label' => 'Password Baru',
+                'rules' => 'required|min_length[6]',
+            ],
+            [
+                'field' => 'confirm_password',
+                'label' => 'Konfirmasi Password',
+                'rules' => 'required|matches[new_password]',
+            ]
+        ];
+
+        return $validationRules;
+    }
+
+    public function resetPassword($input)
+    {
+        $data = [
+            'password' => hashEncrypt($input->new_password),
+        ];
+
+        $user = $this->where('id_user', $input->id_user)->update($data);
+        if ($user) {
+            return true;
+        }
+
+        return false;
     }
 
     public function fetchAll()
@@ -24,6 +55,21 @@ class Users_model extends MY_Model
             ]
         )
             ->get();
+    }
+
+    public function getUserById($id_user)
+    {
+        return $this->select(
+            [
+                'id_user',
+                'username',
+                'name',
+                'role',
+                'is_active',
+            ]
+        )
+            ->where('id_user', $id_user)
+            ->first();
     }
 }
 

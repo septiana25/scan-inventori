@@ -59,7 +59,10 @@ class Register_model extends MY_Model
         ];
 
         $user = $this->create($data);
+        if ($user) {
+            return true;
+        }
 
-        return true;
+        return false;
     }
 }

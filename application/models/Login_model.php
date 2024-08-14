@@ -41,7 +41,7 @@ class Login_model extends MY_Model
 
         if (!empty($query) && password_verify($input->password, $query->password)) {
             $sess_data = [
-                'id'          => $query->id,
+                'id_user'     => $query->id_user,
                 'name'        => $query->name,
                 'username'    => $query->username,
                 'role'        => $query->role,
