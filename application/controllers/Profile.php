@@ -24,9 +24,13 @@ class Profile extends MY_Controller
 
     public function index()
     {
+        $content =  (object) [
+            'user' => $this->session->userdata('name'),
+            'role' => $this->session->userdata('role'),
+        ];
         $data['title'] = 'Profile User';
         $data['nav'] = 'Profile';
-        $data['data'] = $this->session->userdata('name');
+        $data['content'] = $content;
         $data['page'] = 'pages/profile/index';
         $this->view($data);
     }

@@ -1,3 +1,6 @@
+<?php
+$content = !empty($content) && is_object($content) ? $content : (object) [];
+?>
 <main class="container py-5">
   <div class="row justify-content-center">
     <div class="col-md-8 col-lg-6">
@@ -11,27 +14,35 @@
           </div>
 
           <div class="mb-3 text-center">
-            <h3>Halo, <?= htmlspecialchars($data) ?>!</h3>
+            <h3>Halo, <?= htmlspecialchars($content->user) ?>!</h3>
           </div>
 
           <div class="mb-3">
             <label class="form-label fw-bold">Username:</label>
-            <p class="form-control-plaintext"><?= htmlspecialchars($data) ?></p>
+            <p class="form-control-plaintext"><?= htmlspecialchars($content->user) ?></p>
           </div>
 
-          <?php if (isset($email)) : ?>
+          <?php if ($email ?? false) : ?>
             <div class="mb-3">
               <label class="form-label fw-bold">Email:</label>
-              <p class="form-control-plaintext"><?= htmlspecialchars($data) ?></p>
+              <p class="form-control-plaintext"><?= htmlspecialchars($content->user) ?></p>
             </div>
           <?php endif; ?>
 
-          <?php if (isset($joined_date)) : ?>
+          <?php if ($joined_date ?? false) : ?>
             <div class="mb-3">
               <label class="form-label fw-bold">Bergabung Sejak:</label>
-              <p class="form-control-plaintext"><?= htmlspecialchars($data) ?></p>
+              <p class="form-control-plaintext"><?= htmlspecialchars($content->user) ?></p>
             </div>
           <?php endif; ?>
+
+          <?php if ($content->role == 'superadmin') : ?>
+            <div class="d-grid gap-2 mt-4">
+              <a href="<?= base_url("users") ?>" class="btn btn-success">Data User</a>
+            </div>
+          <?php endif; ?>
+
+
 
           <div class="d-grid gap-2 mt-4">
             <a href="<?= base_url("logout") ?>" class="btn btn-danger">Logout</a>
