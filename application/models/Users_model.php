@@ -29,6 +29,20 @@ class Users_model extends MY_Model
         return $validationRules;
     }
 
+    public function changeRole($input)
+    {
+        $data = [
+            'role' => $input->role,
+        ];
+
+        $user = $this->where('id_user', $input->id_user)->update($data);
+        if ($user) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function resetPassword($input)
     {
         $data = [

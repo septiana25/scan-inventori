@@ -5,6 +5,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @date : 2024-03-15
  * @description : Middleware untuk mengatur akses pengguna
  * @property CI_Controller $CI
+ * @property CI_URI $CI->uri
+ * @property CI_Session $CI->session
+ * @property CI_Router $CI->router
  */
 class AccessMiddleware
 {
@@ -40,7 +43,7 @@ class AccessMiddleware
         $access_map = [
             'users' => [
                 'allowed_roles' => ['superadmin'],
-                'methods' => ['index', 'resetdefault', 'edit', 'delete']
+                'methods' => ['index', 'resetdefault', 'changerole', 'delete']
             ],
             'pickerso' => [
                 'allowed_roles' => ['superadmin', 'admin', 'pickers'],
