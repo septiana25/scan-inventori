@@ -18,19 +18,24 @@
       <tbody>
         <?php
         if (!empty($content) && is_iterable($content)):
-          foreach ($content as $item) :
-        ?>
+          foreach ($content as $items) : ?>
             <tr>
               <td>
                 <div>
-                  <h6><?= $item->brg ?></h6>
-                  <div class="d-flex justify-content-between">
-                    <span class="text-muted fs-5">Rak: <?= $item->rak ?></span>
+                  <h6><?= $items->brg ?></h6>
+                  <div class="d-flex flex-column">
+                    <?php foreach ($items->details as $key => $item) : ?>
+                      <div class="d-flex justify-content-between mb-2 <?= $key < count($items->details) - 1 ? 'border-bottom pb-2 mb-2' : '' ?>">
+                        <span class="text-muted fs-6 flex-grow-1 flex-basis-0">Rak: <?= $item->rak ?></span>
+                        <span class="text-muted fs-6 flex-grow-1 flex-basis-0">Tahun: <?= $item->tahunprod ?></span>
+                        <span class="text-muted fs-6 flex-grow-1 flex-basis-0">QTY: <?= $item->jumlah ?></span>
+                      </div>
+                    <?php endforeach; ?>
                   </div>
                 </div>
               </td>
               <td>
-                <h6><?= $item->saldo_akhir ?></h6>
+                <h6><?= $items->saldo_akhir ?></h6>
               </td>
             </tr>
           <?php
