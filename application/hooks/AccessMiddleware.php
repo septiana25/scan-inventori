@@ -43,7 +43,7 @@ class AccessMiddleware
         $access_map = [
             'users' => [
                 'allowed_roles' => ['superadmin'],
-                'methods' => ['index', 'resetdefault', 'changerole', 'delete']
+                'methods' => ['index', 'resetdefault', 'changerole', 'lock']
             ],
             'pickerso' => [
                 'allowed_roles' => ['superadmin', 'admin', 'pickers'],

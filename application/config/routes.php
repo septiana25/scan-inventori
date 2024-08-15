@@ -79,6 +79,7 @@ $route['items']                     = 'items/index';
 $route['approved']                  = 'approved/index';
 
 $route['users']                     = 'users/index';
+$route['users/lock/(:num)']          = 'users/lock/$1';
 $route['users/resetdefault/(:num)'] = 'users/resetdefault/$1';
 $route['users/changerole']          = 'users/changerole';
 

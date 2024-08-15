@@ -11,6 +11,9 @@ class Users extends MY_Controller
     const ERROR_TRY_CATCH = 'Terjadi kesalahan saat mengubah peran.';
     const SUCCESS_CHANGE_ROLE = 'Role berhasil diubah';
     const ERROR_CHANGE_ROLE = 'Role gagal diubah';
+    const SUCCESS_LOCK = 'User berhasil ';
+    const ERROR_FETCH_USER = 'Gagal mengambil user';
+    const ERROR_LOCK = 'User gagal ';
 
     public function __construct()
     {
@@ -45,6 +48,32 @@ class Users extends MY_Controller
         } catch (\Throwable $e) {
             $this->session->set_flashdata('error', $e->getMessage() ?? self::ERROR_TRY_CATCH);
         }
+    }
+
+    public function lock($id_user)
+    {
+        try {
+            $user = $this->users->getUserById($id_user);
+            if (!$user) {
+                throw new Exception(self::ERROR_FETCH_USER);
+            }
+
+            $data = (object) [
+                'id_user' => $id_user,
+                'is_active' => $user->is_active == 0 ? 1 : 0,
+            ];
+
+            $message = $data->is_active == 1 ? 'dibuka' : 'dikunci';
+
+            if (!$this->users->lock($data)) {
+                throw new Exception(self::ERROR_LOCK . $message);
+            }
+
+            $this->session->set_flashdata('success', self::SUCCESS_LOCK . $message);
+        } catch (\Throwable $e) {
+            $this->session->set_flashdata('error', $e->getMessage() ?? self::ERROR_TRY_CATCH);
+        }
+        redirect('users');
     }
 
     public function resetdefault($id_user)

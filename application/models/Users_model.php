@@ -43,6 +43,20 @@ class Users_model extends MY_Model
         return false;
     }
 
+    public function lock($input)
+    {
+        $data = [
+            'is_active' => $input->is_active,
+        ];
+
+        $user = $this->where('id_user', $input->id_user)->update($data);
+        if ($user) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function resetPassword($input)
     {
         $data = [

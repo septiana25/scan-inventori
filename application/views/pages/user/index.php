@@ -13,9 +13,10 @@
                 <?php
                 if (!empty($content) && is_iterable($content)):
                     foreach ($content as $row) :
+                        $is_lock = $row->is_active == 0 ? '<i class="fa fa-lock" aria-hidden="true"></i>' : '';
                 ?>
                         <tr>
-                            <td><?= htmlspecialchars($row->name) ?></td>
+                            <td><?= htmlspecialchars($row->name) . ' ' . $is_lock ?></td>
                             <td class="text-center"><?= htmlspecialchars($row->username) ?></td>
                             <td><?= htmlspecialchars($row->role) ?></td>
                             <td>
