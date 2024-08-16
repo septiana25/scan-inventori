@@ -1,13 +1,3 @@
-<style>
-  .card {
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  }
-
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-  }
-</style>
 <main class="container py-4">
   <section id="dashboard">
     <?php $this->load->view('layouts/_alert') ?>
