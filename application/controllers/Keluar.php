@@ -19,16 +19,22 @@ class Keluar extends MY_Controller
         parent::__construct();
     }
 
-    public function index($no_plat = 0)
+    public function index()
     {
+        $data['title'] = 'Menu Keluar';
+        $data['nav'] = 'Menu Keluar';
+        $data['page'] = "pages/keluar/index";
+        $this->view($data);
+    }
 
+    public function report()
+    {
         $result = $this->keluar->fetchAll();
 
-        $data['title'] = 'Form Keluar Scan';
-        $data['nav'] = 'Keluar - Scan Kendaraan';
+        $data['title'] = 'Report Keluar Menu';
+        $data['nav'] = 'Keluar - Menu Report';
         $data['content'] = $result;
-        $data['form_action'] = "keluar/create/$no_plat";
-        $data['page'] = "pages/keluar/index";
+        $data['page'] = "pages/keluar/reportmenu";
         $this->view($data);
     }
 

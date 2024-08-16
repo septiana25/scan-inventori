@@ -60,7 +60,8 @@ $route['rakmasuk/(:any)']           = 'rakmasuk/index/$1';
 $route['managemasuk']               = 'managebarangmasuk/index';
 $route['barangkerak/(:num)']        = 'barangkerak/index/$1';
 
-$route['keluar/(:any)']             = 'keluar/index/$1';
+$route['keluar']             = 'keluar/index/';
+$route['keluar/report']       = 'keluar/report';
 $route['keluar/print/(:any)']       = 'keluar/print/$1';
 $route['detailkeluar/(:any)']       = 'detailkeluar/index/$1';
 
