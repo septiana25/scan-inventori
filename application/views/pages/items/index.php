@@ -3,7 +3,7 @@
     <?php $this->load->view('layouts/_alert') ?>
     <?= form_open($form_action, ['method' => 'POST']) ?>
     <div class="mb-3">
-      <?= form_input('barcodeRak', isset($input->barcodeRak) ? $input->barcodeRak : '', ['class' => 'form-control',  'autofocus' => true, 'placeholder' => 'Scan Rak']); ?>
+      <?= form_input('barcodeRak', isset($input->barcodeRak) ? $input->barcodeRak : '', ['class' => 'form-control', 'id' => 'barcodeRak', 'autofocus' => true, 'placeholder' => 'Scan Rak']); ?>
       <?= form_error('barcodeRak') ?>
     </div>
     <?= form_close() ?>
@@ -50,3 +50,12 @@
     </table>
   </section>
 </main>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const barcodeInput = document.getElementById('barcodeRak');
+    document.body.addEventListener('click', (event) => {
+      barcodeInput.focus();
+      if (event.target.id !== 'barcodeRak') {}
+    });
+  });
+</script>
