@@ -84,8 +84,33 @@ $options = [
     document.addEventListener('DOMContentLoaded', () => {
         const form = document.getElementById('form_scan');
         const loadingIndicator = document.getElementById('loadingIndicator');
-        const barcode = document.getElementById('barcode');
+        const recordsTable = document.getElementById('records_table');
+        const barcodeInput = document.getElementById('barcode');
+        const unitSelect = document.getElementById('unit');
         let isLoading = false;
+
+        document.body.addEventListener('click', (event) => {
+            // Daftar id elemen yang tidak boleh memicu fokus ke input barcode
+            const excludedElementIds = ['barcode', 'unit', 'saveRoleButton'];
+
+            // Periksa apakah elemen yang diklik atau parent-nya bukan dari daftar yang dikecualikan
+            const isExcluded = excludedElementIds.some(id =>
+                event.target.id === id || event.target.closest(`#${id}`)
+            );
+
+            // Jika bukan elemen yang dikecualikan, fokuskan ke input barcode
+            if (!isExcluded) {
+                barcodeInput.focus();
+            }
+        });
+
+        // Event listener untuk perubahan pada select unit
+        unitSelect.addEventListener('change', () => {
+            // Fokuskan ke input barcode setelah memilih unit
+            setTimeout(() => {
+                barcodeInput.focus();
+            }, 0);
+        });
 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -128,7 +153,7 @@ $options = [
                         // Tangani error di sini
                     })
                     .finally(() => {
-                        barcode.value = '';
+                        barcodeInput.value = '';
                     });
             }
         });
