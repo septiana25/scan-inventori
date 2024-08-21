@@ -51,7 +51,7 @@ class AccessMiddleware
             ],
             'pickersodetail' => [
                 'allowed_roles' => ['superadmin', 'admin', 'pickers'],
-                'methods' => ['index']
+                'methods' => ['index', 'save', 'update']
             ],
             'checkerso' => [
                 'allowed_roles' => ['superadmin', 'admin', 'checkers'],
