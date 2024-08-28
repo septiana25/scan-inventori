@@ -77,6 +77,7 @@ $route['checkerso/detail/(:any)/(:num)'] = 'checkersodetail/index/$1/$2';
 $route['checkerso/save']       = 'checkersodetail/save';
 
 $route['returns']                  = 'returns/index';
+$route['returns/detail/(:num)/(:any)']      = 'returns/detail/$1/$2';
 
 $route['items']                     = 'items/index';
 $route['approved']                  = 'approved/index';

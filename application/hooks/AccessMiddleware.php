@@ -63,7 +63,7 @@ class AccessMiddleware
             ],
             'returns' => [
                 'allowed_roles' => ['superadmin', 'admin', 'pickers'],
-                'methods' => ['index']
+                'methods' => ['index', 'detail']
             ],
             'approved' => [
                 'allowed_roles' => ['superadmin'],

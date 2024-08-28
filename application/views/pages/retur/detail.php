@@ -3,14 +3,24 @@
         <?php $this->load->view('layouts/_alert') ?>
         <div id="alert-container"></div>
         <!-- Tombol Kembali -->
-        <?= form_open($form_action, ['method' => 'POST']) ?>
         <div class="mb-3">
-            <?= form_input('barcode', isset($input->barcode) ? $input->barcode : '', ['class' => 'form-control', 'id' => 'barcode', 'autofocus' => true, 'placeholder' => 'Scan ' . $field]); ?>
-            <?= form_error('barcode') ?>
+            <a href="<?= base_url('returns') ?>" class="btn btn-secondary">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i> Kembali
+            </a>
         </div>
-        <?= form_close() ?>
+        <form id="form_scan">
+            <div class="mb-3">
+                <label for="rak" class="form-label d-block">
+                    <div class="d-flex justify-content-between">
+                        <h6>Rak: <?= $rak ?></h6>
+                    </div>
+                </label>
+                <input type="hidden" name="idRak" value="<?= $idRak ?>">
+                <input type="text" name="barcode" id="barcode" class="form-control" autofocus="true" placeholder="Scan Item">
+            </div>
+        </form>
         <div class="d-flex justify-content-center align-item-center">
-            <h6>Daftar Item</h6>
+            <h6>Daftar Item Yang Harus Discan</h6>
         </div>
         <table class="table table-sm pb-5" id="records_table">
             <thead>
@@ -61,7 +71,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const barcodeInput = document.getElementById('barcode');
+        const barcodeInput = document.getElementById('barcodeRak');
         document.body.addEventListener('click', (event) => {
             barcodeInput.focus();
             if (event.target.id !== 'barcode') {}

@@ -24,17 +24,19 @@ class Returns extends MY_Controller
                 $input = (object) $this->input->post(null, true);
             }
 
-            if (!empty($input->barcodeRak)) {
-                $url = $this->config->item('base_url_api') . "/shelves/$input->barcodeRak";
+            if (!empty($input->barcode)) {
+                $url = $this->config->item('base_url_api') . "/shelves/$input->barcode";
                 $apiKey = $this->config->item('api_key');
                 $responseRak = curl_request($url, 'GET', null, ["X-API-KEY: $apiKey"]);
                 $resultRak = json_decode($responseRak);
 
+
                 $this->validateResponse($responseRak);
                 $this->validateDataResult($resultRak->data->shelf);
                 $idRak = $resultRak->data->shelf->idRak;
+                $rak = $resultRak->data->shelf->rak;
 
-                redirect(base_url("returns/detail/$idRak"));
+                redirect(base_url("returns/detail/$idRak/$rak"));
             }
 
             $url = $this->config->item('base_url_api') . "/returns";
@@ -53,6 +55,7 @@ class Returns extends MY_Controller
 
         $data['title'] = 'Data Returns';
         $data['nav'] = 'Retur - Scan Rak';
+        $data['field'] = 'Rak';
         $data['input'] = $this->defalutValueReturns();
         $data['form_action'] = "returns";
         $data['page'] = 'pages/retur/index';
@@ -60,8 +63,25 @@ class Returns extends MY_Controller
     }
 
 
-    public function detail()
+    public function detail($idRak, $rak)
     {
+        try {
+            $url = $this->config->item('base_url_api') . "/returns";
+            $apiKey = $this->config->item('api_key');
+            $response = curl_request($url, 'GET', null, ["X-API-KEY: $apiKey"]);
+            $result = json_decode($response);
+
+            $this->validateResponse($response);
+            $this->validateDataResult($result->data->returns);
+
+            $data['idRak'] = $idRak;
+            $data['rak'] = $rak;
+            $data['content'] = $result->data->returns;
+        } catch (Exception $e) {
+            log_message('error', 'Error saat mengambil data Retur: ' . $e->getMessage());
+            $data['content'] = [];
+        }
+
         $data['title'] = 'Detail Returns';
         $data['nav'] = 'Retur - Scan Rak';
         $data['page'] = 'pages/retur/detail';

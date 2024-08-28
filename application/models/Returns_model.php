@@ -10,7 +10,7 @@ class Returns_model extends MY_Model
     public function getDefaultValues()
     {
         return [
-            'barcodeRak'        => ''
+            'barcode'        => ''
         ];
     }
 
@@ -18,8 +18,8 @@ class Returns_model extends MY_Model
     {
         $validationRules = [
             [
-                'field' => 'barcodeRak',
-                'label' => 'Barcode Rak',
+                'field' => 'barcode',
+                'label' => 'Barcode',
                 'rules'    => 'trim|required'
             ]
         ];
