@@ -4,7 +4,7 @@
     <h1 class="mt-5 mt-md-5 mt-lg-6 text-center">Halaman Dashboard</h1>
     <div class="row row-cols-2 row-cols-md-3 g-4">
       <div class="col">
-        <a href="#" class="text-decoration-none">
+        <a href="<?= base_url("returns") ?>" class="text-decoration-none">
           <div class="card h-100 text-center shadow-sm">
             <div class="card-body d-flex flex-column justify-content-center">
               <i class="fa fa-recycle fa-3x text-success mb-3"></i>

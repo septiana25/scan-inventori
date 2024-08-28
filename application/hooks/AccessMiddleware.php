@@ -61,6 +61,10 @@ class AccessMiddleware
                 'allowed_roles' => ['superadmin', 'admin', 'checkers'],
                 'methods' => ['index', 'save']
             ],
+            'returns' => [
+                'allowed_roles' => ['superadmin', 'admin', 'pickers'],
+                'methods' => ['index']
+            ],
             'approved' => [
                 'allowed_roles' => ['superadmin'],
                 'methods' => ['index', 'upproverak', 'cancelrak']
