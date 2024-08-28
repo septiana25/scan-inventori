@@ -3,11 +3,12 @@
         <?php $this->load->view('layouts/_alert') ?>
         <div id="alert-container"></div>
         <!-- Tombol Kembali -->
-        <form id="form_scan">
-            <div class="mb-3">
-                <input type="text" name="barcode" id="barcode" class="form-control" autofocus="true" placeholder="Scan Rak">
-            </div>
-        </form>
+        <?= form_open($form_action, ['method' => 'POST']) ?>
+        <div class="mb-3">
+            <?= form_input('barcodeRak', isset($input->barcodeRak) ? $input->barcodeRak : '', ['class' => 'form-control', 'id' => 'barcodeRak', 'autofocus' => true, 'placeholder' => 'Scan Rak']); ?>
+            <?= form_error('barcodeRak') ?>
+        </div>
+        <?= form_close() ?>
         <div class="d-flex justify-content-center align-item-center">
             <h6>Daftar Item</h6>
         </div>
@@ -57,3 +58,13 @@
         </br>
     </section>
 </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const barcodeInput = document.getElementById('barcodeRak');
+        document.body.addEventListener('click', (event) => {
+            barcodeInput.focus();
+            if (event.target.id !== 'barcodeRak') {}
+        });
+    });
+</script>

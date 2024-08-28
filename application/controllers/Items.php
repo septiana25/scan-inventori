@@ -30,7 +30,6 @@ class Items extends MY_Controller
             $url = $this->config->item('base_url_api') . "/item/shelf/$input->barcodeRak";
             $response = curl_request($url, 'GET', null, ["X-API-KEY:ian123"]);
             $result = json_decode($response);
-            $resultData = $result->data->items;
 
             if ($result == NULL) {
                 $this->session->set_flashdata('error', 'Opps Server API Error');
@@ -42,6 +41,7 @@ class Items extends MY_Controller
                 redirect(base_url("items"));
             }
 
+            $resultData = $result->data->items;
             if (empty($resultData)) {
                 $this->session->set_flashdata('error', 'Data Tidak Ada');
                 redirect(base_url("items"));
