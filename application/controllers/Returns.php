@@ -31,7 +31,7 @@ class Returns extends MY_Controller
                 $resultRak = json_decode($responseRak);
 
 
-                $this->validateResponse($responseRak);
+                $this->validateResponse($responseRak, "home");
                 $this->validateDataResult($resultRak->data->shelf);
                 $idRak = $resultRak->data->shelf->idRak;
                 $rak = $resultRak->data->shelf->rak;
@@ -44,10 +44,9 @@ class Returns extends MY_Controller
             $response = curl_request($url, 'GET', null, ["X-API-KEY: $apiKey"]);
             $result = json_decode($response);
 
-            $this->validateResponse($response);
-            $this->validateDataResult($result->data->returns);
+            $this->validateResponse($response, "home");
 
-            $data['content'] = $result->data->returns;
+            $data['content'] = isset($result->data->returns) ? $result->data->returns : [];
         } catch (Exception $e) {
             log_message('error', 'Error saat mengambil data Retur: ' . $e->getMessage());
             $data['content'] = [];
@@ -71,8 +70,7 @@ class Returns extends MY_Controller
             $response = curl_request($url, 'GET', null, ["X-API-KEY: $apiKey"]);
             $result = json_decode($response);
 
-            $this->validateResponse($response);
-            $this->validateDataResult($result->data->returns);
+            $this->validateResponse($response, "home");
 
             $data['idRak'] = $idRak;
             $data['rak'] = $rak;
@@ -94,16 +92,13 @@ class Returns extends MY_Controller
         return (object) $this->returns->getDefaultValues();
     }
 
-    private function validateResponse($response)
+    private function validateResponse($response, $url)
     {
-        if ($response == NULL) {
-            $this->session->set_flashdata('error', 'Opps Server API Error');
-            redirect(base_url("returns"));
-        }
+        $response = json_decode($response);
 
-        if (!empty($response->statusCode) && $response->statusCode == 404) {
-            $this->session->set_flashdata('error', 'Opps Terjadi Kesalahan URL API');
-            redirect(base_url("returns"));
+        if ($response == NULL || !empty($response->statusCode) || isset($response->statusCode)) {
+            $this->session->set_flashdata('error', 'Opps Server API Error');
+            redirect(base_url($url));
         }
     }
 
