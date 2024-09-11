@@ -40,11 +40,14 @@ class Returns extends MY_Controller
                 redirect(base_url("returns/detail/$idRak/$rak"));
             }
 
-            $response = $this->handleGetDataReturns();
+            $url = $this->config->item('base_url_api') . "/returns";
+            $apiKey = $this->config->item('api_key');
+            $response = curl_request($url, 'GET', null, ["X-API-KEY: $apiKey"]);
+            $result = json_decode($response);
 
-            $this->validateResponse($response, "home");
+            $this->validateResponse($result, "home");
 
-            $data['content'] = isset($response->data->returns) ? $response->data->returns : [];
+            $data['content'] = isset($result->data->returns) ? $result->data->returns : [];
         } catch (Exception $e) {
             log_message('error', 'Error saat mengambil data Retur: ' . $e->getMessage());
             $data['content'] = [];
@@ -63,16 +66,13 @@ class Returns extends MY_Controller
     public function detail($idRak, $rak)
     {
         try {
-            $url = $this->config->item('base_url_api') . "/returns";
-            $apiKey = $this->config->item('api_key');
-            $response = curl_request($url, 'GET', null, ["X-API-KEY: $apiKey"]);
-            $result = json_decode($response);
+            $response = $this->handleGetDataReturns($idRak);
 
             $this->validateResponse($response, "home");
 
             $data['idRak'] = $idRak;
             $data['rak'] = $rak;
-            $data['content'] = $result->data->returns;
+            $data['content'] = $response->data->returns;
         } catch (Exception $e) {
             log_message('error', 'Error saat mengambil data Retur: ' . $e->getMessage());
             $data['content'] = [];
@@ -95,7 +95,7 @@ class Returns extends MY_Controller
             if ($saveBarcode->status == 'fail') {
                 throw new Exception($saveBarcode->message);
             }
-            $response = $this->handleGetDataReturns();
+            $response = $this->handleGetDataReturns($data['idRak']);
             $this->sendJsonResponse($response);
         } catch (Exception $e) {
             log_message('error', 'Error saat mengambil data Retur: ' . $e->getMessage());
@@ -103,9 +103,9 @@ class Returns extends MY_Controller
         }
     }
 
-    private function handleGetDataReturns()
+    private function handleGetDataReturns($idRak)
     {
-        $url = $this->config->item('base_url_api') . "/returns";
+        $url = $this->config->item('base_url_api') . "/returns/$idRak";
         $apiKey = $this->config->item('api_key');
         $response = curl_request($url, 'GET', null, ["X-API-KEY: $apiKey"]);
         $result = json_decode($response);
