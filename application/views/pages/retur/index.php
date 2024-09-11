@@ -10,7 +10,7 @@
         </div>
         <?= form_close() ?>
         <div class="d-flex justify-content-center align-item-center">
-            <h6>Daftar Item</h6>
+            <h6>Daftar Item Retur</h6>
         </div>
         <table class="table table-sm pb-5" id="records_table">
             <thead>
@@ -23,7 +23,7 @@
                 if (!empty($content) && is_iterable($content)):
                     foreach ($content as $item) :
                 ?>
-                        <tr id="item-row-<?= $item->id ?>">
+                        <tr id="item-row-<?= $item->id_brg ?>">
                             <td>
                                 <div id="loadingIndicator" class="text-center d-none">
                                     <div class="spinner-border text-primary" role="status">
