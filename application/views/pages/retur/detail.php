@@ -20,8 +20,8 @@
             </div>
             <div class="mb-3">
                 <select name="unit" id="unit" class="form-select">
-                    <option value="pcs">Pcs</option>
-                    <option value="pack" selected>Koli/Karung/Dus</option>
+                    <option value="pack">Koli/Karung/Dus</option>
+                    <option value="pcs" selected>Pcs</option>
                 </select>
             </div>
         </form>
