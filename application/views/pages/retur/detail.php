@@ -20,13 +20,13 @@
             </div>
             <div class="mb-3">
                 <select name="unit" id="unit" class="form-select">
-                    <option value="pack" selected>Koli/Karung/Dus</option>
                     <option value="pcs">Pcs</option>
+                    <option value="pack" selected>Koli/Karung/Dus</option>
                 </select>
             </div>
         </form>
         <div class="d-flex justify-content-center align-item-center">
-            <h6>Daftar Item Yang Harus Discan</h6>
+            <h6>Daftar Item Sudah Discan</h6>
         </div>
         <table class="table table-sm pb-5" id="records_table">
             <thead>
