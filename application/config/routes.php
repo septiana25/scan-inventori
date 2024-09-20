@@ -79,7 +79,10 @@ $route['checkerso/save']       = 'checkersodetail/save';
 $route['returns']                  = 'returns/index';
 $route['returns/detail/(:num)/(:any)']      = 'returns/detail/$1/$2';
 $route['returns/save']       = 'returns/save';
-$route['items']                     = 'items/index';
+
+$route['checksaldo']                  = 'checksaldo/index';
+$route['saldorak']                     = 'saldorak/index';
+$route['saldoitem']                     = 'saldoitem/index';
 $route['approved']                  = 'approved/index';
 
 $route['users']                     = 'users/index';

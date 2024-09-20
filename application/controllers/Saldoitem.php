@@ -5,9 +5,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @property CI_Session $session
  * @property CI_Config $config
  * @property CI_Input $input
- * @property Items_model $items
+ * @property Saldoitem_model $saldoitem
  */
-class Items extends MY_Controller
+class Saldoitem extends MY_Controller
 {
     public function __construct()
     {
@@ -24,36 +24,36 @@ class Items extends MY_Controller
             $input = (object) $this->input->post(null, true);
         }
 
-        if (empty($input->barcodeRak)) {
+        if (empty($input->barcodeItem)) {
             $resultData = [];
         } else {
-            $url = $this->config->item('base_url_api') . "/item/shelf/$input->barcodeRak";
+            $url = $this->config->item('base_url_api') . "/item/item/$input->barcodeItem";
             $response = curl_request($url, 'GET', null, ["X-API-KEY:ian123"]);
             $result = json_decode($response);
 
             if ($result == NULL) {
                 $this->session->set_flashdata('error', 'Opps Server API Error');
-                redirect(base_url("items"));
+                redirect(base_url("saldoitem"));
             }
 
             if (!empty($result->statusCode) && $result->statusCode == 404) {
                 $this->session->set_flashdata('error', 'Opps Terjadi Kesalahan URL API');
-                redirect(base_url("items"));
+                redirect(base_url("saldoitem"));
             }
 
             $resultData = $result->data->items;
             if (empty($resultData)) {
                 $this->session->set_flashdata('error', 'Data Tidak Ada');
-                redirect(base_url("items"));
+                redirect(base_url("saldoitem"));
             }
         }
 
-        $data['title'] = 'Cek Saldo Rak';
-        $data['nav'] = 'Cek Saldo Rak';
+        $data['title'] = 'Cek Saldo Item';
+        $data['nav'] = 'Cek Saldo Item';
         $data['input'] = $this->defalutValueItems();
-        $data['form_action'] = "items";
+        $data['form_action'] = "saldoitem";
         $data['content'] = $resultData;
-        $data['page'] = 'pages/items/index';
+        $data['page'] = 'pages/saldo/item';
         $this->view($data);
     }
 
@@ -62,7 +62,7 @@ class Items extends MY_Controller
     public function defalutValueItems()
     {
 
-        return (object) $this->items->getDefaultValues();
+        return (object) $this->saldoitem->getDefaultValues();
     }
 }
 

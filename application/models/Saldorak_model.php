@@ -2,7 +2,7 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Items_model extends MY_Model
+class Saldorak_model extends MY_Model
 {
 
     protected $table = '';
@@ -28,4 +28,4 @@ class Items_model extends MY_Model
     }
 }
 
-/* End of file Items_model.php */
+/* End of file Saldorak_model */

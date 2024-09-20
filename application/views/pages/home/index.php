@@ -44,11 +44,11 @@
         </a>
       </div>
       <div class="col">
-        <a href="<?= base_url("items") ?>" class="text-decoration-none">
+        <a href="<?= base_url("checksaldo") ?>" class="text-decoration-none">
           <div class="card h-100 text-center shadow-sm">
             <div class="card-body d-flex flex-column justify-content-center">
               <i class="fa fa-balance-scale fa-3x text-warning mb-3"></i>
-              <h5 class="card-title">Cek Saldo Rak</h5>
+              <h5 class="card-title">Cek Saldo</h5>
             </div>
           </div>
         </a>
