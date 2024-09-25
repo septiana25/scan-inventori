@@ -108,7 +108,7 @@
             event.preventDefault();
             const formData = new FormData(form);
             const data = Object.fromEntries(formData);
-            console.log(data);
+            barcodeInput.value = '';
 
             fetch('<?= base_url("returns/save") ?>', {
                 method: 'POST',
