@@ -23,6 +23,7 @@ function asset_url($filename)
     <script src="<?= asset_url('js/jquery.min.js') ?>"></script>
     <script src="<?= asset_url('js/loadingIndicator.js') ?>"></script>
     <script src="<?= asset_url('js/alertManager.js') ?>"></script>
+
 </head>
 
 <body>
@@ -66,7 +67,7 @@ function asset_url($filename)
     </script>
     <script src="<?= asset_url('js/popper.min.js') ?>"></script>
     <script src="<?= asset_url('js/bootstrap.bundle.min.js') ?>"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
     <!-- <script src="assets/js/<?= $filejs[1]; ?>.js"></script> -->
 
 </body>

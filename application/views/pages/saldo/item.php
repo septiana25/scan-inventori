@@ -3,8 +3,13 @@
     <?php $this->load->view('layouts/_alert') ?>
     <?= form_open($form_action, ['method' => 'POST']) ?>
     <div class="mb-3">
-      <?= form_input('barcodeItem', isset($input->barcodeItem) ? $input->barcodeItem : '', ['class' => 'form-control', 'id' => 'barcodeItem', 'autofocus' => true, 'placeholder' => 'Scan Item']); ?>
-      <?= form_error('barcodeItem') ?>
+      <div class="input-group">
+        <?= form_input('barcodeItem', isset($input->barcodeItem) ? $input->barcodeItem : '', ['class' => 'form-control', 'id' => 'barcodeItem', 'autofocus' => true, 'placeholder' => 'Scan Item']); ?>
+        <?= form_error('barcodeItem') ?>
+        <button type="button" id="barcode-button" class="btn btn-outline-secondary">
+          <img src="<?= asset_url('images/barcode.svg') ?>" alt="Barcode" width="20">
+        </button>
+      </div>
     </div>
     <?= form_close() ?>
     <div class="d-flex justify-content-center align-item-center">

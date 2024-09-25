@@ -15,8 +15,13 @@
                         <h6>Rak: <?= $rak ?></h6>
                     </div>
                 </label>
-                <input type="hidden" name="idRak" value="<?= $idRak ?>">
-                <input type="text" name="barcode" id="barcode" class="form-control" autofocus="true" placeholder="Scan Item">
+                <div class="input-group">
+                    <input type="text" name="barcode" id="barcode" class="form-control" autofocus="true" placeholder="Scan Item">
+                    <button type="button" id="barcode-button" class="btn btn-outline-secondary">
+                        <img src="<?= asset_url('images/barcode.svg') ?>" alt="Barcode" width="20">
+                    </button>
+                    <input type="hidden" name="idRak" value="<?= $idRak ?>">
+                </div>
             </div>
             <div class="mb-3">
                 <select name="unit" id="unit" class="form-select">
