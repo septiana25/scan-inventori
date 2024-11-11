@@ -35,6 +35,9 @@
                           <span class="text-muted fs-6 flex-grow-1 flex-basis-0">Rak: <?= $item->rak ?></span>
                           <span class="text-muted fs-6 flex-grow-1 flex-basis-0">Tahun: <?= $item->tahunprod ?></span>
                           <span class="text-muted fs-6 flex-grow-1 flex-basis-0">QTY: <?= $item->jumlah ?></span>
+                          <a href="<?= base_url('mutasi/detail/' . $item->id_detailsaldo) ?>" class="btn btn-sm btn-primary">
+                            <i class="fa fa-hand-pointer-o" aria-hidden="true"></i>
+                          </a>
                         </div>
                       <?php endforeach; ?>
                     </div>

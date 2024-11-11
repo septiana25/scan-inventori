@@ -60,37 +60,41 @@ $route['rakmasuk/(:any)']           = 'rakmasuk/index/$1';
 $route['managemasuk']               = 'managebarangmasuk/index';
 $route['barangkerak/(:num)']        = 'barangkerak/index/$1';
 
-$route['keluar']             = 'keluar/index/';
-$route['keluar/report']       = 'keluar/report';
+$route['keluar']                    = 'keluar/index/';
+$route['keluar/report']             = 'keluar/report';
 $route['keluar/print/(:any)']       = 'keluar/print/$1';
 $route['detailkeluar/(:any)']       = 'detailkeluar/index/$1';
 
 $route['pickerso']                  = 'pickerso/index';
 $route['pickerso/(:num)']           = 'pickerso/index/$1';
-$route['pickerso/detail/(:any)']     = 'pickersodetail/index/$1';
-$route['pickerso/detail/(:any)/(:num)']     = 'pickersodetail/index/$1/$2';
-$route['pickerso/save']                 = 'pickersodetail/save';
+$route['pickerso/detail/(:any)']    = 'pickersodetail/index/$1';
+$route['pickerso/detail/(:any)/(:num)'] = 'pickersodetail/index/$1/$2';
+$route['pickerso/save']             = 'pickersodetail/save';
 
-$route['checkerso']                  = 'checkerso/index';
-$route['checkerso/detail/(:any)']      = 'checkerso/detail/$1';
+$route['checkerso']                 = 'checkerso/index';
+$route['checkerso/detail/(:any)']   = 'checkerso/detail/$1';
 $route['checkerso/detail/(:any)/(:num)'] = 'checkersodetail/index/$1/$2';
-$route['checkerso/save']       = 'checkersodetail/save';
+$route['checkerso/save']            = 'checkersodetail/save';
 
-$route['returns']                  = 'returns/index';
-$route['returns/detail/(:num)/(:any)']      = 'returns/detail/$1/$2';
-$route['returns/save']       = 'returns/save';
+$route['returns']                   = 'returns/index';
+$route['returns/detail/(:num)/(:any)'] = 'returns/detail/$1/$2';
+$route['returns/save']              = 'returns/save';
 
-$route['checksaldo']                  = 'checksaldo/index';
-$route['saldorak']                     = 'saldorak/index';
-$route['saldoitem']                     = 'saldoitem/index';
+$route['mutasi']                    = 'mutasi/index';
+$route['mutasi/detail/(:num)'] = 'mutasi/detail/$1';
+$route['mutasi/save']               = 'mutasi/save';
+
+$route['checksaldo']                = 'checksaldo/index';
+$route['saldorak']                  = 'saldorak/index';
+$route['saldoitem']                 = 'saldoitem/index';
 $route['approved']                  = 'approved/index';
 
 $route['users']                     = 'users/index';
-$route['users/lock/(:num)']          = 'users/lock/$1';
+$route['users/lock/(:num)']         = 'users/lock/$1';
 $route['users/resetdefault/(:num)'] = 'users/resetdefault/$1';
 $route['users/changerole']          = 'users/changerole';
 
-$route['profile']                  = 'profile/index';
+$route['profile']                   = 'profile/index';
 $route['profile/reset/(:num)']      = 'profile/reset/$1';
 
 /* $route['api/(:any)']	= 'api/index/$1'; */

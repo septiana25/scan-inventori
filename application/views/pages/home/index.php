@@ -34,7 +34,7 @@
         </a>
       </div>
       <div class="col">
-        <a href="#" class="text-decoration-none">
+        <a href="<?= base_url("mutasi") ?>" class="text-decoration-none">
           <div class="card h-100 text-center shadow-sm">
             <div class="card-body d-flex flex-column justify-content-center">
               <i class="fa fa-random fa-3x text-danger mb-3"></i>
