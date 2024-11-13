@@ -35,6 +35,14 @@ class Mutasi_model extends MY_Model
         return $validationRules;
     }
 
+    public function getBarcodeAPIAllData()
+    {
+        $url = $this->config->item('base_url_api') . "/mutasi";
+        $apiKey = $this->config->item('api_key');
+        $response = curl_request($url, 'GET', [], ["X-API-KEY: $apiKey"]);
+        return json_decode($response);
+    }
+
     public function saveBarcodeAPI($data)
     {
 

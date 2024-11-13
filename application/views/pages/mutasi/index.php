@@ -14,9 +14,10 @@
       <tbody>
         <?php
         if (!empty($content) && is_iterable($content)):
+
           foreach ($content as $item) :
         ?>
-            <tr id="item-row-<?= $item['id_brg'] ?>">
+            <tr id="item-row-<?= $item->id_detailsaldo ?>">
               <td>
                 <div id="loadingIndicator" class="text-center d-none">
                   <div class="spinner-border text-primary" role="status">
@@ -25,16 +26,16 @@
                   <p class="mt-2">Sedang memproses...</p>
                 </div>
                 <div>
-                  <h6><?= $item['brg'] ?></h6>
+                  <h6><?= $item->brg ?></h6>
                   <div class="d-flex justify-content-between">
                   </div>
                 </div>
               </td>
               <td>
-                <h6 class="text-center item-sisa"><?= $item['rak'] ?></h6>
+                <h6 class="text-center item-sisa"><?= $item->rak_asal . ' <i class="fa fa-long-arrow-right" aria-hidden="true"></i> ' . $item->rak_tujuan ?></h6>
               </td>
               <td>
-                <h6 class="text-center item-sisa"><?= $item['sisa'] ?></h6>
+                <h6 class="text-center item-sisa"><?= $item->qty ?></h6>
               </td>
             </tr>
           <?php

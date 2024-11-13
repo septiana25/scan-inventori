@@ -20,25 +20,21 @@ class Mutasi extends MY_Controller
     {
         try {
 
-            $url = $this->config->item('base_url_api') . "/mutasi";
-            $apiKey = $this->config->item('api_key');
-            $response = curl_request($url, 'GET', null, ["X-API-KEY: $apiKey"]);
-            $result = json_decode($response);
+            $response = $this->mutasi->getBarcodeAPIAllData();
+            $this->validateResponse($response, "home");
+            if ($response->status == 'fail') {
+                throw new Exception($response->message);
+            }
 
-            $dataDummy = $this->handleGetDataMutasiDummy();
-            $result = $dataDummy;
-
-            $this->validateResponse($result, "home");
-
-            //$data['content'] = isset($result->data->mutasi) ? $result->data->mutasi : [];
-            $data['content'] = $result->data['mutasi'];
+            $data['content'] = $response->data->mutasi;
         } catch (Exception $e) {
             log_message('error', 'Error saat mengambil data Mutasi: ' . $e->getMessage());
+            $this->session->set_flashdata('error', $e->getMessage());
             $data['content'] = [];
         }
 
         $data['title'] = 'Data Mutasi';
-        $data['nav'] = 'Mutasi - Scan Rak';
+        $data['nav'] = 'Mutasi - Belum Diproses';
         $data['field'] = 'Rak';
         $data['input'] = $this->defalutValueMutasi();
         $data['form_action'] = "mutasi";
